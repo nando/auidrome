@@ -23,7 +23,8 @@ module Auidrome
           :restodrome,
           :auidrome,
           :ripodrome,
-          :fictiondrome
+          :fictiondrome,
+          :repulsodrome
       end
 
       # Returns the first (more important) drome for a given person

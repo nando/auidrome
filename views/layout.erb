@@ -96,9 +96,11 @@
     <div class="dromes-links">
       <div class="dromes-links-inner">
         <% [
-             %w{Auidrome AcadoDrome PedaloDrome},
-             %w{LoveDrome FictionDrome},
-             %w{ByebyeDrome RestoDrome RipoDrome}
+             %w{Auidrome Acadodrome Pedalodrome},
+             %w{Lovedrome},
+             %w{Byebyedrome Restodrome Ripodrome},
+             %w{Repulsodrome},
+             %w{Fictiondrome}
            ].each do |dromes| %>
         <div>
           <% dromes.map{|dromename| Auidrome::Config.new(dromename)}.each do |drome| %>

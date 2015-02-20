@@ -1,0 +1,7 @@
+port_base: 9009
+site_name: Repulsodrome
+site_tagline: People we'd like to have far enough from our pedals
+item_name: Bug
+item_description: nickname of someone <strong>you do NOT like</strong>at all.
+tuit_sentence: the {{at}} somebody storaged <strong><a href="/tuits/{{tuit}}">{{tuit}}</a></strong> in our server (<a href="/tuits.json">here!</a>).
+tuit_consideration: <strong><a href="/tuits/{{tuit}}">{{tuit}}</a></strong> should let us work in THE FIX WE NEED without tripping.

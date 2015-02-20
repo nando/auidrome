@@ -6,7 +6,7 @@
 
 **Drome**: a place where people can get in, and from some of them people can also get out.
 
-In the context of a project, a good long project (e.g. a human life, a collective ambition, or a business line) there are **7 basic dromes**:
+In the context of a project, **a good long project** (e.g. a human life, a collective ambition, or a business line) there are **7 basic dromes** we'd like to manage:
 
 1. **AuiDrome**: people that are coming soon or that are finally between us. Her or his name should be created using, of course, love, and optionally related to one of the languages of the different cultures of the world (e.g. choosing from Glottolog [1] or ISO 639-3 vocabularies [2]).
 
@@ -23,13 +23,15 @@ In the context of a project, a good long project (e.g. a human life, a collectiv
 
 7. **LoveDrome**: people we love or admire regardless of the *drome* to which they belong (**our affection is more important** than the *drome* where whey should be).
 
-That said, those 7 basic dromes with an aditional one, the **FictionDrome**, give us the places where **a human being** can be in the head of a person that feels part of **a project**. That *project* would be the part of another *"first-level drome"*, **the projectDrome**.
+That said, those 7 basic dromes give us the places where **another human being** can be in our head in the context of **the abovementioned project**, giving us **the main first-level drome**: the *Human Beings Drome*.
 
-All *dromes* needed to semantically store important information handled by a person will be discussed and defined using Loomio[5] as decision-making tool.
+And **the project** itself would be an example of another *first-level drome*, **the ProjectDrome**. Each entry of the **ProjectDrome** will be *de facto* boosted by at least a *Pedalodrome* (though they don't know we're calling them that way:).
 
-*Auidrome* is supposed to run on a **collective and personal server** and the data of its different *dromes* (stored in simple JSON files) should be easily shared between servers (ideally using federated sharing similar to the *Smallest Federated Wiki[3]* one).
+All *dromes* needed to semantically store important information handled by a person will be discussed and defined using Loomio[3] as decision-making tool.
 
-*Auidrome* is also desired to become *Hyperbooted[4]* to guarantee always **the rights of the user**.
+*Auidrome* is supposed to run on a **collective and personal server** and the data of its different *dromes* (stored in simple JSON files) should be easily shared between servers (ideally using federated sharing similar to the *Smallest Federated Wiki[4]* one).
+
+*Auidrome* is also desired to become *Hyperbooted[5]* to guarantee always **the rights of the user**.
 
 [0] [https://en.wikipedia.org/wiki/Huia#Voice](https://en.wikipedia.org/wiki/Huia#Voice)
 
@@ -37,11 +39,11 @@ All *dromes* needed to semantically store important information handled by a per
 
 [2] [http://datahub.io/dataset/iso-639-3](http://datahub.io/dataset/iso-639-3)
 
-[3] [https://github.com/WardCunningham/Smallest-Federated-Wiki](https://github.com/WardCunningham/Smallest-Federated-Wiki)
+[3] [https://www.loomio.org/g/t4295q8g/auidrome](https://www.loomio.org/g/t4295q8g/auidrome)
 
-[4] [http://hyperboot.org](http://hyperboot.org)
+[4] [https://github.com/WardCunningham/Smallest-Federated-Wiki](https://github.com/WardCunningham/Smallest-Federated-Wiki)
 
-[5] [https://www.loomio.org/g/t4295q8g/auidrome](https://www.loomio.org/g/t4295q8g/auidrome)
+[5] [http://hyperboot.org](http://hyperboot.org)
 
 ## Think and Shout (and dance if you want:).
 
