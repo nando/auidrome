@@ -67,7 +67,7 @@ module Auidrome
       if @hash[:auido] and image_file?
         @image_file
       else
-        "/images/frijolito.png"
+        "/images/#{conf.dromename}.png"
       end
     end
 

@@ -24,7 +24,7 @@
     <script id="template_result" type="x-tmpl-mustache">
       <div class="results">
 <% if App.config.drome_of_humans? %>
-        <a href="/tuits/{{tuit}}"><img src="/images/{{tuit}}.png" onerror="this.src = '/images/frijolito.png'" alt="{{tuit}} avatar or default avatar" class="img-thumbnail icon"/></a>
+        <a href="/tuits/{{tuit}}"><img src="/images/{{tuit}}.png" onerror="this.src = '/images/<%= App.config.dromename %>.png'" alt="{{tuit}} avatar or default avatar" class="img-thumbnail icon"/></a>
         <p><a href="/tuits/{{tuit}}">{{tuit}}</a>: {{at}}</p>
         <p>· <a href="/tuits/{{tuit}}.json">JSON FILE</a> ·</p>
 <% else %>
@@ -48,7 +48,7 @@
     <script id="template_tuited" type="x-tmpl-mustache">
 <% if App.config.drome_of_humans? %>
       <div class="status">
-        <a href="/tuits/{{tuit}}"><img src="/images/{{tuit}}.png" onerror="this.src = '/images/frijolito.png'" alt="{{tuit}} avatar or default avatar" class="img-thumbnail icon"/></a>
+        <a href="/tuits/{{tuit}}"><img src="/images/{{tuit}}.png" onerror="this.src = '/images/<%= App.config.dromename %>.png'" alt="{{tuit}} avatar or default avatar" class="img-thumbnail icon"/></a>
         <p><%= App.config.tuit_sentence %></p>
         <p><%= App.config.tuit_consideration %></p>
       </div>
