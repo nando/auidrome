@@ -12,5 +12,5 @@ for drome in $dromes; do
   run_command "cd ../$drome"
   run_command "cp public/tuits.json ../auidrome/data/public/$drome"
   run_command "cp public/tuits/* ../auidrome/data/public/$drome/tuits/"
-  run_command "cp public/images/* ../auidrome/data/public/$drome/images/"
+  run_command "cp -Rf public/images/* ../auidrome/data/public/$drome/images/"
 done
