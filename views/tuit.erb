@@ -14,7 +14,7 @@
                 </h1>
 <% if App.config.drome_of_humans? and @drome_entry.identity.any? %>
                 <span class="identities">
-                (<% @drome_entry.identity.each do |identity| %><span class="identity">@<%= identity %></span> <% end %>)
+                (<% @drome_entry.identity.each do |identity| %><span class="identity"><%= identity %></span> <% end %>)
                 </span>
 <% end %>
                 <div class="tuit-properties">
