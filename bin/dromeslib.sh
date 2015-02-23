@@ -27,8 +27,15 @@ function run {
 function ask_and_run {
   cmd="$1"
   echo ">>> $cmd"
-  read -p "Should I run it?"
-  run "$cmd"
+  read -r -p "Should I run it? [Y/n] " response
+  case $response in
+    [nN][oO]|[nN]) 
+      echo "     -- skipping command: '$cmd'"
+      ;;
+    *)
+      run "$cmd"
+      ;;
+  esac
 }
 
 function run_command {
