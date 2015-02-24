@@ -146,7 +146,9 @@ EM.run do
       @image_quality = image_quality
       @page_title = params[:auido]
       @drome_entry = drome.load_json(params[:auido], current_user, image_quality)
-      @property_names_for_autocomplete = Config.property_names_with_associated_drome.map{|p| {value: p}}
+      @property_names_for_autocomplete = Config.properties_with_drome.map{|p, d|
+        {value: "#{p} => #{d.dromename}", data: p}
+      }
       erb :tuit
     end
 
