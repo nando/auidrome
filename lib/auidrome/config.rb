@@ -2,7 +2,12 @@
 require 'yaml'
 module Auidrome
   class Config
-    @@dromes, @@properties_drome, @@values_drome = {}, {}, {}
+    @@dromes = {} # Auidrome::Config instances of each drome.
+    # Class instance variables "naming": @@HASH-KEYS_HASH-VALUE
+    @@properties_drome = {} # Each property name with its mapped drome.
+    @@values_drome = {} # Values could be mapped too (i don't like this at all:(
+    @@dromes_properties = {} # Properties for each dromename
+    @@ports_drome = {} # Drome for each port
 
     def initialize cfg_file=nil
       cfg_file ||= "config/dromes/auidrome.yml"
@@ -62,13 +67,7 @@ module Auidrome
     end
 
     def self.property_names_with_associated_drome
-      if @@properties_drome.empty?
-        drome_property_mappings_file.each {|drome, property_names|
-          property_names.split(',').map(&:to_sym).each {|prop|
-            @@properties_drome[prop] = drome
-          }
-        }
-      end
+      load_properties_from_mappings_file if @@properties_drome.empty?
       @@properties_drome.keys
     end
 
@@ -80,7 +79,28 @@ module Auidrome
       end
     end
 
+    def self.properties_mapped_to dromename
+      load_properties_from_mappings_file
+      @@dromes_properties[dromename.to_sym]
+    end
+
+    def self.drome_for_port port_base
+      load_properties_from_mappings_file
+      @@ports_drome[port_base.to_i]
+    end
+
     protected
+    def self.load_properties_from_mappings_file
+      drome_property_mappings_file.each {|drome, property_names|
+        @@dromes_properties[drome.to_sym] = []
+        property_names.split(',').map(&:to_sym).each {|prop|
+          @@dromes_properties[drome.to_sym] << prop
+          @@properties_drome[prop] = drome
+          @@ports_drome[load_drome(drome).port_base] = drome
+        }
+      }
+    end
+
     def self.drome_property_mappings_file
       @drome_property_mappings_file ||= YAML.load_file('config/drome_property_mappings.yml')
     end

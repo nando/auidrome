@@ -106,7 +106,7 @@ EM.run do
         (request.referrer =~ /\/search\?/).nil?
       end
 
-      def get_property_name_from_referrer 
+      def get_port_from_referrer 
         if referrer_could_be_a_property_value?
           $1 if request.referrer and request.referrer =~ /:(\d+)/
         end
@@ -146,9 +146,16 @@ EM.run do
       @image_quality = image_quality
       @page_title = params[:auido]
       @drome_entry = drome.load_json(params[:auido], current_user, image_quality)
-      @property_names_for_autocomplete = Config.properties_with_drome.map{|p, d|
-        {value: "#{p} => #{d.dromename}", data: p}
-      }
+      if port = get_port_from_referrer and
+         dromename = Config.drome_for_port(port)
+        @property_names_for_autocomplete = Config.properties_mapped_to(dromename).map {|p|
+          {value: "#{p} => #{dromename}", data: p}
+        }
+      else
+        @property_names_for_autocomplete = Config.properties_with_drome.map{|p, d|
+          {value: "#{p} => #{d.dromename}", data: p}
+        }
+      end
       erb :tuit
     end
 
