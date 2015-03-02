@@ -27,9 +27,9 @@ module Auidrome
           :repulsodrome
       end
 
-      # Returns the first (more important) drome for a given person
+      # Returns the first (more important) drome for a given human being
       def drome_for auido
-        @@all[auido.to_sym].first if all[auido.to_sym]
+        Auidrome::Config.drome(@@all[auido.to_sym].first) if all[auido.to_sym]
       end
 
       # Returns a hash with the Twitter identities of the people in the

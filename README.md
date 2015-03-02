@@ -106,6 +106,12 @@ To use a diferent one we have to give it as argument. For instance:
 
 Other files in the *config* directory should be self-explanatory.
 
+## Things that can be done while using it
+
+Once you've started a session (pushing the "it's me!" or "amadrinate" buttons) you can add key/values on any entry.
+
+If you use "mustaches" as part of a key ({{LIKE-ME}}) its content is assumed to be a human being name and will be replaced with a link to the right drome entry while showing it (WIP).
+
 ## Origin and Dedications
 
 The project comes from a [Codetail](http://github.com/nando/piidos-compartidos-codetails) that use code from another one (http://github.com/samuelnp/banana-status-codetails) and is desired to be part of ANOTHER ONE MUCH MORE BIGGER that is about Twitter decentralization based on laguages and dialects spoken by the folks that are currently living in our planet ([OTAONY.com](http://OTAONY.com)).

@@ -153,6 +153,18 @@ module Auidrome
       save_json!
     end
 
+    def show_property_name(name)
+      # Done thanks to Bozhidar Ivanov's post "Using Ruby's Gsub With a Block"
+      #   (http://batsov.com/articles/2013/08/30/using-gsub-with-a-block/)
+      name.to_s.gsub(/{{(.+)}}/) {
+        human_auido = Regexp.last_match[1]
+        if drome = People.drome_for(human_auido)
+          %!<a href="#{drome.url}/tuits/#{human_auido}">#{human_auido}</a>!
+        else
+          human_auido
+        end
+      }
+    end
 
     private
     def image_file?

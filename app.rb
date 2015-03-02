@@ -219,7 +219,7 @@ EM.run do
         end
       elsif App.config.drome_of_humans? and # i'm from the anti-if-campaign but
             drome = People.drome_for(auido) # let's do this only for humans :D
-        redirect to(Config.drome(drome).url + request.path)
+        redirect to drome.url + request.path
       else
         raise Sinatra::NotFound
       end
