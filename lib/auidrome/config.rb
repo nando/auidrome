@@ -109,7 +109,7 @@ module Auidrome
       if @@values_drome[value].is_a? Auidrome::Config
         @@values_drome[value]
       elsif drome = People.drome_for(value.to_sym)
-        @@values_drome[value] = load_drome(drome)
+        @@values_drome[value] = drome
       end
     end
 
