@@ -2,6 +2,7 @@
 require 'thin'
 require 'em-websocket'
 require 'sinatra/base'
+require 'rack/cors'
 require 'rack-flash'
 require 'rack/session/cookie'
 require 'omniauth-twitter'
@@ -21,6 +22,13 @@ EM.run do
       :expire_after => 3600, # In seconds
       :secret => ENV['CONSUMER_SECRET']
     use Rack::Flash
+
+    use Rack::Cors do |config|
+      config.allow do |allow|
+        allow.origins '*'
+        allow.resource '/auidos.json', headers: :any
+      end
+    end
 
     def self.config
       @@config ||= Config.new(ARGV[0])
@@ -181,6 +189,17 @@ EM.run do
       tuits = array[([from, 0].max)..to]
       @tuits_submitted = Hash[tuits].invert.to_json
       erb :index
+    end
+
+    get "/auidos.json" do
+      content_type :'application/json'
+      Tuit.current_stored_tuits.map do |auido, timestring|
+        {
+          id: DateTime.parse(timestring).strftime("%s").to_i,
+          created_at: timestring,
+          auido: auido
+        }
+      end.to_json
     end
 
     post "/tuits" do
