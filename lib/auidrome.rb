@@ -30,7 +30,9 @@ module Auidrome
   }
   # Templates to build HREFs
   PROPERTY_VALUE_TEMPLATES = {
-    twitter: "http://twitter.com/{{value}}"
+    twitter: "http://twitter.com/{{value}}",
+    flickr: "http://www.flickr.com/photos/{{value}}",
+    github: "http://github.com/{{value}}"
   }
 
 end
