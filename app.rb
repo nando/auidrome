@@ -66,6 +66,10 @@ EM.run do
         puts "Generating pretty JSON."
       end
 
+      File.open(EMBER_FILE,"w") do |f|
+        f.write "auidrome_url = '#{App.config.url}';"
+      end
+
       puts "Using ENV['CONSUMER_KEY'] and ENV['CONSUMER_SECRET'] for Twitter auth."
       use OmniAuth::Builder do
         provider :twitter, ENV['CONSUMER_KEY'], ENV['CONSUMER_SECRET']
@@ -195,9 +199,8 @@ EM.run do
       content_type :'application/json'
       Tuit.current_stored_tuits.map do |auido, timestring|
         {
-          id: DateTime.parse(timestring).strftime("%s").to_i,
-          created_at: timestring,
-          auido: auido
+          sec: Time.parse(timestring).to_i,
+          title: auido
         }
       end.to_json
     end

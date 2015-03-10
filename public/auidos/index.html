@@ -1,0 +1,92 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Auidrome • Auidos</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <script type="text/x-handlebars" data-template-name="auidos/index">
+  <ul id="auido-list">
+    {{#each auido in model itemController="auido"}}
+      <li {{bind-attr class="auido.isCompleted:completed auido.isEditing:editing"}}>
+        {{#if auido.isEditing}}
+          {{edit-auido class="edit" value=auido.title focus-out="acceptChanges" insert-newline="acceptChanges"}}
+        {{else}}
+          {{input type="checkbox" checked=auido.isCompleted class="toggle"}}
+          <label {{action "editAuido" on="doubleClick"}}>
+            <span class="created_at">{{auido.createdAt}}</span>
+            <a {{bind-attr href="auido.href"}}">{{auido.title}}</a>
+          </label>
+          <button {{action "removeAuido"}} class="destroy"></button>
+        {{/if}}
+      </li>
+    {{/each}}
+  </ul>
+  </script>
+
+  <script type="text/x-handlebars" data-template-name="auidos">
+    <section id="auidoapp">
+      <header id="header">
+        <h1>auidos</h1>
+        {{input
+          type="text"
+          id="new-auido"
+          placeholder="What else needs to be droned?"
+          value=newTitle
+          action="createAuido"}}
+      </header>
+
+      <section id="main">
+        {{outlet}}
+
+        {{input type="checkbox" id="toggle-all" checked=allAreDone}}
+      </section>
+
+      <footer id="footer">
+        <span id="auido-count">
+          <strong>{{remaining}}</strong> {{inflection}} left
+        </span>
+        <ul id="filters">
+          <li>
+            {{#link-to "auidos.index" activeClass="selected"}}All{{/link-to}}
+          </li>
+          <li>
+            {{#link-to "auidos.active" activeClass="selected"}}Active{{/link-to}}
+          </li>
+          <li>
+            {{#link-to "auidos.completed" activeClass="selected"}}Completed{{/link-to}}
+          </li>
+        </ul>
+
+        {{#if hasCompleted}}
+        <button id="clear-completed" {{action "clearCompleted"}}>
+          Clear completed ({{completed}})
+        </button>
+        {{/if}}
+
+      </footer>
+    </section>
+
+    <footer id="info">
+      <p>Double-click to edit an auido</p>
+    </footer>
+
+
+  </script>
+
+  <script src="js/libs/jquery-1.11.2.min.js"></script>
+  <script src="js/libs/handlebars-v1.3.0.js"></script>
+  <script src="js/libs/ember.js"></script>
+  <script src="js/libs/ember-data.js"></script>
+  <script src="js/libs/localstorage_adapter.js"></script>
+  <script src="js/auidrome.js"></script>
+  <script src="js/application.js"></script>
+  <script src="js/router.js"></script>
+  <script src="js/models/auido.js"></script>
+  <script src="js/controllers/auidos_controller.js"></script>
+  <script src="js/controllers/auido_controller.js"></script>
+  <script src="js/views/edit_auido_view.js"></script>
+</body>
+</html>
+
