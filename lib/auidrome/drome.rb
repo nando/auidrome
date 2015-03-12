@@ -2,6 +2,8 @@
 require 'json'
 module Auidrome
   class Drome
+    include Auidrome
+
     def initialize app
       @app = app
       @hash = {
@@ -31,32 +33,38 @@ module Auidrome
     end
 
     def core_properties
-      Auidrome::CORE_PROPERTIES # no more, no less, by now...
-    end
-
-    def self.linkable_property? property, value
-      Auidrome::HREF_PROPERTIES.include?(property) or
-        Auidrome::PROPERTY_VALUE_TEMPLATES.include?(property.to_sym) or
-          Auidrome::Config.property_names_with_associated_drome.include?(property.to_sym) or
-            value =~ /^https?:\/\//i
+      CORE_PROPERTIES # no more, no less, by now...
     end
 
     def self.protocol_for property
-      Auidrome::PROTOCOLS[property.downcase] || 'http://'
+      PROTOCOLS[property.downcase] || 'http://'
     end
 
+    # embedded value
+    def embeddable_property?(property, value)
+      value =~ /^<.+>$/ or
+      PROPERTY_VALUE_TEMPLATES[:embeddings].include?(property.to_sym)
+    end
+
+    def embed_for(property, value)
+      PROPERTY_VALUE_TEMPLATES[:embeddings][property].gsub('{{value}}', value)
+    end
+
+    # to <a href> value
     def hrefable_property? property, value
-      value =~ /^https?:/i or
-        Drome.linkable_property? property.downcase, value
+      HREF_PROPERTIES.include?(property) or
+      PROPERTY_VALUE_TEMPLATES[:hrefs].include?(property.to_sym) or
+      Config.property_names_with_associated_drome.include?(property.to_sym) or
+      value =~ /^https?:\/\//i
     end
 
     def href_for name, value
       name_sym = name.downcase.to_sym
       if value =~ /^https?:/i
         value
-      elsif template = Auidrome::PROPERTY_VALUE_TEMPLATES[name_sym]
+      elsif template = PROPERTY_VALUE_TEMPLATES[:hrefs][name_sym]
         template.gsub('{{value}}', value)
-      elsif drome = Auidrome::Config.drome_mapping_for(name_sym, value)
+      elsif drome = Config.drome_mapping_for(name_sym, value)
         "#{Drome.protocol_for(name)}#{drome.domain_and_port}/tuits/#{value}"
       else
         "#{Drome.protocol_for(name)}#{value}"
@@ -118,12 +126,12 @@ module Auidrome
     def load_json auido, reader = nil, quality = 0
       @quality = quality # Currently only for image quality ("better" subdir levels)
       public_data = Tuit.read_json("#{PUBLIC_TUITS_DIR}/#{auido}.json")
-      protected_data = if Auidrome::AccessLevel.can_read_protected?(reader, public_data)
+      protected_data = if AccessLevel.can_read_protected?(reader, public_data)
         Tuit.read_json("#{PROTECTED_TUITS_DIR}/#{auido}.json")
       else
         {}
       end
-      private_data = if Auidrome::AccessLevel.can_read_private?(reader, public_data)
+      private_data = if AccessLevel.can_read_private?(reader, public_data)
         Tuit.read_json("#{PRIVATE_TUITS_DIR}/#{auido}.json")
       else
         {}

@@ -62,8 +62,10 @@
 <%   enum_value.each do |value| %>
                         <span>
 
-<%     if @drome_entry.hrefable_property? property_name, value %>
+<%     if @drome_entry.hrefable_property?(property_name, value) %>
                           <a href="<%= @drome_entry.href_for property_name, value %>"><%= value %></a>
+<%     elsif @drome_entry.embeddable_property?(property_name, value) %>
+                          <%= @drome_entry.embed_for property_name, value %>
 <%     else %>
                           <%= value %>
 <%     end %>

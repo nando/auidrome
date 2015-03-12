@@ -29,13 +29,19 @@ module Auidrome
     :email  => 'mailto:',
     :'tel.' => 'tel:'
   }
-  # Templates to build HREFs
-  PROPERTY_VALUE_TEMPLATES = {
-    twitter: "http://twitter.com/{{value}}",
-    flickr: "http://www.flickr.com/photos/{{value}}",
-    github: "http://github.com/{{value}}"
-  }
 
+
+  # Templates to build HREFs and other embeddings
+  PROPERTY_VALUE_TEMPLATES = {
+    hrefs: {
+      twitter: "http://twitter.com/{{value}}",
+      flickr: "http://www.flickr.com/photos/{{value}}",
+      github: "http://github.com/{{value}}"
+    },
+    embeddings: {
+      audio: %!<iframe src="https://archive.org/embed/{{value}}.ogg" width="600" height="30" frameborder="0" webkitallowfullscreen="true" mozallowfullscreen="true" allowfullscreen></iframe>!
+    }
+  }
 end
 require_relative 'auidrome/config.rb'
 require_relative 'auidrome/tuit.rb'
