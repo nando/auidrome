@@ -39,7 +39,7 @@ module Auidrome
       github: "http://github.com/{{value}}"
     },
     embeddings: {
-      audio: %!<iframe src="https://archive.org/embed/{{value}}.ogg" width="600" height="30" frameborder="0" webkitallowfullscreen="true" mozallowfullscreen="true" allowfullscreen></iframe>!
+      audio: %!<iframe src="https://archive.org/embed/{{value}}" width="600" height="30" frameborder="0" webkitallowfullscreen="true" mozallowfullscreen="true" allowfullscreen></iframe>!
     }
   }
 end
