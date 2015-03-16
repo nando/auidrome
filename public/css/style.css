@@ -310,6 +310,7 @@ article h1 {
   height:64px;
   float: left;
   margin-right: 10px;
+  border-radius: 100px;
 }
 
 .status p, .results p {
