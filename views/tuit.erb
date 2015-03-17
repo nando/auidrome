@@ -65,7 +65,6 @@
 <%     if @drome_entry.hrefable_property?(property_name, value) %>
                           <a href="<%= @drome_entry.href_for property_name, value %>"><%= value %></a>
 <%     elsif @drome_entry.embeddable_property?(property_name, value) %>
-                          <p><%= value %></p>
                           <%= @drome_entry.embed_for property_name, value %>
 <%     else %>
                           <%= value %>

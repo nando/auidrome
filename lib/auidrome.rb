@@ -36,10 +36,12 @@ module Auidrome
     hrefs: {
       twitter: "http://twitter.com/{{value}}",
       flickr: "http://www.flickr.com/photos/{{value}}",
-      github: "http://github.com/{{value}}"
+      github: "http://github.com/{{value}}",
+      soundcloud: "https://soundcloud.com/{{value}}"
     },
     embeddings: {
-      audio: %!<iframe src="https://archive.org/embed/{{value}}" width="600" height="30" frameborder="0" webkitallowfullscreen="true" mozallowfullscreen="true" allowfullscreen></iframe>!
+      audio: %!<p><em>({{value}})</em></p><iframe src="https://archive.org/embed/{{value}}" width="600" height="30" frameborder="0" webkitallowfullscreen="true" mozallowfullscreen="true" allowfullscreen></iframe>!,
+      vimeo: %!<iframe src="https://player.vimeo.com/video/{{value}}" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>!
     }
   }
 end
