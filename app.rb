@@ -260,6 +260,7 @@ EM.run do
       yml['drome_name'] = App.config.site_name
       yml['drome_item_name'] = App.config.item_name
       yml['drome_item_description'] = App.config.item_description
+      yml['living_things_drome'] = App.config.living_things_drome rescue false
       yml['dromes_ports'] = @ports
       yml['property_mappings'] = @properties
 
