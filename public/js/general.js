@@ -127,6 +127,19 @@ $('#property_form').submit(function(){
   property_name.val(property_name.val().toLowerCase());
 });
 
+$('#property_name').blur(function() {
+  var property_name = property_to_drome[$('#property_name').val()];
+  addMessage("blur " + property_name);
+  if(drome_urls.hasOwnProperty(property_name)) {
+    var json_url = drome_urls[property_name] + "auidos.json";
+    $.getJSON( json_url, function( data ) {
+      $('#property_value').autocomplete({
+        lookup: data
+      });
+    });
+  }
+});
+
 function initMoustache() {
   addMessage(" > initMoustache()");
   template_query = $('#template_query').html();

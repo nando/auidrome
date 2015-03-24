@@ -28,6 +28,11 @@ module Auidrome
       @dromename
     end
 
+    def self.dromes
+      self.load_dromes_with_mappings
+      @@dromes
+    end
+
     def self.drome dromename
       load_drome dromename.to_sym
     end
@@ -90,6 +95,11 @@ module Auidrome
     end
 
     protected
+
+    def self.load_dromes_with_mappings
+      self.load_properties_from_mappings_file if @@dromes.size == 0
+    end
+
     def self.load_properties_from_mappings_file
       drome_property_mappings_file.each {|drome, property_names|
         @@dromes_properties[drome.to_sym] = []

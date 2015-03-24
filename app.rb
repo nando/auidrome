@@ -82,6 +82,7 @@ EM.run do
       end
 
       def current_user
+return "twitter/colgado"
         # e.g. "twitter/colgado" or "github/nando" (or nil)
         if session[:provider] && session[session[:provider]]
           "#{session[:provider]}/#{session[session[:provider]]}"
@@ -158,6 +159,14 @@ EM.run do
       @image_quality = image_quality
       @page_title = params[:auido]
       @drome_entry = drome.load_json(params[:auido], current_user, image_quality)
+      @drome_urls = {}
+      Config.dromes.each do |name, cfg|
+        @drome_urls[name] = cfg.url
+      end
+      @property_to_drome = {}
+      Config.properties_with_drome.each do |property, drome|
+        @property_to_drome[property] = drome.dromename
+      end
       if port = get_port_from_referrer and
          dromename = Config.drome_for_port(port)
         @property_names_for_autocomplete = Config.properties_mapped_to(dromename).map {|p|
@@ -199,8 +208,8 @@ EM.run do
       content_type :'application/json'
       Tuit.current_stored_tuits.map do |auido, timestring|
         {
-          sec: Time.parse(timestring).to_i,
-          title: auido
+          data: Time.parse(timestring).to_i,
+          value: auido
         }
       end.to_json
     end

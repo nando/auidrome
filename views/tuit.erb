@@ -82,7 +82,10 @@
               <script src="/js/jquery.autocomplete.min.js"></script>
               <script>
                 $(function(){
+                  drome_urls = <%= @drome_urls.to_json %>;
+                  property_to_drome = <%= @property_to_drome.to_json %>;
                   var property_names_with_mapped_drome = <%= @property_names_for_autocomplete.to_json %>;
+                  
                   $('#property_name').autocomplete({
                     lookup: property_names_with_mapped_drome,
                     onSelect: function (suggestion) {

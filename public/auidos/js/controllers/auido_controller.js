@@ -8,7 +8,7 @@ Auidos.AuidoController = Ember.ObjectController.extend({
     acceptChanges: function() {
       this.set('isEditing', false);
   
-      if (Ember.isEmpty(this.get('model.title'))) {
+      if (Ember.isEmpty(this.get('model.value'))) {
         this.send('removeAuido');
       } else {
         this.get('model').save();

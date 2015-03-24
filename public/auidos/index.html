@@ -11,12 +11,12 @@
     {{#each auido in model itemController="auido"}}
       <li {{bind-attr class="auido.isCompleted:completed auido.isEditing:editing"}}>
         {{#if auido.isEditing}}
-          {{edit-auido class="edit" value=auido.title focus-out="acceptChanges" insert-newline="acceptChanges"}}
+          {{edit-auido class="edit" value=auido.value focus-out="acceptChanges" insert-newline="acceptChanges"}}
         {{else}}
           {{input type="checkbox" checked=auido.isCompleted class="toggle"}}
           <label {{action "editAuido" on="doubleClick"}}>
             <span class="created_at">{{auido.createdAt}}</span>
-            <a {{bind-attr href="auido.href"}}">{{auido.title}}</a>
+            <a {{bind-attr href="auido.href"}}">{{auido.value}}</a>
           </label>
           <button {{action "removeAuido"}} class="destroy"></button>
         {{/if}}

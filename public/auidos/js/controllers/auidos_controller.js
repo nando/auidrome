@@ -6,13 +6,13 @@ Auidos.AuidosController = Ember.ArrayController.extend({
       completed.invoke('save');
     },
     createAuido: function() {
-      // Get the auido title set by the "New Auido" text field
-      var title = this.get('newTitle');
-      if (!title.trim()) { return; }
+      // Get the auido value set by the "New Auido" text field
+      var value = this.get('newTitle');
+      if (!value.trim()) { return; }
 
       // Create the new Auido model
       var auido = this.store.createRecord('auido', {
-        title: title,
+        value: value,
         isCompleted: false
       });
 
