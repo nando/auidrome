@@ -82,7 +82,6 @@ EM.run do
       end
 
       def current_user
-return "twitter/colgado"
         # e.g. "twitter/colgado" or "github/nando" (or nil)
         if session[:provider] && session[session[:provider]]
           "#{session[:provider]}/#{session[session[:provider]]}"
