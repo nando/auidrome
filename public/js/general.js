@@ -2,7 +2,7 @@ function pia() {
   var piido = $("#piido");
   try {
     if(piido.val()) {
-      var name = piido.val().toUpperCase();
+      var name = piido.val();
       addMessage(" > pia() "+ name);
       socket.send(name);
       piido.val('');
@@ -112,19 +112,13 @@ $("#tuitear button").click(function(){
   if(piido.val()) {
     var tuitear = $("#tuitear");
     var target = $("#host").val();
-    tuitear.append(piido.val(piido.val().toUpperCase()));
+    tuitear.append(piido.val(piido.val()));
     if(target) {
       target = target + tuitear.attr('action');
       tuitear.attr('action', target);
     }
     return $("#tuitear").submit();
   }
-});
-
-$('#property_name').addClass('lowercase');
-$('#property_form').submit(function(){
-  var property_name = $('#property_name');
-  property_name.val(property_name.val().toLowerCase());
 });
 
 $('#property_name').blur(function() {
