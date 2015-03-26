@@ -6,11 +6,10 @@ auido: Like 'name', just a word or short phrase that we have chosen to remember 
 identity: Digital itentity/ies of the owner/s of what this entry represents. OPTIONAL property.
 madrino: Indentity/ies of people that think this entry is interesting for others and that know more things about it. OPTIONAL property.
 
-# Properties currently coming from Aristotle's 24 syllogisms analysis:
-# 1.- All the men are mortal. Socrates is a man. Socrates is mortal.
-start_living_at: Only for entries into LivingThings Dromes. Moment when the entry starts living here :)
-ends_living_at: Only for entries into LivingThings Dromes. Moment when the entry pass away.
-# 2.- (do you know other syllogysm? help me please! (i'd remember that pull request all my life;))
+start_living_year: Only for entries into LivingThings Dromes. Year when the entry starts living.
+start_living_month: Only for entries into LivingThings Dromes. Month when the entry starts living.
+ends_living_year: Only for entries into LivingThings Dromes. Year when the entry pass away.
+ends_living_month: Only for entries into LivingThings Dromes. Month when the entry pass away.
 
 # DROME DESCRIPTION
 # (different in each drome but the same for all the drome entries)
