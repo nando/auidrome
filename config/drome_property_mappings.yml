@@ -1,13 +1,15 @@
 lovedrome: author,autora,autor,speaker,featuring,vía,ponente,madre,padre,hermano,hermana,amiga,amigo,pedalea,compañera,compañero,participa,deportista
-docudrome: talk,doc,spec,codetail,charla,parte de,parte,obra,trabajo,recommends,post,screencast,recomienda leer
+docudrome: talk,doc,spec,codetail,charla,parte de,parte,obra,trabajo,recommends,post,screencast,recomienda leer,wrote,escribió
 notedrome: note,reflexion,thought,monolog,dialog,triatlog,conversation
-eventodrome: event,evento,meet,quedada,open,hackathon,hackatón,organiza
+eventodrome: event,evento,meet,quedada,open,hackathon,hackatón,organiza,colabora con
 petodrome: animal,pet
 vegidrome: plant,tree,flower,cactus
-projectdrome: project,proyecto,site,sitio,comisión,depende de,organizador,organizado por,debilitador,ensuciado por
+projectdrome: project,proyecto,site,sitio,comisión,depende de,organizador,organizado por,debilitador,ensuciado por,batería en,colabora en
+gamedrome: creó el juego
 
 auidrome: hija,hija,rapaza,rapaz,zagala,zagal
 acadodrome: estudiante,becaria,becario
 restodrome: maestra,maestro
 ripodrome: inspiración
 repulsodrome: bug,bicho,debilita,ensucia
+byebyedrome: batería

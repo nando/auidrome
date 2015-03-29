@@ -1,0 +1,7 @@
+port_base: 50005 # Will use also port_base+1
+site_name: Gamedrome
+site_tagline: Let's have fun!!!
+item_name: Game
+item_description: name of the activity that <strong>let us enjoy our time playing</strong>.
+tuit_sentence: the {{at}} somebody storaged <strong><a href="/tuits/{{tuit}}">{{tuit}}</a></strong> in our server (<a href="/tuits.json">here!</a>).
+tuit_consideration: <a href="/tuits/{{tuit}}">{{tuit}}</a> could be the game that <strong>more powerful humans play</strong> to manage their wealth (instead of making others suffer).
