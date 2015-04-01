@@ -345,7 +345,7 @@ EM.run do
 
     post '/admin/property/:auido' do
       auido = params['auido'].to_sym
-      drome.create_tuit(auido, Time.now.utc) unless Drome.tuit_exists?(auido) # Right now then!
+      drome.create_tuit(auido, Time.now.utc) unless Tuit.exists?(auido) # Right now then!
       property_name = params['property_name'].strip.to_sym
       entry = Drome.new(App)
       entry.load_json auido
