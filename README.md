@@ -112,6 +112,24 @@ Once you've started a session (pushing the "it's me!" or "amadrinate" buttons) y
 
 If you use "mustaches" as part of a key ({{LIKE-ME}}) its content is assumed to be a human being name and will be replaced with a link to the right drome entry while showing it (WIP).
 
+## ActivityStream
+
+It's possible to configure Auidrome so that it notifies every command[0] to an ActivityStream hosted in getStream[1].
+
+In order to do so your environment needs to have the following variables:
+
+    - **AUIDROME_STREAM_ACTOR**: with the name of the actor/user of this Auidrome instance.
+    - **STREAM_KEY**: with the API key in getStream.io.
+    - **STREAM_SECRET**: with the API secret.
+
+At this moment only two actions are sent:
+
+    - New entries will be sent with the verb **tuit** and with the **dromename** as *target*.
+    - *Amadrinations* will be sent using **amadrinate** as verb, and the string **this** as *target*.
+
+[0] http://rom-rb.org/introduction/commands
+[1] http://getStream.io
+
 ## Origin and Dedications
 
 The project comes from a [Codetail](http://github.com/nando/piidos-compartidos-codetails) that use code from another one (http://github.com/samuelnp/banana-status-codetails) and is desired to be part of ANOTHER ONE MUCH MORE BIGGER that is about Twitter decentralization based on laguages and dialects spoken by the folks that are currently living in our planet ([OTAONY.com](http://OTAONY.com)).
