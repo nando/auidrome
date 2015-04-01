@@ -116,19 +116,38 @@ If you use "mustaches" as part of a key ({{LIKE-ME}}) its content is assumed to 
 
 It's possible to configure Auidrome so that it notifies every command[0] to an ActivityStream hosted in getStream[1].
 
-In order to do so your environment needs to have the following variables:
+In order to do so you need to have the right values in the following environment variables:
 
-    - **AUIDROME_STREAM_ACTOR**: with the name of the actor/user of this Auidrome instance.
-    - **STREAM_KEY**: with the API key in getStream.io.
-    - **STREAM_SECRET**: with the API secret.
+    AUIDROME_STREAM_ACTOR: with the name of the actor/user of the owner of
+      the Auidrome instance.
+    STREAM_KEY: with the API key in getStream.io.
+    STREAM_SECRET: with the API secret.
 
 At this moment only two actions are sent:
 
-    - New entries will be sent with the verb **tuit** and with the **dromename** as *target*.
-    - *Amadrinations* will be sent using **amadrinate** as verb, and the string **this** as *target*.
+- New entries will be sent with the verb **tuit** and with the **name of the drome** as *target*.
+- *Amadrinations* will be sent using **amadrinate** as verb, and the string **"this"** as *target*.
 
 [0] http://rom-rb.org/introduction/commands
+
 [1] http://getStream.io
+
+## Dirty recipe
+
+This is the recipe I use to run Auidrome in a different host:
+
+    $ git clone http://github.com/Auidrome/auidrome.git
+    $ cd auidrome
+    $ # pull data/public, data/protected and data/private repos:
+    $ git submodule update --init
+    $ ./bin/symboliclones.sh
+    $ ./bin/updatefromcommitted.sh
+    $ ./bin/screenthemall.sh -S
+    $ # => and launch ./bin/auidrome.sh on every screen
+
+Using submodules for the *data* repos hasn't been a good idea and I'm thinking how to change the current implementation.
+
+Those 3 repos are available in https://github.com/Auidrome, though data/protected and data/private are meant to be corporate and personal.
 
 ## Origin and Dedications
 
