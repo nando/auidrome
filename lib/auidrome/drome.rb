@@ -1,5 +1,6 @@
 # Copyright 2015 The Cocktail Experience
 require 'json'
+require_relative 'activity_stream.rb'
 module Auidrome
   class Drome
     include Auidrome
@@ -30,6 +31,12 @@ module Auidrome
 
     def method_missing(method, *args, &block)
       @hash[method.to_sym] || super
+    end
+
+    def create_tuit auido, timestamp
+      Tuit.create! auido, timestamp
+      @hash.merge! Tuit.read_from_index_file(auido)
+      ActivityStream.tuit! self 
     end
 
     def core_properties
@@ -115,8 +122,12 @@ module Auidrome
     def basic_jsonld_for auido
       {
         :'@context' => conf.url + "json-context.json",
-        :'@id' => conf.url + "tuits/#{auido}"
+        :'@id' => tuit_url
       }.merge(basic_data_for(auido))
+    end
+
+    def tuit_url
+      conf.url + "tuits/#{@hash[:auido]}"
     end
 
     def image_quality

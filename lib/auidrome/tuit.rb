@@ -2,12 +2,6 @@
 require 'json'
 module Auidrome
   class Tuit
-    def self.store_these tuits
-      File.open(TUITS_FILE,"w") do |f|
-        f.write JSON.pretty_generate(tuits)
-      end 
-    end
-
     def self.current_stored_tuits
       @@stored_tuits ||= tuits_in_index_file
     end
@@ -19,7 +13,7 @@ module Auidrome
     def self.read_from_index_file auido
       {
         auido: auido,
-        created_at: Tuit.current_stored_tuits[auido.to_sym] || 'NOT FOUND!'
+        created_at: Tuit.current_stored_tuits[auido.to_sym] || Time.now.utc
       }
     end
 
@@ -27,7 +21,18 @@ module Auidrome
       File.exists?(filepath) ? JSON.parse(File.read(filepath), symbolize_names: true) : {}
     end
 
+    def self.create! tuit, timestamp
+      @@stored_tuits[tuit] = timestamp
+      Tuit.store_tuits!
+    end
+
     private
+    def self.store_tuits!
+      File.open(TUITS_FILE,"w") do |f|
+        f.write JSON.pretty_generate(@@stored_tuits)
+      end 
+    end
+
     def self.tuits_in_index_file
       if File.file?(TUITS_FILE)
         JSON.parse(File.read(TUITS_FILE), symbolize_names: true)

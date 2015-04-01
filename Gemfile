@@ -9,3 +9,4 @@ gem "omniauth"
 gem "omniauth-twitter"
 gem 'em-websocket'
 gem 'json'
+gem 'stream-ruby'

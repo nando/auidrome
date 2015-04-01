@@ -8,6 +8,7 @@ require 'rack/session/cookie'
 require 'omniauth-twitter'
 require 'pry'
 require 'json'
+require 'stream'
 require_relative 'lib/auidrome'
 
 EM.run do
@@ -62,10 +63,11 @@ EM.run do
 
     configure do
       puts "AUIDROME: listening with #{App.config.site_name} in #{App.config.url}"
-      if App.config.pretty_json?
-        puts "Generating pretty JSON."
-      end
 
+      if actor = ENV['AUIDROME_STREAM_ACTOR']
+        puts "Using AUIDROME_STREAM_ACTOR (#{actor}), STREAM_KEY and STREAM_SECRET env. vars to StreamActivity."
+      end
+      # Let the Ember.js app know where we are running
       File.open(EMBER_FILE,"w") do |f|
         f.write "auidrome_url = '#{App.config.url}';"
       end
@@ -74,6 +76,7 @@ EM.run do
       use OmniAuth::Builder do
         provider :twitter, ENV['CONSUMER_KEY'], ENV['CONSUMER_SECRET']
       end
+      puts "Generating pretty JSON ;)" if App.config.pretty_json?
     end
 
     helpers do
@@ -124,7 +127,7 @@ EM.run do
         end
       end
 
-      def get_value_from_referrer 
+      def get_value_from_referrer
         if referrer_could_be_a_property_value?
           CGI.unescape($1) if request.referrer and request.referrer =~ /\/([^\/]+)$/
         end
@@ -216,15 +219,13 @@ EM.run do
     post "/tuits" do
       piido = params[:piido].strip.to_sym
       puts (current_user || 'Somebody') + " has shouted: ¡¡¡#{piido}!!!"
-      current_tuits = Tuit.current_stored_tuits
-      if current_tuits[piido] 
+      if Tuit.current_stored_tuits[piido] 
         # The piído is in our tuits.json but we still don't know anything about madrinos.
         amadrinated_at = nil
       else
         # We assume current_user exist, so the piido will be "amadrinated" right now.
         amadrinated_at = Time.now.utc
-        current_tuits[piido] = amadrinated_at
-        Tuit.store_these current_tuits
+        drome.create_tuit piido, amadrinated_at
       end
 
       piido_link = %@<a href="/tuits/#{piido}">#{piido}</a>@
@@ -338,16 +339,13 @@ EM.run do
         entry.add_madrino! current_user 
         msg = "Now you are a madrino of <strong>" + auido + '</strong>. GREAT!!!'
       end
+      ActivityStream.amadrinate! entry
       return_to 'tuits/' + auido, msg
     end
 
     post '/admin/property/:auido' do
       auido = params['auido'].to_sym
-      unless Tuit.exists?(auido) # Right now then!
-        current_tuits = Tuit.current_stored_tuits
-        current_tuits[auido] = Time.now.utc
-        Tuit.store_these current_tuits
-      end
+      drome.create_tuit(auido, Time.now.utc) unless Drome.tuit_exists?(auido) # Right now then!
       property_name = params['property_name'].strip.to_sym
       entry = Drome.new(App)
       entry.load_json auido
