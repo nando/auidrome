@@ -31,7 +31,7 @@ module Auidrome
         if actor and client
           puts "ActivityStream.amadrinate! '#{tuit.auido}'"
           activity = activity_hash(:amadrinate, tuit, {
-            target: 'this',
+            target: "#{tuit.conf.dromename}:#{tuit.created_at.to_i}",
             when: Time.now
           })
           stream.add_activity activity
