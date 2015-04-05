@@ -11,9 +11,16 @@ module Auidrome
     end
 
     def self.read_from_index_file auido
+      created_at = if string = Tuit.current_stored_tuits[auido.to_sym]
+        Time.parse(string)
+      else
+        #TODO: this should be "nil", because this tuits hasn't been created yet.
+        # (i'm afraid to return nil right now and have no time at this moment...:(
+        Time.now.utc
+      end
       {
         auido: auido,
-        created_at: Tuit.current_stored_tuits[auido.to_sym] || Time.now.utc
+        created_at: created_at
       }
     end
 

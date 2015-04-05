@@ -1,5 +1,6 @@
 # Copyright 2015 The Cocktail Experience
 require 'json'
+require 'time'
 require_relative 'activity_stream.rb'
 module Auidrome
   class Drome
@@ -183,6 +184,12 @@ module Auidrome
           human_auido
         end
       }
+    end
+
+    def created_at
+      if created_at = @hash[:created_at]
+        created_at.is_a?(String) ? Time.parse(created_at) : created_at
+      end
     end
 
     private
