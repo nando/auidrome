@@ -1,5 +1,6 @@
 # Copyright 2015 The Cocktail Experience
 module Auidrome
+  ACTIONS_PER_PAGE = 3
   TUITS_PER_PAGE = 50
   TUITS_FILE = 'public/tuits.json'
   EMBER_FILE = 'public/auidos/js/auidrome.js'

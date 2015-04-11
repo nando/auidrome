@@ -1,0 +1,60 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title><%= activity_title %></title>
+    <link href='http://fonts.googleapis.com/css?family=Carrois+Gothic+SC' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Tangerine">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="/css/style.css?version=20150218001">
+  </head>
+
+  <body class="activities<%= '-error' unless @actions.any? %>">
+    <div class="header">
+      <h1><a href="/activity" title="<%= ENV['AUIDROME_STREAM_ACTOR'] %>'s activity in Dromeland">Dromeland Activity</a></h1>
+    </div>
+
+    <div class="site-wrapper">
+
+      <div class="site-wrapper-inner">
+
+        <div class="cover-container">
+<% if @actions.any? %>
+          <div class="pagination">
+            <p>
+<% if @page == 0 %>
+              ❧ HOME ☙
+<% else %>
+              « <a href="?page=<%= @page - 1 %>">PREVIOUS</a> «
+<% end %>
+            </p>
+          </div>
+
+          <div id="content">
+            <%= "─" * 14 %>
+<% @actions.each_with_index do |action, index| %>
+<%= between_actions_fleuron unless index == 0 %>
+            <div class="action">
+              <p>At <%= action['time'] %> <a href="/me#TODO:show.AUIDROME_STREAM_ACTOR.entry">I</a> <strong><%= action['verb'] %></strong></p>
+              <p class="tuit"><a href="<%= action['object'] %>"><%= action['tuit'] %></a></p>
+              <p>in the <em><%= action['target'].split(':').first.capitalize %></em></p>
+            </div>
+<% end %>
+            <%= "─" * 14 %>
+          </div>
+
+<% if @next =~ /id_lt/ %>
+          <div class="pagination">
+            <p>» <a href="?page=<%= @page + 1 %>">NEXT</a> »</p>
+          </div>
+<% end %>
+<% else %>
+  <div class="error-message"><a href="?page=<%= @page %>">¡¡¡turbulence!!!</a></div>
+<% end %>
+        </div>
+
+      </div>
+    </div>
+  </body>
+</html>

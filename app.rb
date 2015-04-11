@@ -102,6 +102,18 @@ EM.run do
         ].join(': ')
       end
 
+      def activity_page
+        if @page && (@page > 0)
+          "page #{@page}" + (@actions.any? ? " (#{@actions.first['tuit']}...)" : '.')
+        else
+          'Home'
+        end
+      end
+
+      def activity_title
+        @title ||= "Dromeland Activity: " + activity_page
+      end
+
       def me_or_by_me_button_text
         App.config.drome_of_humans? ? "It's me!" : "By me"
       end
@@ -180,6 +192,10 @@ EM.run do
         }
       end
       erb :tuit
+    end
+
+    def between_actions_fleuron
+      '─'*17 + ' ❧❦☙  ' + '─'*17 # Nice idea from @fxn's Tkn. Thanks nen!
     end
 
     get '/auth/twitter/callback' do
@@ -341,6 +357,13 @@ EM.run do
       end
       ActivityStream.amadrinate! entry
       return_to 'tuits/' + auido, msg
+    end
+
+    get "/activity" do
+      @page = [0, params[:page].to_i].max
+      @actions = ActivityStream.get(@page)
+      @next = ActivityStream.next
+      erb :activity, :layout => false
     end
 
     post '/admin/property/:auido' do

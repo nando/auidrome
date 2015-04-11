@@ -14,6 +14,20 @@ module Auidrome
       def stream
         @@stream ||= client.feed('auidrome', actor)
       end
+
+      def get(page = 0)
+        @@last_response = ActivityStream.stream.get({
+          offset: ACTIONS_PER_PAGE * page,
+          limit: ACTIONS_PER_PAGE
+        })
+        @@last_response['results']
+      rescue
+        {}
+      end
+
+      def next
+        @@last_response && @@last_response['next']
+      end
   
       def tuit!(tuit)
         if actor and client
