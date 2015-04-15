@@ -1,4 +1,4 @@
-lovedrome: author,autora,autor,speaker,featuring,vía,ponente,madre,padre,hermano,hermana,amiga,amigo,pedalea,compañera,compañero,participa,deportista,ilustrador,ilustradora
+lovedrome: author,autora,autor,speaker,featuring,vía,ponente,madre,padre,hermano,hermana,amiga,amigo,pedalea,compañera,compañero,participa,deportista,ilustrador,ilustradora,coordinado por
 
 docudrome: talk,doc,spec,codetail,charla,parte de,parte,obra,trabajo,recommends,post,screencast,recomienda leer,wrote,escribió,recomienda ver,libro,ensayo
 
@@ -6,7 +6,7 @@ notedrome: note,reflexion,thought,monolog,dialog,triatlog,conversation
 
 eventodrome: event,evento,meet,quedada,open,hackathon,hackatón,organiza,colabora con,asistente a
 
-projectdrome: project,proyecto,site,sitio,comisión,depende de,organizador,organizado por,debilitador,ensuciado por,batería en,colabora en,parte del proyecto,proyecto relacionado
+projectdrome: project,proyecto,site,sitio,comisión,depende de,organizador,organizado por,debilitador,ensuciado por,batería en,colabora en,parte del proyecto,proyecto relacionado,ha pedaleado con
 
 gamedrome: juego,creó el juego,jugona de,jugón de,recomienda el juego
 
