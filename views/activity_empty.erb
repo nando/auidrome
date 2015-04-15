@@ -1,0 +1,14 @@
+<div class="activity-empty">
+<% if Auidrome::ActivityStream.bad_configuration?  %>
+          <p>BAD CONFIGURATION</p>
+          <a href="/">Not ready to cruise</a>
+<% elsif Auidrome::ActivityStream.error?  %>
+          <p>¡¡¡turbulence!!!</p>
+          <a href="?page=<%= @page %>">click to reload</a>
+<% elsif @page > 0 %>
+          <p>OUT OF BINNACLE</p>
+          « <a href="?page=<%= @page - 1 %>">NEXT PAGE</a> «
+<% else %>
+          <a href="/">NO ACTIVITY!!!</a>
+<% end %>
+</div>

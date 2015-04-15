@@ -7,28 +7,55 @@ module Auidrome
         ENV['AUIDROME_STREAM_ACTOR']
       end
   
+      def configured?
+        not actor.nil?
+      end
+
       def client
-        @@client ||= Stream::Client.new(ENV['STREAM_KEY'], ENV['STREAM_SECRET'])
+        @@client ||= Stream::Client.new(ENV['STREAM_KEY'], ENV['STREAM_SECRET']) if configured?
       end
   
       def stream
-        @@stream ||= client.feed('auidrome', actor)
+        @@stream ||= client.feed('auidrome', actor) if configured?
       end
 
       def get(page = 0)
-        @@last_response = ActivityStream.stream.get({
-          offset: ACTIONS_PER_PAGE * page,
-          limit: ACTIONS_PER_PAGE
-        })
+        if configured?
+          @@last_response = ActivityStream.stream.get({
+            offset: ACTIONS_PER_PAGE * page,
+            limit: ACTIONS_PER_PAGE
+          })
+          @@last_response['results']
+        end
+      rescue Net::OpenTimeout, Stream::StreamApiResponseException => e
+        @@last_response = {
+          'exception' => e,
+          'results' => [],
+          'next' => ''
+        }
         @@last_response['results']
-      rescue
-        {}
+      end
+
+      def results
+        read_from_last_response 'results'
       end
 
       def next
-        @@last_response && @@last_response['next']
+        read_from_last_response 'next'
+      end
+
+      def exception
+        read_from_last_response 'exception'
       end
   
+      def error?
+        !exception.nil?
+      end
+
+      def bad_configuration?
+        exception and exception.kind_of?(Stream::StreamApiResponseException)
+      end
+
       def tuit!(tuit)
         if actor and client
           puts "ActivityStream.tuit! '#{tuit.auido}'"
@@ -63,6 +90,12 @@ module Auidrome
           target: details[:target],
           foreign_id: details[:foreign_id]
         }
+      end
+
+      def read_from_last_response(key)
+        if configured? and class_variables.include? :@@last_response
+          @@last_response[key]
+        end
       end
     end
   end

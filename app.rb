@@ -111,7 +111,7 @@ EM.run do
       end
 
       def activity_title
-        @title ||= "Dromeland Activity: " + activity_page
+        @title ||= ActivityStream.error? ? ActivityStream.exception.message : activity_page
       end
 
       def me_or_by_me_button_text
@@ -146,13 +146,13 @@ EM.run do
       end
 
       def warning_span text
-        '<span class="warning">' + text + '</span>'
+        %{<span class="warning">#{text}</span>}
       end
       
     end
 
     before do
-      logger.info "Proccessing #{request.path_info}" unless file_request?
+      logger.info "Proccessing #{request.path_info}?#{request.query_string}" unless file_request?
       pass unless request.path_info =~ /^\/admin/
 
       # /auth/twitter is captured by omniauth:
@@ -338,7 +338,7 @@ EM.run do
       auido = params['auido']
       entry = drome.load_json auido
       if entry.identity.include? current_user
-        msg = '<span class="warning">Yes, we already knew that! :)</span>.'
+        msg = warning_span('Yes, we already knew that! :)')
       else
         entry.add_identity! current_user 
         msg = "Added <strong>#{current_user}</strong> as identity/author of <strong>" + auido + '</strong>.'
@@ -350,7 +350,7 @@ EM.run do
       auido = params['auido']
       entry = drome.load_json(auido)
       if entry.madrino.include? current_user
-        msg = '<span class="warning">You already was madrino of <strong>' + auido + '</strong></span>.'
+        msg = warning_span('You already was madrino of <strong>' + auido + '</strong>')
       else
         entry.add_madrino! current_user 
         msg = "Now you are a madrino of <strong>" + auido + '</strong>. GREAT!!!'
@@ -360,10 +360,18 @@ EM.run do
     end
 
     get "/activity" do
-      @page = [0, params[:page].to_i].max
-      @actions = ActivityStream.get(@page)
-      @next = ActivityStream.next
-      erb :activity, :layout => false
+      if ActivityStream.configured?
+        @page = [0, params[:page].to_i].max
+        @actions = ActivityStream.get(@page)
+        @next = ActivityStream.next
+        if @actions.any?
+          erb :activity, layout: :activity_layout
+        else
+          erb :activity_empty, layout: :activity_layout
+        end
+      else
+        return_to '/', warning_span('ActivityStream has not been configured in this drome :(')
+      end
     end
 
     post '/admin/property/:auido' do

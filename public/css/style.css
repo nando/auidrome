@@ -45,10 +45,6 @@ body {
 .toolbar strong {
   font-size: 16px;
 }
-#content  {
-  font-size: 12px;
-  color: #999;
-}
 #content {
   font-size: 12px;
   color: #999;
@@ -78,7 +74,6 @@ body {
 }
 
 .pagination {
-  margin: 40px 0;
   font-size: 18px;
 }
 
@@ -181,15 +176,15 @@ section button {
 
 /* Extra markup and styles for table-esque vertical and horizontal centering */
 .site-wrapper {
-  width: 630px;
-  display: inline-block;
-  text-align: center;
+  display: table;
+  width: 100%;
   height: 100%; /* For at least Firefox */
   min-height: 100%;
   -webkit-box-shadow: inset 0 0 100px rgba(255,111,0,.5);
           box-shadow: inset 0 0 100px rgba(255,111,0,.5);
 }
 .site-wrapper-inner {
+  display: table-cell;
   vertical-align: top;
 }
 .cover-container {
@@ -292,7 +287,7 @@ article h1 {
   .masthead,
   .mastfoot,
   .cover-container {
-    width: 570px;
+    width: 620px;
   }
 }
 
@@ -325,30 +320,37 @@ article h1 {
   float:right;
 }
 
+#activity .site-wrapper-inner {
+  height: 640px;
+}
+#activity .site-wrapper {
+  background: url("../images/common/len_bg.jpg") center no-repeat
+}
+#activity.bad-configuration .site-wrapper {
+  background: url("../images/common/broken_lempass.jpg") center no-repeat
+}
+#activity .cover-container {
+  display: table;
+  height: 100%;
+}
+.activity {
+  height: 100%;
+  display: table-cell;
+  vertical-align: middle;
+}
+.activity-empty {
+  padding: 220px 0;
+}
+.activity-empty p {
+  font-weight: bold;
+}
 .action {
   padding: 15px 0 15px 0;
 }
-
 .action p {
   margin-bottom: 0px;
 }
-
 .action .tuit {
   font-weight: bold;
   font-size: 1.6em;
-}
-
-.activities .site-wrapper {
-  background-image: url("../images/common/len_bg.jpg")
-}
-.activities-error .site-wrapper {
-  background-image: url("../images/common/broken_lempass.jpg")
-}
-.error-message {
-  margin: 210px 0 210px;
-  font-size: 2.4em;
-}
-.error-message a {
-  font-family: 'Tangerine', serif;
-  color: black;
 }

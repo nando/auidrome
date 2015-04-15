@@ -103,6 +103,7 @@ module Auidrome
       !(image_of_quality(image_quality+1)).nil?
     end
 
+    #TODO: Me suena que Ruby tiene algo para hacer esto mejor (pero no me acuerdo :(
     def enumerable(property)
       val = self.send(property)
       if val.is_a? Enumerable
