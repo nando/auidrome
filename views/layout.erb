@@ -74,7 +74,7 @@
     <div class="toolbar">
 <% if current_user %>
       You're <strong><%= current_user %></strong> in our...
-<% elsif request.referrer =~ /\/activity[\?|$]/ %>
+<% elsif request.referrer =~ /\/activity(?:\?.+)?$/ %>
       <a href="<%= request.referrer %>">BACK TO DROMELAND ACTIVITY</a>
 <% else %>
       <a href="http://OTAONY.com">OTAONY.com</a>
