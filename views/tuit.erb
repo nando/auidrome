@@ -60,7 +60,7 @@
                       <span class="property_name"><%= @drome_entry.show_property_name(property_name) %></span>
                       <span class="property_value <%= property_name %>">
 <%   enum_value.each do |value| %>
-                        <span>
+                        <span class="emojiable_content">
 
 <%     if @drome_entry.hrefable_property?(property_name, value) %>
                           <a href="<%= @drome_entry.href_for property_name, value %>"><%= value %></a>
