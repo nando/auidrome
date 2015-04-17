@@ -4,7 +4,7 @@
 <% else %>
           <div class="pagination">
             <p>
-              « <a href="?page=<%= @page - 1 %>">NEXT </a>«
+              »<a href="?page=<%= @page - 1 %>"> NEXT</a> »
             </p>
           </div>
 <% end %>
@@ -25,9 +25,9 @@
 
 <% if @next =~ /id_lt/ %>
           <div class="pagination">
-            <p>»<a href="?page=<%= @page + 1 %>"> PREVIOUS</a> »</p>
+            <p>« <a href="?page=<%= @page + 1 %>">PREVIOUS </a>«</p>
           </div>
 <% else %>
-          <div class="last-action-footer">THE END</div>
+          <div class="last-action-footer">START</div>
 <% end %>
         </div>

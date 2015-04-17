@@ -75,13 +75,13 @@
 <% if current_user %>
       You're <strong><%= current_user %></strong> in our...
 <% elsif request.referrer =~ /\/activity(?:\?.+)?$/ %>
-      <a href="<%= request.referrer %>">BACK TO DROMELAND ACTIVITY</a>
+      « <a href="<%= request.referrer %>">BACK TO DROMELAND's ActivityStream</a> «
 <% else %>
       <a href="http://OTAONY.com">OTAONY.com</a>
 <% end %>
     </div>
     <div class="header">
-      ❧ <h1><a href="/" title="<%= App.config.site_name %> home"><%= App.config.site_name %></a></h1> ☙
+      <a href="http://OTAONY.com" title="DROMELAND ActivityStream">❧</a> <h1><a href="/" title="<%= App.config.site_name %> home"><%= App.config.site_name %></a></h1> <a href="http://OTAONY.com" title="DROMELAND ActivityStream">☙</a>
     </div>
 
 <% if flash[:notice] %>

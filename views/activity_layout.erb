@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Dromeland Activity: <%= activity_title %></title>
+    <title>Dromeland ActivityStream: <%= activity_title %></title>
     <link href='http://fonts.googleapis.com/css?family=Carrois+Gothic+SC' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Tangerine">
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -13,7 +13,8 @@
   <body id="activity"
         <%= 'class="bad-configuration"' if Auidrome::ActivityStream.bad_configuration? %>>
     <div class="header">
-      <h1><a href="/activity" title="<%= ENV['AUIDROME_STREAM_ACTOR'] %>'s activity in Dromeland">Dromeland Activity</a></h1>
+      <div>nando's</div> 
+      <h1><a href="/activity" title="<%= ENV['AUIDROME_STREAM_ACTOR'] %>'s activity in Dromeland">Dromeland</a></h1>
     </div>
     <div class="site-wrapper">
 
@@ -25,6 +26,10 @@
       </div>
     </div>
 
+    <div class="footer">
+      <div><strong>Dromeland</strong> is the stream of <%= ENV['AUIDROME_STREAM_ACTOR'] %>'s Auidrome entries (its "dromed" entries).</div>
+      <div>Auidrome source code is <a href="http://github.com/AuiDrome/auidrome">on GitHub</a> and the ActivityStream is provided by <a href="http://getStream.io">getStream</a>.</div>
+    </div>
 
   </body>
 </html>
