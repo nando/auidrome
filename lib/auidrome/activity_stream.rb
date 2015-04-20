@@ -8,7 +8,7 @@ module Auidrome
       end
   
       def configured?
-        not actor.nil?
+        (actor && !actor.empty?) || false
       end
 
       def client
