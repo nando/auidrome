@@ -38,6 +38,7 @@ module Auidrome
       Tuit.create! auido, timestamp
       @hash.merge! Tuit.read_from_index_file(auido)
       ActivityStream.tuit! self 
+      Neo4J.create_node self
     end
 
     def core_properties
@@ -191,6 +192,10 @@ module Auidrome
       if created_at = @hash[:created_at]
         created_at.is_a?(String) ? Time.parse(created_at) : created_at
       end
+    end
+
+    def tuit_id
+      created_at.to_i
     end
 
     private

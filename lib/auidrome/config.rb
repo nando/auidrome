@@ -45,6 +45,14 @@ module Auidrome
       @yaml['port_base'] < 10001
     end
 
+    def cardinal_point
+      @cardinal_point ||= Config.cardinal_point_for(@yaml['port_base'])
+    end
+
+    def point
+      cardinal_point.split('-').last
+    end
+
     def pretty_json?
       File.exists? 'config/generate_pretty_json'
     end
@@ -94,7 +102,18 @@ module Auidrome
       @@ports_drome[port_base.to_i]
     end
 
+    def self.cardinal_point_for port_base
+      if port_base < 10000
+        cardinal_points[port_base] || cardinal_points[0]
+      else
+        cardinal_points[port_base.div(10000)]
+      end
+    end
+
     protected
+    def self.cardinal_points
+      @cardinal_points ||= YAML.load_file('config/drome_cardinal_points.yml')
+    end
 
     def self.load_dromes_with_mappings
       self.load_properties_from_mappings_file if @@dromes.size == 0

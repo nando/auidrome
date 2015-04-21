@@ -9,6 +9,7 @@ require 'omniauth-twitter'
 require 'pry'
 require 'json'
 require 'stream'
+require 'neo4j'
 require_relative 'lib/auidrome'
 
 EM.run do
@@ -62,11 +63,17 @@ EM.run do
     end
 
     configure do
-      puts "AUIDROME: listening with #{App.config.site_name} in #{App.config.url}"
+      puts "AUIDROME: listening with #{App.config.site_name} in #{App.config.url} (looking to #{App.config.cardinal_point})"
 
       if ActivityStream.configured?
         puts "Using AUIDROME_STREAM_ACTOR (#{ActivityStream.actor}), STREAM_KEY and STREAM_SECRET env. vars to StreamActivity."
       end
+
+      if Neo4J.configured?
+        puts "Using ENV[AUIDROME_NEO4J_SERVER] (#{Neo4J.server}) as graph DB server."
+        Neo4J.open_session
+      end
+
       # Let the Ember.js app know where we are running
       File.open(EMBER_FILE,"w") do |f|
         f.write "auidrome_url = '#{App.config.url}';"

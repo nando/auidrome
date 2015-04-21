@@ -10,3 +10,4 @@ gem "omniauth-twitter"
 gem 'em-websocket'
 gem 'json'
 gem 'stream-ruby'
+gem 'neo4j', '~> 4.1.0'
