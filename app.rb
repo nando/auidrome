@@ -64,8 +64,8 @@ EM.run do
     configure do
       puts "AUIDROME: listening with #{App.config.site_name} in #{App.config.url}"
 
-      if actor = ENV['AUIDROME_STREAM_ACTOR']
-        puts "Using AUIDROME_STREAM_ACTOR (#{actor}), STREAM_KEY and STREAM_SECRET env. vars to StreamActivity."
+      if ActivityStream.configured?
+        puts "Using AUIDROME_STREAM_ACTOR (#{ActivityStream.actor}), STREAM_KEY and STREAM_SECRET env. vars to StreamActivity."
       end
       # Let the Ember.js app know where we are running
       File.open(EMBER_FILE,"w") do |f|
