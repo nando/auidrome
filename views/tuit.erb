@@ -52,7 +52,7 @@
 
 <%# Properties %>
                   <div class="other-properties clearfix">
-<% (@drome_entry.properties - @drome_entry.core_properties).each do |property_name| %>
+<% @drome_entry.other_properties.each do |property_name| %>
 <%# TODO(CRITICAL): PARSE THIS ATTR BEFORE DOING ANYTHING WITH IT!!!! %>
 <%# TODO: DO ALL THIS BETTER/WELL-DONE (add HAML?) %>
 <%   enum_value = @drome_entry.enumerable(property_name) %>

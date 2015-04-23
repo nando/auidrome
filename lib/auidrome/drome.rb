@@ -45,6 +45,14 @@ module Auidrome
       CORE_PROPERTIES # no more, no less, by now...
     end
 
+    def other_properties
+      @other_properties ||= properties - CORE_PROPERTIES
+    end
+
+    def unmapped_properties
+      @unmapped_properties ||= other_properties - Config.property_names_with_associated_drome
+    end
+
     def self.protocol_for property
       PROTOCOLS[property.downcase] || 'http://'
     end
@@ -163,6 +171,7 @@ module Auidrome
          @hash[property] = value
       end
       save_json!
+      Neo4J.update_unmapped_properties(self) if unmapped_properties.include?(property)
     end
 
     def add_identity! user
