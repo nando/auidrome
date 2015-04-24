@@ -1,9 +1,9 @@
-0:    N-Humans
-1:    S-Documents
-2:    W-Projects
-3:    E-Events
+0:    N-Human-smiley
+1:    S-Document-books
+2:    W-Project-briefcase
+3:    E-Event-confetti_ball
 
-3333: NW-Animals
-8888: NE-Plants
-4:    SW-Machines
-5:    SE-Games
+3333: NW-Animal-dolphin
+8888: NE-Plant-sunflower
+4:    SW-Machine-rocket
+5:    SE-Game-game_die

@@ -48,10 +48,9 @@ module Auidrome
     def cardinal_point
       @cardinal_point ||= Config.cardinal_point_for(@yaml['port_base'])
     end
-
-    def point
-      cardinal_point.split('-').last
-    end
+    def drift; cardinal_point[0]; end
+    def point; cardinal_point[1]; end
+    def emoji; cardinal_point[2]; end
 
     def pretty_json?
       File.exists? 'config/generate_pretty_json'
@@ -102,12 +101,13 @@ module Auidrome
       @@ports_drome[port_base.to_i]
     end
 
+    # Returns array with [DRIFT, POINT, EMOJI]
     def self.cardinal_point_for port_base
       if port_base < 10000
         cardinal_points[port_base] || cardinal_points[0]
       else
         cardinal_points[port_base.div(10000)]
-      end
+      end.split('-')
     end
 
     protected
