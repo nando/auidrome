@@ -55,7 +55,7 @@ module Auidrome
 
     def auido_href
       # CAUTION: It could be NIL!!! (we need at least a point between letters)
-      if web = @hash[:web] && web.is_a?(String) && !web.empty?
+      if @hash[:web] && !web.empty? # Checking before asking
         web =~ /^http/ ? web : "http://#{web}"
       else
         "http://#{@hash[:auido]}" if @hash[:auido] =~ /.+\..+/ # DOES IT HAS A POINT?
