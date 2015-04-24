@@ -155,7 +155,14 @@ EM.run do
       def warning_span text
         %{<span class="warning">#{text}</span>}
       end
-      
+
+      def auido_title entry
+        if href = entry.auido_href
+          %{<a href="#{href}">#{entry.auido}</a>}
+        else
+          entry.auido
+        end
+      end
     end
 
     before do

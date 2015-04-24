@@ -53,6 +53,15 @@ module Auidrome
       @unmapped_properties ||= other_properties - Config.property_names_with_associated_drome
     end
 
+    def auido_href
+      # CAUTION: It could be NIL!!! (we need at least a point between letters)
+      if web = @hash[:web] && web.is_a?(String) && !web.empty?
+        web =~ /^http/ ? web : "http://#{web}"
+      else
+        "http://#{@hash[:auido]}" if @hash[:auido] =~ /.+\..+/ # DOES IT HAS A POINT?
+      end
+    end
+
     def self.protocol_for property
       PROTOCOLS[property.downcase] || 'http://'
     end

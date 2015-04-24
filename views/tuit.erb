@@ -10,7 +10,7 @@
               </a>
 <% end %>
                 <h1 id="auido">
-                  <%= @drome_entry.auido %>
+                  <%= auido_title @drome_entry %>
                 </h1>
 <% if App.config.drome_of_humans? and @drome_entry.identity.any? %>
                 <span class="identities">

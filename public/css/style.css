@@ -246,6 +246,10 @@ article h1 {
   display: inline-block;
 }
 
+article h1 a {
+  color: lightgreen;
+}
+
 .identities {
   font-size: 12px;
 }
