@@ -38,7 +38,7 @@ module Auidrome
       Tuit.create! auido, timestamp
       @hash.merge! Tuit.read_from_index_file(auido)
       ActivityStream.tuit! self 
-      Neo4J.create_node self
+      Neo4jServerDB.create_node self
     end
 
     def core_properties
@@ -170,8 +170,10 @@ module Auidrome
       else
          @hash[property] = value
       end
+
       save_json!
-      Neo4J.update_unmapped_properties(self) if unmapped_properties.include?(property)
+
+      Neo4jServerDB.update_property! self, property
     end
 
     def add_identity! user

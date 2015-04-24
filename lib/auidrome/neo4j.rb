@@ -1,7 +1,7 @@
 # Copyright 2015 The Cocktail Experience
 require 'neo4j'
 module Auidrome
-  class Neo4J
+  class Neo4jServerDB
     class << self
       def server
         ENV['AUIDROME_NEO4J_SERVER']
@@ -18,11 +18,22 @@ module Auidrome
       end
 
       def create_node(tuit)
-        run_query create_query_for(tuit)
+        run_query create_query(tuit)
       end
 
-      def update_unmapped_properties(tuit)
-        run_query update_unmapped_query_for(tuit)
+      def update_property!(tuit, property)
+        if Config.property_names_with_associated_drome.include?(property)
+          related_auidos = [tuit.send(property)].flatten
+          related_auidos.each do |related_auido|
+            run_query update_mapped_property_value_query(tuit, property, related_auido)
+          end
+        elsif tuit.unmapped_properties.include?(property)
+          run_query update_unmapped_property_query(tuit, property)
+        end
+      end
+
+      def update_unmapped_properties!(tuit)
+        run_query update_unmapped_properties_query(tuit)
       end
 
       private
@@ -30,7 +41,7 @@ module Auidrome
         "#{tuit.conf.point}:#{tuit.conf.dromename.capitalize}"
       end
 
-      def create_query_for(tuit)
+      def create_query(tuit)
         node_labels = node_labels_for(tuit)
         node_properties = <<-PROPERTIES
             {
@@ -47,7 +58,25 @@ module Auidrome
         QUERY_STRING
       end
 
-      def update_unmapped_query_for(tuit)
+      def update_mapped_property_value_query(tuit, property, related_auido)
+        related_drome = Config.drome_for_property(property)
+        relationship = property.to_s.downcase.gsub(' ', '_')
+        <<-QUERY
+          MATCH (a:#{tuit.conf.point}),(b:#{related_drome.point})
+          WHERE a.name =~ '(?i)#{tuit.auido}' AND b.name =~ '(?i)#{related_auido}'
+          CREATE UNIQUE (a)-[r:#{relationship}]->(b)
+          RETURN r
+        QUERY
+      end
+
+      def update_unmapped_property_query(tuit, property)
+        <<-QUERY
+          MATCH (e {id: '#{tuit.tuit_id}'})
+          SET e.#{property}="#{tuit.send(property).to_s.gsub('"','\"')}"
+        QUERY
+      end
+
+      def update_unmapped_properties_query(tuit)
         <<-QUERY
           MATCH (e { id: '#{tuit.tuit_id}' })
           SET #{tuit.unmapped_properties.map{|p| %!e.#{p}="#{tuit.send(p).to_s.gsub('"','\"')}"!}.join(', ')}
@@ -60,7 +89,6 @@ module Auidrome
           Neo4j::Session.current.query query
         end
       end
-
     end
   end
 end

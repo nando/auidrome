@@ -69,9 +69,9 @@ EM.run do
         puts "Using AUIDROME_STREAM_ACTOR (#{ActivityStream.actor}), STREAM_KEY and STREAM_SECRET env. vars to StreamActivity."
       end
 
-      if Neo4J.configured?
-        puts "Using ENV[AUIDROME_NEO4J_SERVER] (#{Neo4J.server}) as graph DB server."
-        Neo4J.open_session
+      if Neo4jServerDB.configured?
+        puts "Using ENV[AUIDROME_NEO4J_SERVER] (#{Neo4jServerDB.server}) as graph DB server."
+        Neo4jServerDB.open_session
       end
 
       # Let the Ember.js app know where we are running
