@@ -1,6 +1,7 @@
 port_base: 10001
 site_name: Docudrome
 site_tagline: Knowledge & Fun
+emoji: books
 item_name: Doc
 item_description: A piece of data that seems interesting to read
 tuit_sentence: the {{at}} somebody storaged <strong><a href="/tuits/{{tuit}}">{{tuit}}</a></strong> in our server (<a href="/tuits.json">here!</a>).

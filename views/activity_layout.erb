@@ -8,20 +8,50 @@
     <link rel="stylesheet" href="/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="/css/style.css?version=20150218001">
+
+    <script src="/js/jquery-1.11.2.min.js"></script>
+
+    <!-- EmojiOne!!! BEGIN -->
+    <script src="//cdn.jsdelivr.net/emojione/1.3.0/lib/js/emojione.min.js"></script>
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/emojione/1.3.0/assets/css/emojione.min.css" />
   </head>
 
   <body id="activity"
         <%= 'class="bad-configuration"' if Auidrome::ActivityStream.bad_configuration? %>>
+    <script>
+      $(document).ready(function() {
+        $('.emojiable_content').each(function( index ) {
+          $(this).html(emojione.toImage($(this).html()));
+        });
+      });
+    </script>
+    <!-- EmojiOne!!! END -->
+
     <div class="header">
       <div>nando's</div> 
       <h1><a href="/activity" title="<%= ENV['AUIDROME_STREAM_ACTOR'] %>'s activity in Dromeland">Dromeland</a></h1>
     </div>
+
     <div class="site-wrapper">
-
       <div class="site-wrapper-inner">
-
         <div class="cover-container">
-        <%= yield %>
+
+          <div class="activity">
+            <div class="cardinal_points emojiable_content">
+              <a href="<%= southeast_drome.url %>" class="southeast_cardinal_point">:<%= southeast_drome.emoji %>:</a>
+              <a href="<%= southwest_drome.url %>" class="southwest_cardinal_point">:<%= southwest_drome.emoji %>:</a>
+
+              <a href="<%= south_drome.url %>" class="south_cardinal_point">:<%= south_drome.emoji %>:</a>
+              <a href="<%= east_drome.url %>" class="east_cardinal_point">:<%= east_drome.emoji %>:</a>
+              <a href="<%= north_drome.url %>" class="north_cardinal_point">:<%= north_drome.emoji %>:</a>
+              <a href="<%= west_drome.url %>" class="west_cardinal_point">:<%= west_drome.emoji %>:</a>
+
+              <a href="<%= northeast_drome.url %>" class="northeast_cardinal_point">:<%= northeast_drome.emoji %>:</a>
+              <a href="<%= northwest_drome.url %>" class="northwest_cardinal_point">:<%= northwest_drome.emoji %>:</a>
+            </div>
+            <%= yield %>
+          </div>
+
         </div>
       </div>
     </div>

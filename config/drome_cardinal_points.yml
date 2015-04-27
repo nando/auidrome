@@ -1,9 +1,9 @@
-0:    N-Human-smiley
-1:    S-Document-books
-2:    W-Project-briefcase
-3:    E-Event-confetti_ball
+0:    N-Human-lovedrome
+1:    S-Document-docudrome
+2:    W-Project-projectdrome
+3:    E-Event-eventodrome
 
-3333: NW-Animal-dolphin
-8888: NE-Plant-sunflower
-4:    SW-Machine-rocket
-5:    SE-Game-game_die
+3333: NW-Animal-petodrome
+8888: NE-Plant-vegidrome
+4:    SW-Machine-machinedrome
+5:    SE-Game-gamedrome

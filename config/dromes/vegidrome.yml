@@ -1,6 +1,7 @@
 port_base: 8888
 site_name: Vegidrome
 site_tagline: Such beauty that sometimes we even eat them :)
+emoji: sunflower
 item_name: Vegithing
 item_description: Air won't be the same without them.
 living_things_drome: true

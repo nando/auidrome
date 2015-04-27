@@ -1,6 +1,7 @@
 port_base: 3333
 site_name: Petodrome
 site_tagline: They do NOT need words.
+emoji: dolphin
 item_name: Pet
 item_description: It's around us, and we love it.
 living_things_drome: true

@@ -35,7 +35,7 @@ body {
 .header h1 {
   margin: 5px;
   font-family: 'Tangerine', serif;
-  font-size: 54px;
+  font-size: 2.6em;
   display: inline-block;
 }
 .toolbar {
@@ -124,7 +124,7 @@ section.human .img-thumbnail {
   float: left;
 }
 section.other img {
-  display: none;
+  display: inline; /* it used to be "none" ¿? */
 }
 .tuit-properties {
   font-size: 14px;
@@ -323,7 +323,14 @@ article h1 a {
   height:64px;
   float:right;
 }
-
+#activity .header {
+  position: absolute;
+  padding-left: 5px;
+  text-align: left;
+  font-size: 0.5em;
+  color: gray;
+  line-height: 0.9;
+}
 #activity .site-wrapper-inner {
   height: 640px;
 }
@@ -334,6 +341,7 @@ article h1 a {
   background: url("../images/common/broken_lempass.jpg") center no-repeat
 }
 #activity .cover-container {
+  position: relative;
   display: table;
   height: 100%;
 }
@@ -358,3 +366,66 @@ article h1 a {
   font-weight: bold;
   font-size: 1.6em;
 }
+
+
+.cardinal_points {
+  width: 100%;
+  text-align: center;
+}
+
+.north_cardinal_point {
+  position: absolute;
+  color: darkgreen;  
+  top: -20px;
+  left: 274px;
+}
+ 
+.south_cardinal_point {
+  position: absolute;
+  color: darkblue;  
+  top: 540px;
+  left: 274px;
+}
+
+.west_cardinal_point {
+  position: absolute;
+  top: 275px;
+  left: -20px;
+  color: yellow;  
+}
+
+.east_cardinal_point {
+  position: absolute;
+  top: 275px;
+  left: 560px;
+  color: pink;  
+}
+
+.northwest_cardinal_point {
+  position: absolute;
+  color: grey;  
+  top: 73px;
+  left: 50px;
+}
+
+.northeast_cardinal_point {
+  position: absolute;
+  color: grey;  
+  top: 73px;
+  left: 500px;
+}
+
+.southwest_cardinal_point {
+  position: absolute;
+  color: grey;  
+  top: 470px;
+  left: 50px;
+}
+
+.southeast_cardinal_point {
+  position: absolute;
+  color: grey;  
+  top: 470px;
+  left: 500px;
+}
+

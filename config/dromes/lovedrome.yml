@@ -1,6 +1,7 @@
 port_base: 6556
 site_name: Lovedrome
 site_tagline: People we admire a.k.a. people we love
+emoji: smiley
 item_name: Target
 item_description: nickname of <strong>someone you'd like to have near you</strong> lots of days.
 living_things_drome: true
