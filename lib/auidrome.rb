@@ -38,7 +38,8 @@ module Auidrome
       twitter: "http://twitter.com/{{value}}",
       flickr: "http://www.flickr.com/photos/{{value}}",
       github: "http://github.com/{{value}}",
-      soundcloud: "https://soundcloud.com/{{value}}"
+      soundcloud: "https://soundcloud.com/{{value}}",
+      instagram: "https://instagram.com/{{value}}/"
     },
     embeddings: {
       audio: %!<p><em>({{value}})</em></p><iframe src="https://archive.org/embed/{{value}}" width="600" height="30" frameborder="0" webkitallowfullscreen="true" mozallowfullscreen="true" allowfullscreen></iframe>!,
