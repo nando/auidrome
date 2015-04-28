@@ -6,6 +6,21 @@ module Auidrome
       @drift = drift.upcase.to_sym
     end
 
+    # Function to get 'south' from 's', 'north' from 'n', and so on...
+    def self.letter_to_word(letter)
+      case letter.upcase.to_sym
+      when :S  then 'south'
+      when :SE then 'southeast'
+      when :E  then 'east'
+      when :NE then 'northeast'
+      when :N  then 'north'
+      when :NW then 'northwest'
+      when :W  then 'west'
+      when :SW then 'southwest'
+      else nil
+      end
+    end
+
     # Returns array with [DRIFT, POINT, DROMENAME]
     def self.create_from_port_number(port_base)
       string = if port_base < 10000
@@ -23,6 +38,10 @@ module Auidrome
     def drift; config_values[0]; end
     def point; config_values[1]; end
     def dromename; config_values[2]; end
+
+    def drome_config
+      @drome_config ||= Auidrome::Config.load_drome(dromename)
+    end
 
     private
     def config_values

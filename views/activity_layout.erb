@@ -38,16 +38,15 @@
 
           <div class="activity">
             <div class="cardinal_points emojiable_content">
-              <a href="<%= southeast_drome.url %>" class="southeast_cardinal_point">:<%= southeast_drome.emoji %>:</a>
-              <a href="<%= southwest_drome.url %>" class="southwest_cardinal_point">:<%= southwest_drome.emoji %>:</a>
+              <%= link_to_cardinal_drome :S %>
+              <%= link_to_cardinal_drome :SE %>
+              <%= link_to_cardinal_drome :E %>
+              <%= link_to_cardinal_drome :NE %>
 
-              <a href="<%= south_drome.url %>" class="south_cardinal_point">:<%= south_drome.emoji %>:</a>
-              <a href="<%= east_drome.url %>" class="east_cardinal_point">:<%= east_drome.emoji %>:</a>
-              <a href="<%= north_drome.url %>" class="north_cardinal_point">:<%= north_drome.emoji %>:</a>
-              <a href="<%= west_drome.url %>" class="west_cardinal_point">:<%= west_drome.emoji %>:</a>
-
-              <a href="<%= northeast_drome.url %>" class="northeast_cardinal_point">:<%= northeast_drome.emoji %>:</a>
-              <a href="<%= northwest_drome.url %>" class="northwest_cardinal_point">:<%= northwest_drome.emoji %>:</a>
+              <%= link_to_cardinal_drome :N %>
+              <%= link_to_cardinal_drome :NW %>
+              <%= link_to_cardinal_drome :W %>
+              <%= link_to_cardinal_drome :SW %>
             </div>
             <%= yield %>
           </div>

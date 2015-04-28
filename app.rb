@@ -46,6 +46,10 @@ EM.run do
       end
     end
 
+    def self.cardinal_points
+      @@cardinal_points ||= {}
+    end
+
     def drome
       @drome ||= Drome.new(App)
     end
@@ -164,36 +168,9 @@ EM.run do
         end
       end
       
-      def north_drome
-        @@north_drome ||= Config.load_drome(CardinalPoint.new(:N).dromename)
-      end
-
-      def south_drome
-        @@south_drome ||= Config.load_drome(CardinalPoint.new(:S).dromename)
-      end
-
-      def west_drome
-        @@west_drome  ||= Config.load_drome(CardinalPoint.new(:W).dromename)
-      end
-
-      def east_drome
-        @@east_drome  ||= Config.load_drome(CardinalPoint.new(:E).dromename)
-      end
-
-      def northwest_drome
-        @@northwest_drome ||= Config.load_drome(CardinalPoint.new(:NW).dromename)
-      end
-
-      def northeast_drome
-        @@northeast_drome ||= Config.load_drome(CardinalPoint.new(:NE).dromename)
-      end
-
-      def southwest_drome
-        @@southwest_drome ||= Config.load_drome(CardinalPoint.new(:SW).dromename)
-      end
-
-      def southeast_drome
-        @@southeast_drome ||= Config.load_drome(CardinalPoint.new(:SE).dromename)
+      def link_to_cardinal_drome(letter)
+        cp = App.cardinal_points[letter] ||= CardinalPoint.new(letter)
+        %|<a href="#{cp.drome_config.url}" title="#{cp.point}s" class="#{cp.point}_point">:#{cp.drome_config.emoji}:</a>|
       end
     end
 

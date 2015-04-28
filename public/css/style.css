@@ -373,59 +373,68 @@ article h1 a {
   text-align: center;
 }
 
-.north_cardinal_point {
+.Human_cardinal_point {
   position: absolute;
   color: darkgreen;  
   top: -20px;
   left: 274px;
 }
  
-.south_cardinal_point {
+.Document_point {
   position: absolute;
   color: darkblue;  
   top: 540px;
   left: 274px;
 }
 
-.west_cardinal_point {
+.Project_point {
   position: absolute;
   top: 275px;
   left: -20px;
   color: yellow;  
 }
 
-.east_cardinal_point {
+.Event_point {
   position: absolute;
   top: 275px;
   left: 560px;
   color: pink;  
 }
 
-.northwest_cardinal_point {
+.Animal_point {
   position: absolute;
   color: grey;  
   top: 73px;
   left: 50px;
+  -webkit-transform: rotate(-45deg);
+  -moz-transform:  rotate(-45deg);
+  -o-transform:  rotate(-45deg);
 }
 
-.northeast_cardinal_point {
+.Plant_point {
   position: absolute;
   color: grey;  
   top: 73px;
   left: 500px;
+  -webkit-transform: rotate(45deg);
+  -moz-transform:  rotate(45deg);
+  -o-transform:  rotate(45deg);
 }
 
-.southwest_cardinal_point {
+.Machine_point {
   position: absolute;
   color: grey;  
   top: 470px;
   left: 50px;
 }
 
-.southeast_cardinal_point {
+.Game_point {
   position: absolute;
   color: grey;  
   top: 470px;
   left: 500px;
+  -webkit-transform: rotate(25deg);
+  -moz-transform:  rotate(25deg);
+  -o-transform:  rotate(25deg);
 }
 
