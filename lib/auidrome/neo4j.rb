@@ -59,10 +59,10 @@ module Auidrome
       end
 
       def update_mapped_property_value_query(tuit, property, related_auido)
-        related_drome = Config.drome_for_property(property)
+        related_cp = Config.drome_for_property(property).cardinal_point
         relationship = property.to_s.downcase.gsub(' ', '_')
         <<-QUERY
-          MATCH (a:#{tuit.conf.point}),(b:#{related_drome.point})
+          MATCH (a:#{tuit.conf.cardinal_point.point}),(b:#{related_cp.point})
           WHERE a.name =~ '(?i)#{tuit.auido}' AND b.name =~ '(?i)#{related_auido}'
           CREATE UNIQUE (a)-[r:#{relationship}]->(b)
           RETURN r
