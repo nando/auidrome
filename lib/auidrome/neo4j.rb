@@ -38,7 +38,7 @@ module Auidrome
 
       private
       def node_labels_for(tuit)
-        "#{tuit.conf.point}:#{tuit.conf.dromename.capitalize}"
+        "#{tuit.conf.cardinal_point.point}:#{tuit.conf.dromename.capitalize}"
       end
 
       def create_query(tuit)
