@@ -6,8 +6,8 @@ auido: Like 'name', just a word or short phrase that we have chosen to remember 
 identity: Digital itentity/ies of the owner/s of what this entry represents. OPTIONAL property.
 madrino: Indentity/ies of people that think this entry is interesting for others and that know more things about it. OPTIONAL property.
 
-start_living_year: Only for entries into LivingThings Dromes. Year when the entry starts living.
-start_living_month: Only for entries into LivingThings Dromes. Month when the entry starts living.
+starts_living_year: Only for entries into LivingThings Dromes. Year when the entry starts living.
+starts_living_month: Only for entries into LivingThings Dromes. Month when the entry starts living.
 passed_away_year: Only for entries into LivingThings Dromes. Year when the entry passed away.
 passed_away_month: Only for entries into LivingThings Dromes. Month when the entry passed away.
 
