@@ -8,8 +8,8 @@ madrino: Indentity/ies of people that think this entry is interesting for others
 
 start_living_year: Only for entries into LivingThings Dromes. Year when the entry starts living.
 start_living_month: Only for entries into LivingThings Dromes. Month when the entry starts living.
-ends_living_year: Only for entries into LivingThings Dromes. Year when the entry pass away.
-ends_living_month: Only for entries into LivingThings Dromes. Month when the entry pass away.
+passed_away_year: Only for entries into LivingThings Dromes. Year when the entry passed away.
+passed_away_month: Only for entries into LivingThings Dromes. Month when the entry passed away.
 
 # DROME DESCRIPTION
 # (different in each drome but the same for all the drome entries)
