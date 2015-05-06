@@ -6,8 +6,10 @@ module Auidrome
   class Drome
     include Auidrome
 
-    def initialize app
-      @app = app
+    attr_reader :conf
+
+    def initialize config
+      @conf = config
       @hash = {
         identity: [],
         madrino: []
@@ -16,10 +18,6 @@ module Auidrome
 
     def hash
       @hash
-    end
-
-    def conf
-      @app.config
     end
 
     def properties
@@ -132,7 +130,7 @@ module Auidrome
     end
 
     def save_json!
-      @app.save_json! basic_jsonld_for(@hash[:auido]).merge(@hash)
+      save_hash_in_tuits_file! basic_jsonld_for(@hash[:auido]).merge(@hash)
     end
 
     def basic_data_for auido
@@ -232,6 +230,16 @@ module Auidrome
         return filepath if File.exists?("public" + filepath)
       end
       return nil
+    end
+
+    def save_hash_in_tuits_file! hash
+      File.open(PUBLIC_TUITS_DIR + "/#{hash[:auido]}.json","w") do |f|
+        if @conf.pretty_json?
+          f.write JSON.pretty_generate(hash)
+        else
+          f.write hash.to_json
+        end
+      end
     end
 
   end

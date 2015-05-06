@@ -36,22 +36,12 @@ EM.run do
       @@config ||= Config.new(ARGV[0])
     end
 
-    def self.save_json! hash
-      File.open(PUBLIC_TUITS_DIR + "/#{hash[:auido]}.json","w") do |f|
-        if config.pretty_json?
-          f.write JSON.pretty_generate(hash)
-        else
-          f.write hash.to_json
-        end
-      end
-    end
-
     def self.cardinal_points
       @@cardinal_points ||= {}
     end
 
     def drome
-      @drome ||= Drome.new(App)
+      @drome ||= Drome.new(App.config)
     end
 
     configure :production do
@@ -281,15 +271,15 @@ EM.run do
       if Tuit.exists? auido
         content_type :'application/json'
         tuit = drome.basic_jsonld_for(auido)
-        App.save_json! tuit # if we're here then the JSON file is not there
+        drome.save_json! tuit # if we're here then the JSON file is not there
         if pretty?
           JSON.pretty_generate tuit
         else
           tuit.to_json
         end
       elsif App.config.drome_of_humans? and # i'm from the anti-if-campaign but
-            drome = People.drome_for(auido) # let's do this only for humans :D
-        redirect to drome.url + request.path
+            human_drome = People.drome_for(auido) # let's do this only for humans :D
+        redirect to human_drome.url + request.path
       else
         raise Sinatra::NotFound
       end
@@ -401,7 +391,7 @@ EM.run do
       auido = params['auido'].to_sym
       drome.create_tuit(auido, Time.now.utc) unless Tuit.exists?(auido) # Right now then!
       property_name = params['property_name'].strip.to_sym
-      entry = Drome.new(App)
+      entry = Drome.new(App.config)
       entry.load_json auido
       if entry.properties.include? property_name
         msg = warning_span("One more value for #{auido}'s #{property_name}")
