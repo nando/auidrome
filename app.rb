@@ -57,7 +57,8 @@ EM.run do
     end
 
     configure do
-      puts "AUIDROME: listening with #{App.config.site_name} in #{App.config.url} (looking to #{App.config.cardinal_point})"
+      puts "AUIDROME: listening with #{App.config.site_name} in #{App.config.url}" + 
+           " (looking to #{CardinalPoint.letter_to_word(App.config.cardinal_point.drift)})"
 
       if ActivityStream.configured?
         puts "Using AUIDROME_STREAM_ACTOR (#{ActivityStream.actor}), STREAM_KEY and STREAM_SECRET env. vars to StreamActivity."
