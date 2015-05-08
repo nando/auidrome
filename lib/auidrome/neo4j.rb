@@ -11,13 +11,19 @@ module Auidrome
         (server && !server.empty?) || false
       end
 
-      def open_session
+      def start_session!
         if configured?
           @@neo4j_session ||= Neo4j::Session.open(:server_db, server)
+        else
+          'WARNING: Neo4j server NOT configured (AUIDROME_NEO4J_SERVER env. var is empty)'
         end
       end
 
-      def create_node(tuit)
+      def session
+        @@neo4j_session
+      end
+
+      def create_node!(tuit)
         run_query create_query(tuit)
       end
 
@@ -84,8 +90,9 @@ module Auidrome
       end
 
       def run_query(query)
-        if configured?
+        if configured? and session
           puts query #TODO: the logging thing (this line sucks!)
+          session.query query
           Neo4j::Session.current.query query
         end
       end

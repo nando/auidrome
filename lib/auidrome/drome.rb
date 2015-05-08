@@ -8,12 +8,9 @@ module Auidrome
 
     attr_reader :conf
 
-    def initialize config
-      @conf = config
-      @hash = {
-        identity: [],
-        madrino: []
-      }
+    def initialize config = nil
+      @conf = config || Config.new
+      @hash = Tuit.empty_tuit
     end
 
     def hash
@@ -36,7 +33,16 @@ module Auidrome
       Tuit.create! auido, timestamp
       @hash.merge! Tuit.read_from_index_file(auido)
       ActivityStream.tuit! self 
-      Neo4jServerDB.create_node self
+      Neo4jServerDB.create_node! self
+    end
+
+    def update_graph_nodes!
+      Neo4jServerDB.start_session!
+      Tuit.current_stored_tuits.each do |tuit, timestamp|
+        puts "Uptading graph node for #{tuit}..."
+        @hash = Tuit.read_from_index_file(tuit)
+        Neo4jServerDB.create_node! self
+      end
     end
 
     def core_properties

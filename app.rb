@@ -66,7 +66,7 @@ EM.run do
 
       if Neo4jServerDB.configured?
         puts "Using ENV[AUIDROME_NEO4J_SERVER] (#{Neo4jServerDB.server}) as graph DB server."
-        Neo4jServerDB.open_session
+        Neo4jServerDB.start_session!
       end
 
       # Let the Ember.js app know where we are running
