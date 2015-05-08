@@ -10,6 +10,7 @@ module Auidrome
     @@ports_drome = {} # Drome for each port
 
     def initialize cfg_file=nil
+      puts "LOADING DROME CONFIGURATION FILE (#{cfg_file})"
       cfg_file ||= "config/dromes/auidrome.yml"
       cfg_file = "config/dromes/#{cfg_file.downcase}.yml" unless cfg_file =~ /^config.+yml$/
       @yaml = YAML.load_file(cfg_file)
