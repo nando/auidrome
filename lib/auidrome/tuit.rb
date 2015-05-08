@@ -62,7 +62,7 @@ module Auidrome
   
       def create! tuit, timestamp
         @@stored_tuits[tuit] = timestamp.to_s # the same as if it're read from JSON file
-        Tuit.store_tuits!
+        store_tuits!
       end
   
       private
