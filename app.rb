@@ -271,7 +271,7 @@ EM.run do
       auido = params[:auido].to_sym
       if Tuit.exists? auido
         content_type :'application/json'
-        tuit = drome.basic_jsonld_for(auido)
+        tuit = Tuit.basic_jsonld_for(auido)
         drome.save_json! tuit # if we're here then the JSON file is not there
         if pretty?
           JSON.pretty_generate tuit

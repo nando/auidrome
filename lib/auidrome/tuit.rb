@@ -2,7 +2,24 @@
 require 'json'
 module Auidrome
   class Tuit
-    #TODO: This smells very bad... all of them are class methods!
+    attr_reader :hash
+
+    def initialize(auido, reader)
+      public_data = self.class.read_json("#{PUBLIC_TUITS_DIR}/#{auido}.json")
+      protected_data = if AccessLevel.can_read_protected?(reader, public_data)
+        self.class.read_json("#{PROTECTED_TUITS_DIR}/#{auido}.json")
+      else
+        {}
+      end
+      private_data = if AccessLevel.can_read_private?(reader, public_data)
+        self.class.read_json("#{PRIVATE_TUITS_DIR}/#{auido}.json")
+      else
+        {}
+      end
+
+      @hash = self.class.basic_data_for(auido).merge(public_data.merge(protected_data.merge(private_data)))
+    end
+
     class << self
       def empty_tuit
         {
@@ -12,7 +29,11 @@ module Auidrome
           madrino: []
         }
       end
-  
+
+      def basic_data_for auido
+        @hash = read_from_index_file(auido).merge(@hash)
+      end
+
       def current_stored_tuits
         @@stored_tuits ||= tuits_in_index_file
       end
@@ -29,7 +50,7 @@ module Auidrome
           # (i'm afraid to return nil right now and have no time at this moment...:(
           Time.now.utc
         end
-        empty_tuit.merge!({
+        @hash = empty_tuit.merge!({
           auido: auido,
           created_at: created_at
         })

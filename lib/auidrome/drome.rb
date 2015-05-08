@@ -139,15 +139,11 @@ module Auidrome
       save_hash_in_tuits_file! basic_jsonld_for(@hash[:auido]).merge(@hash)
     end
 
-    def basic_data_for auido
-      Tuit.read_from_index_file(auido).merge @hash
-    end
-
     def basic_jsonld_for auido
       {
         :'@context' => conf.url + "json-context.json",
         :'@id' => tuit_url
-      }.merge(basic_data_for(auido))
+      }.merge(Tuit.basic_data_for(auido))
     end
 
     def tuit_url
@@ -160,18 +156,7 @@ module Auidrome
 
     def load_json auido, reader = nil, quality = 0
       @quality = quality # Currently only for image quality ("better" subdir levels)
-      public_data = Tuit.read_json("#{PUBLIC_TUITS_DIR}/#{auido}.json")
-      protected_data = if AccessLevel.can_read_protected?(reader, public_data)
-        Tuit.read_json("#{PROTECTED_TUITS_DIR}/#{auido}.json")
-      else
-        {}
-      end
-      private_data = if AccessLevel.can_read_private?(reader, public_data)
-        Tuit.read_json("#{PRIVATE_TUITS_DIR}/#{auido}.json")
-      else
-        {}
-      end
-      @hash = basic_data_for(auido).merge(public_data.merge(protected_data.merge(private_data)))
+      @hash = Tuit.new(auido, reader).hash
       self
     end
 
