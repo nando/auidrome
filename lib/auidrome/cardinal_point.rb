@@ -1,24 +1,29 @@
 # Copyright 2015 The Cocktail Experience
 module Auidrome
   class CardinalPoint
+    @@cardinal_points = {}
+    @@letters_hash = {
+      S:  'south',
+      SE: 'southeast',
+      E:  'east',
+      NE: 'northeast',
+      N:  'north',
+      NW: 'northwest',
+      W:  'west',
+      SW: 'southwest'
+    }
+
     # Drift should be N, S, W, E, NW, NE, SW or SE.
     def initialize drift
       @drift = drift.upcase.to_sym
     end
 
-    # Function to get 'south' from 's', 'north' from 'n', and so on...
+    def self.for_letter(letter)
+      @@cardinal_points[letter.upcase.to_sym] ||= new(letter)
+    end
+
     def self.letter_to_word(letter)
-      case letter.upcase.to_sym
-      when :S  then 'south'
-      when :SE then 'southeast'
-      when :E  then 'east'
-      when :NE then 'northeast'
-      when :N  then 'north'
-      when :NW then 'northwest'
-      when :W  then 'west'
-      when :SW then 'southwest'
-      else nil
-      end
+      @@letters_hash[letter.upcase.to_sym]
     end
 
     # Returns array with [DRIFT, POINT, DROMENAME]

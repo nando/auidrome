@@ -1,33 +1,33 @@
 
     <div class="site-wrapper">
       <div class="site-wrapper-inner">
-        <div<%= ' class="cover-container"' unless @image_quality > 1 %>>
+        <div<%= ' class="cover-container"' unless @tuit_image.quality > 1 %>>
           <section id="tuit" class="<%= App.config.drome_of_humans? ? 'human' : 'other' %>">
             <article>
 <% if App.config.drome_of_humans? %>
-              <a href="<%= @drome_entry.image_href %>">
-                <img src="<%= @drome_entry.image_src %>" alt="<%= @drome_entry.auido %> image" class="<%= @drome_entry.image_class %> icon"/>
+              <a href="<%= @tuit_image.href %>">
+                <img src="<%= @tuit_image.src %>" alt="<%= @tuit.auido %> image" class="<%= @tuit_image.class %> icon"/>
               </a>
 <% end %>
                 <h1 id="auido">
-                  <%= auido_title @drome_entry %>
+                  <%= auido_title @tuit %>
                 </h1>
-<% if App.config.drome_of_humans? and @drome_entry.identity.any? %>
+<% if App.config.drome_of_humans? and @tuit.identity.any? %>
                 <span class="identities">
-                (<% @drome_entry.identity.each do |identity| %><span class="identity"><%= identity %></span> <% end %>)
+                (<% @tuit.identity.each do |identity| %><span class="identity"><%= identity %></span> <% end %>)
                 </span>
 <% end %>
                 <div class="tuit-properties">
                   <div>Created at
-                    <span class="date" id="date"><%= @drome_entry.created_at %></span>
+                    <span class="date" id="date"><%= @tuit.created_at %></span>
                   </div>
 
-<% if @drome_entry.madrino.any? %>
-                  <div><%= App.config.drome_of_humans? ? 'Madrino' : 'Announcer' %><%= 's' if @drome_entry.madrino.size > 1 %>
-                  <% @drome_entry.madrino.each do |madrino| %>
+<% if @tuit.madrino.any? %>
+                  <div><%= App.config.drome_of_humans? ? 'Madrino' : 'Announcer' %><%= 's' if @tuit.madrino.size > 1 %>
+                  <% @tuit.madrino.each do |madrino| %>
                     <span class="madrino">
                   <%   if pedaler = Auidrome::People.pedalers[madrino.to_sym] %>
-                         <a href="<%= Auidrome::Config.pedalodrome.url %>/tuits/<%= pedaler %>"><%= pedaler %></a>
+                         <a href="<%= Auidrome::Config.pedalodrome.url %>tuits/<%= pedaler %>"><%= pedaler %></a>
                   <%   else %>
                          <%= madrino %>
                   <%   end %>
@@ -37,14 +37,14 @@
 <% end %>
 
 <%# Identity and trust/hope buttons :) %>
-<% unless (@drome_entry.madrino + @drome_entry.identity).include? current_user %>
+<% unless (@tuit.madrino + @tuit.identity).include? current_user %>
   <% unless %w{Auidrome Ripodrome Fictiondrome}.include?(App.config.site_name) %>
-                  <form action="/admin/its-me/<%= @drome_entry.auido %>">
+                  <form action="/admin/its-me/<%= @tuit.auido %>">
                     <button><%= me_or_by_me_button_text %></button>
                   </form>
   <% end %>
-  <% unless @drome_entry.madrino.include? current_user %>
-                  <form action="/admin/amadrinate/<%= @drome_entry.auido %>">
+  <% unless @tuit.madrino.include? current_user %>
+                  <form action="/admin/amadrinate/<%= @tuit.auido %>">
                     <button><%= amadrinate_or_authorship_button_text %></button>
                   </form>
   <% end %>
@@ -52,22 +52,21 @@
 
 <%# Properties %>
                   <div class="other-properties clearfix">
-<% @drome_entry.other_properties.each do |property_name| %>
+<% @tuit.other_properties.each do |property_name| %>
 <%# TODO(CRITICAL): PARSE THIS ATTR BEFORE DOING ANYTHING WITH IT!!!! %>
 <%# TODO: DO ALL THIS BETTER/WELL-DONE (add HAML?) %>
-<%   enum_value = @drome_entry.enumerable(property_name) %>
                     <div>
-                      <span class="property_name"><%= @drome_entry.show_property_name(property_name) %></span>
+                      <span class="property_name"><%= property_name_with_links(property_name) %></span>
                       <span class="property_value <%= property_name %>">
-<%   enum_value.each do |value| %>
+<%   Array(@tuit.send(property_name)).each do |value| %>
                         <span class="emojiable_content">
 
 <%     if property_name == :images %>
                           <img src="<%= value %>"/>
-<%     elsif @drome_entry.hrefable_property?(property_name, value) %>
-                          <a href="<%= @drome_entry.href_for property_name, value %>"><%= value %></a>
-<%     elsif @drome_entry.embeddable_property?(property_name, value) %>
-                          <%= @drome_entry.embed_for property_name, value %>
+<%     elsif Tuit.hrefable_property?(property_name, value) %>
+                          <a href="<%= Tuit.href_for property_name, value %>"><%= value %></a>
+<%     elsif Tuit.embeddable_property?(property_name, value) %>
+                          <%= Tuit.embed_for property_name, value %>
 <%     else %>
                           <%= value %>
 <%     end %>
@@ -84,7 +83,7 @@
               <script src="/js/jquery.autocomplete.min.js"></script>
               <script>
                 $(function(){
-                  drome_urls = <%= @drome_urls.to_json %>;
+                  drome_urls = <%= Auidrome::Config.drome_urls.to_json %>;
                   property_to_drome = <%= @property_to_drome.to_json %>;
                   var property_names_with_mapped_drome = <%= @property_names_for_autocomplete.to_json %>;
                   
@@ -97,7 +96,7 @@
                 });
               </script>
 
-              <form id="property_form" action="/admin/property/<%= @drome_entry.auido %>" method="POST" >
+              <form id="property_form" action="/admin/property/<%= @tuit.auido %>" method="POST">
                 <input id="property_name" type="text" name="property_name" value="" size="8" />
                 <input id="property_value" type="text" name="property_value" value="<%= get_value_from_referrer %>" />
                 <button>Push!</button>

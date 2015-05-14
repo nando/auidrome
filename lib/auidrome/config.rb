@@ -9,12 +9,13 @@ module Auidrome
     @@dromes_properties = {} # Properties for each dromename
     @@ports_drome = {} # Drome for each port
 
-    def initialize cfg_file=nil
+    def initialize(cfg_file = nil, base_domain = 'localhost')
       puts "LOADING DROME CONFIGURATION FILE (#{cfg_file})"
       cfg_file ||= "config/dromes/auidrome.yml"
       cfg_file = "config/dromes/#{cfg_file.downcase}.yml" unless cfg_file =~ /^config.+yml$/
       @yaml = YAML.load_file(cfg_file)
       @dromename = File.basename(cfg_file, '.yml').to_sym
+      @base_domain = base_domain
     end
 
     def method_missing(method, *args, &block)
@@ -30,8 +31,24 @@ module Auidrome
     end
 
     def self.dromes
-      self.load_dromes_with_mappings
+      load_dromes_with_mappings
       @@dromes
+    end
+
+    def self.drome_urls
+      @@drome_urls ||= {}.tap do |urls_hash|
+        dromes.each do |name, drome|
+          urls_hash[name] = drome.url
+        end
+      end
+    end
+
+    def self.property_to_drome
+      @@property_to_drome ||= {}.tap do |p2d|
+        Config.properties_with_drome.each do |property, drome|
+          p2d[property] = drome.dromename
+        end
+      end
     end
 
     def self.drome dromename
@@ -55,7 +72,7 @@ module Auidrome
     end
 
     def domain_and_port
-      App.settings.base_domain + ":" + @yaml['port_base'].to_s
+      @base_domain + ":" + @yaml['port_base'].to_s
     end
 
     def url

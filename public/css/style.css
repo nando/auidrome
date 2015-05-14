@@ -287,13 +287,11 @@ article h1 a {
   box-shadow:0 1px 2px rgba(0,0,0,.075);
 }
 
-@media (min-width: 992px) {
   .masthead,
   .mastfoot,
   .cover-container {
     width: 620px;
   }
-}
 
 .results {
   text-align: left;
@@ -367,13 +365,12 @@ article h1 a {
   font-size: 1.6em;
 }
 
-
 .cardinal_points {
   width: 100%;
   text-align: center;
 }
 
-.Human_cardinal_point {
+.Human_point {
   position: absolute;
   color: darkgreen;  
   top: -20px;
@@ -404,7 +401,7 @@ article h1 a {
 .Animal_point {
   position: absolute;
   color: grey;  
-  top: 73px;
+  top: 80px;
   left: 50px;
   -webkit-transform: rotate(-45deg);
   -moz-transform:  rotate(-45deg);
@@ -414,7 +411,7 @@ article h1 a {
 .Plant_point {
   position: absolute;
   color: grey;  
-  top: 73px;
+  top: 80px;
   left: 500px;
   -webkit-transform: rotate(45deg);
   -moz-transform:  rotate(45deg);

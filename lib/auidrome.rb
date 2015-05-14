@@ -50,6 +50,7 @@ module Auidrome
 end
 require_relative 'auidrome/config.rb'
 require_relative 'auidrome/tuit.rb'
+require_relative 'auidrome/tuit_image.rb'
 require_relative 'auidrome/drome.rb'
 require_relative 'auidrome/people.rb'
 require_relative 'auidrome/access_level.rb'

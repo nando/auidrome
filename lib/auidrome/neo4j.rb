@@ -43,12 +43,8 @@ module Auidrome
       end
 
       private
-      def node_labels_for(tuit)
-        "#{tuit.conf.cardinal_point.point}:#{tuit.conf.dromename.capitalize}"
-      end
-
       def create_query(tuit)
-        node_labels = node_labels_for(tuit)
+        node_labels = "#{tuit.config.cardinal_point.point}:#{tuit.config.dromename.capitalize}"
         node_properties = <<-PROPERTIES
             {
               id: "#{tuit.tuit_id}",
@@ -68,7 +64,7 @@ module Auidrome
         related_cp = Config.drome_for_property(property).cardinal_point
         relationship = property.to_s.downcase.gsub(' ', '_')
         <<-QUERY
-          MATCH (a:#{tuit.conf.cardinal_point.point}),(b:#{related_cp.point})
+          MATCH (a:#{tuit.config.cardinal_point.point}),(b:#{related_cp.point})
           WHERE a.name =~ '(?i)#{tuit.auido}' AND b.name =~ '(?i)#{related_auido}'
           CREATE UNIQUE (a)-[r:#{relationship}]->(b)
           RETURN r

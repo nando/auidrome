@@ -15,11 +15,20 @@ require_relative 'lib/auidrome'
 EM.run do
   class App < Sinatra::Base
     include Auidrome
-    set :bind, '0.0.0.0'
     use Rack::Logger
+
+    set :bind, '0.0.0.0'
+
+    def self.base_domain
+      @@base_domain ||= ENV['RACK_ENV'] == 'production' ? ENV['AUIDROME_DOMAIN'] : 'localhost'
+    end
+
+    def self.config
+      @@config ||= Config.new(ARGV[0], base_domain)
+    end
     use Rack::Session::Cookie,
       :key => 'rack.session',
-      :domain => ENV['AUIDROME_DOMAIN'] || 'localhost',
+      :domain => App.base_domain,
       :path => '/',
       :expire_after => 3600, # In seconds
       :secret => ENV['CONSUMER_SECRET']
@@ -32,28 +41,12 @@ EM.run do
       end
     end
 
-    def self.config
-      @@config ||= Config.new(ARGV[0])
-    end
-
-    def self.cardinal_points
-      @@cardinal_points ||= {}
-    end
-
     def drome
-      @drome ||= Drome.new(App.config)
+      @@drome ||= Drome.new(App.config)
     end
 
     configure :production do
-      if ENV['AUIDROME_DOMAIN']
-        set(:base_domain, ENV['AUIDROME_DOMAIN'])
-      else
-        raise "ENV[AUIDROME_DOMAIN] must be set in production"
-      end
-    end
-
-    configure :development do
-      set :base_domain, 'localhost'
+      raise "ENV[AUIDROME_DOMAIN] must be set in production" unless App.base_domain
     end
 
     configure do
@@ -151,17 +144,30 @@ EM.run do
         %{<span class="warning">#{text}</span>}
       end
 
-      def auido_title entry
-        if href = entry.auido_href
-          %{<a href="#{href}">#{entry.auido}</a>}
+      def auido_title tuit
+        if href = tuit.auido_href
+          %{<a href="#{href}">#{tuit.auido}</a>}
         else
-          entry.auido
+          tuit.auido
         end
       end
       
       def link_to_cardinal_drome(letter)
-        cp = App.cardinal_points[letter] ||= CardinalPoint.new(letter)
+        cp = CardinalPoint.for_letter(letter)
         %|<a href="#{cp.drome_config.url}" title="#{cp.point}s" class="#{cp.point}_point">:#{cp.drome_config.emoji}:</a>|
+      end
+
+      def property_name_with_links(name)
+        # Done thanks to Bozhidar Ivanov's post "Using Ruby's Gsub With a Block"
+        #   (http://batsov.com/articles/2013/08/30/using-gsub-with-a-block/)
+        name.to_s.gsub(/{{(.+)}}/) {
+          human_auido = Regexp.last_match[1]
+          if people_drome = People.drome_for(human_auido)
+            %!<a href="#{people_drome.url}/tuits/#{human_auido}">#{human_auido}</a>!
+          else
+            human_auido
+          end
+        } 
       end
     end
 
@@ -184,17 +190,11 @@ EM.run do
     end
 
     def render_tuit_view image_quality
-      @image_quality = image_quality
       @page_title = params[:auido]
-      @drome_entry = drome.load_json(params[:auido], current_user, image_quality)
-      @drome_urls = {}
-      Config.dromes.each do |name, cfg|
-        @drome_urls[name] = cfg.url
-      end
-      @property_to_drome = {}
-      Config.properties_with_drome.each do |property, drome|
-        @property_to_drome[property] = drome.dromename
-      end
+
+      @tuit = Tuit.read(params[:auido], current_user, App.config)
+      @tuit_image = TuitImage.new(@tuit, image_quality)
+
       if port = get_port_from_referrer and
          dromename = Config.drome_for_port(port)
         @property_names_for_autocomplete = Config.properties_mapped_to(dromename).map {|p|
@@ -205,6 +205,7 @@ EM.run do
           {value: "#{p} => #{d.dromename}", data: p}
         }
       end
+
       erb :tuit
     end
 
@@ -225,7 +226,7 @@ EM.run do
     end
 
     get "/" do
-      array = Tuit.current_stored_tuits.to_a
+      array = Tuit.stored_tuits.to_a
       size = array.length
       @pages = ((size - 1) / TUITS_PER_PAGE.to_f).to_i + 1
       @page = [[params[:page].to_i, 1].max, @pages].min
@@ -238,7 +239,7 @@ EM.run do
 
     get "/auidos.json" do
       content_type :'application/json'
-      Tuit.current_stored_tuits.map do |auido, timestring|
+      Tuit.stored_tuits.map do |auido, timestring|
         {
           data: Time.parse(timestring).to_i,
           value: auido
@@ -249,13 +250,13 @@ EM.run do
     post "/tuits" do
       piido = params[:piido].strip.to_sym
       puts (current_user || 'Somebody') + " has shouted: ¡¡¡#{piido}!!!"
-      if Tuit.current_stored_tuits[piido] 
+      if Tuit.stored_tuits[piido] 
         # The piído is in our tuits.json but we still don't know anything about madrinos.
         amadrinated_at = nil
       else
         # We assume current_user exist, so the piido will be "amadrinated" right now.
         amadrinated_at = Time.now.utc
-        drome.create_tuit piido, amadrinated_at
+        drome.create_tuit! piido, amadrinated_at
       end
 
       piido_link = %@<a href="/tuits/#{piido}">#{piido}</a>@
@@ -350,11 +351,11 @@ EM.run do
 
     get "/admin/its-me/:auido" do
       auido = params['auido']
-      entry = drome.load_json auido
-      if entry.identity.include? current_user
+      tuit = drome.load_json auido
+      if tuit.identity.include? current_user
         msg = warning_span('Yes, we already knew that! :)')
       else
-        entry.add_identity! current_user 
+        tuit.add_identity! current_user 
         msg = "Added <strong>#{current_user}</strong> as identity/author of <strong>" + auido + '</strong>.'
       end
       return_to 'tuits/' + auido, msg
@@ -362,14 +363,14 @@ EM.run do
 
     get "/admin/amadrinate/:auido" do
       auido = params['auido']
-      entry = drome.load_json(auido)
-      if entry.madrino.include? current_user
+      tuit = Tuit.read(auido)
+      if tuit.madrino.include? current_user
         msg = warning_span('You already was madrino of <strong>' + auido + '</strong>')
       else
-        entry.add_madrino! current_user 
+        tuit.add_madrino! current_user 
         msg = "Now you are a madrino of <strong>" + auido + '</strong>. GREAT!!!'
       end
-      ActivityStream.amadrinate! entry
+      ActivityStream.amadrinate! tuit
       return_to 'tuits/' + auido, msg
     end
 
@@ -390,16 +391,16 @@ EM.run do
 
     post '/admin/property/:auido' do
       auido = params['auido'].to_sym
-      drome.create_tuit(auido, Time.now.utc) unless Tuit.exists?(auido) # Right now then!
+      drome.create_tuit!(auido, Time.now.utc) unless Tuit.exists?(auido) # Right now then!
       property_name = params['property_name'].strip.to_sym
-      entry = Drome.new(App.config)
-      entry.load_json auido
-      if entry.properties.include? property_name
+      tuit = Tuit.read(auido, current_user)
+      if tuit.properties.include? property_name
         msg = warning_span("One more value for #{auido}'s #{property_name}")
       else
         msg = "Now we know something about #{auido}'s #{property_name}"
       end
-      entry.add_value! property_name, params['property_value']
+      #TODO: (IMPORTANT) check current_user rigths!!!
+      tuit.add_value! property_name, params['property_value']
       return_to "tuits/#{auido}", msg
     end
   end
