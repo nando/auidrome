@@ -258,7 +258,7 @@ article h1 a {
  * Affix and center
  */
 
-@media (min-width: 768px) {
+/* @media (min-width: 768px) { */
   /* Pull out the header and footer */
   .masthead {
     position: fixed;
@@ -278,7 +278,7 @@ article h1 a {
   .cover-container {
     width: 100%; /* Must be percentage or pixels for horizontal alignment */
   }
-}
+/* } */
 
 .img-normal {
   border: 1px solid #ddd;
@@ -401,7 +401,7 @@ article h1 a {
 .Animal_point {
   position: absolute;
   color: grey;  
-  top: 80px;
+  top: 73px;
   left: 50px;
   -webkit-transform: rotate(-45deg);
   -moz-transform:  rotate(-45deg);
@@ -411,7 +411,7 @@ article h1 a {
 .Plant_point {
   position: absolute;
   color: grey;  
-  top: 80px;
+  top: 73px;
   left: 500px;
   -webkit-transform: rotate(45deg);
   -moz-transform:  rotate(45deg);
