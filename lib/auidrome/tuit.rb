@@ -56,12 +56,13 @@ module Auidrome
       @hash[:auido]
     end
 
-    def auido_href
+    def link_outside
       # CAUTION: It could be NIL!!! (we need at least a point between letters)
-      if @hash[:web] && !web.empty? # Checking before asking
-        web =~ /^http/ ? web : "http://#{web}"
-      else
-        "http://#{@hash[:auido]}" if @hash[:auido] =~ /.+\..+/ # DOES IT HAS A POINT?
+      if href = (@hash[:url] || @hash[:web]) and !href.empty?
+        href =~ /^http/ ? href : "http://#{href}"
+      elsif @hash[:auido] =~ /.+\..+/ # DOES IT HAS A POINT?
+        # ...then the "auido" is the URL itself
+        "http://#{@hash[:auido]}"
       end
     end
 

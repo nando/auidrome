@@ -145,7 +145,7 @@ EM.run do
       end
 
       def auido_title tuit
-        if href = tuit.auido_href
+        if href = tuit.link_outside
           %{<a href="#{href}">#{tuit.auido}</a>}
         else
           tuit.auido
