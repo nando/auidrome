@@ -45,7 +45,7 @@ module Auidrome
     def dromename; config_values[2]; end
 
     def drome_config
-      @drome_config ||= Auidrome::Config.load_drome(dromename)
+      @drome_config ||= Auidrome::Config.drome_config(dromename)
     end
 
     private
