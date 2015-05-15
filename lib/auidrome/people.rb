@@ -29,7 +29,7 @@ module Auidrome
 
       # Returns the first (more important) drome for a given human being
       def drome_for auido
-        Auidrome::Config.drome(@@all[auido.to_sym].first) if all[auido.to_sym]
+        Auidrome::Config.drome_config(@@all[auido.to_sym].first) if all[auido.to_sym]
       end
 
       # Returns a hash with the Twitter identities of the people in the

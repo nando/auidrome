@@ -26,6 +26,7 @@ EM.run do
     def self.config
       @@config ||= Config.new(ARGV[0], base_domain)
     end
+
     use Rack::Session::Cookie,
       :key => 'rack.session',
       :domain => App.base_domain,
@@ -39,10 +40,6 @@ EM.run do
         allow.origins '*'
         allow.resource '/auidos.json', headers: :any
       end
-    end
-
-    def drome
-      @@drome ||= Drome.new(App.config)
     end
 
     configure :production do
@@ -169,6 +166,21 @@ EM.run do
           end
         } 
       end
+
+      def show_property_name(name)
+        # Done thanks to Bozhidar Ivanov's post "Using Ruby's Gsub With a Block"
+        #   (http://batsov.com/articles/2013/08/30/using-gsub-with-a-block/)
+        name.to_s.gsub(/{{(.+)}}/) {
+          human_auido = Regexp.last_match[1]
+          if drome = People.drome_for(human_auido)
+            %!<a href="#{drome.url}/tuits/#{human_auido}">#{human_auido}</a>!
+          else
+            human_auido
+          end
+        }
+      end
+
+
     end
 
     before do
@@ -189,10 +201,14 @@ EM.run do
       redirect to(path || '/')
     end
 
+    def read_tuit(auido)
+      Tuit.read(auido, App.config, current_user)
+    end
+
     def render_tuit_view image_quality
       @page_title = params[:auido]
 
-      @tuit = Tuit.read(params[:auido], current_user, App.config)
+      @tuit = read_tuit(params[:auido])
       @tuit_image = TuitImage.new(@tuit, image_quality)
 
       if port = get_port_from_referrer and
@@ -249,16 +265,15 @@ EM.run do
 
     post "/tuits" do
       piido = params[:piido].strip.to_sym
-      puts (current_user || 'Somebody') + " has shouted: ¡¡¡#{piido}!!!"
+      logger.info (current_user || 'Somebody') + " has shouted: ¡¡¡#{piido}!!!"
       if Tuit.stored_tuits[piido] 
         # The piído is in our tuits.json but we still don't know anything about madrinos.
         amadrinated_at = nil
       else
         # We assume current_user exist, so the piido will be "amadrinated" right now.
         amadrinated_at = Time.now.utc
-        drome.create_tuit! piido, amadrinated_at
+        App.config.create_tuit! piido, amadrinated_at
       end
-
       piido_link = %@<a href="/tuits/#{piido}">#{piido}</a>@
       if amadrinated_at
         msg = piido_link + ' is now between us!'
@@ -273,7 +288,7 @@ EM.run do
       if Tuit.exists? auido
         content_type :'application/json'
         tuit = Tuit.basic_jsonld_for(auido)
-        drome.save_json! tuit # if we're here then the JSON file is not there
+        Tuit.save_json! tuit # if we're here then the JSON file is not there
         if pretty?
           JSON.pretty_generate tuit
         else
@@ -351,7 +366,7 @@ EM.run do
 
     get "/admin/its-me/:auido" do
       auido = params['auido']
-      tuit = drome.load_json auido
+      tuit = read_tuit(auido)
       if tuit.identity.include? current_user
         msg = warning_span('Yes, we already knew that! :)')
       else
@@ -363,7 +378,7 @@ EM.run do
 
     get "/admin/amadrinate/:auido" do
       auido = params['auido']
-      tuit = Tuit.read(auido)
+      tuit = read_tuit(auido)
       if tuit.madrino.include? current_user
         msg = warning_span('You already was madrino of <strong>' + auido + '</strong>')
       else
@@ -391,9 +406,9 @@ EM.run do
 
     post '/admin/property/:auido' do
       auido = params['auido'].to_sym
-      drome.create_tuit!(auido, Time.now.utc) unless Tuit.exists?(auido) # Right now then!
+      App.config.create_tuit!(auido, Time.now.utc) unless Tuit.exists?(auido) # Right now then!
       property_name = params['property_name'].strip.to_sym
-      tuit = Tuit.read(auido, current_user)
+      tuit = read_tuit(auido)
       if tuit.properties.include? property_name
         msg = warning_span("One more value for #{auido}'s #{property_name}")
       else

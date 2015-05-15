@@ -8,10 +8,10 @@ module Auidrome
 
     def initialize(reader = nil, config = nil)
       @reader, @hash = reader, {}
-      @config ||= Auidrome::Config.new
+      @config ||= (config || Auidrome::Config.new)
     end
 
-    def self.read(auido, reader = nil, config = nil)
+    def self.read(auido, config = nil, reader = nil)
       tuit = Tuit.new(reader, config)
       public_data = read_json("#{PUBLIC_TUITS_DIR}/#{auido}.json")
       protected_data = if reader && AccessLevel.can_read_protected?(reader, public_data)
@@ -137,12 +137,22 @@ module Auidrome
         @hash = read_from_index_file(auido).merge(@hash)
       end
 
+      def save_json! hash
+        File.open(PUBLIC_TUITS_DIR + "/#{hash[:auido]}.json","w") do |f|
+          if config.pretty_json?
+            f.write JSON.pretty_generate(hash)
+          else
+            f.write hash.to_json
+          end
+        end
+      end
+
       def stored_tuits
         @@stored_tuits ||= tuits_in_index_file
       end
  
       def exists? tuit
-        @@stored_tuits.keys.include? tuit.to_sym
+        stored_tuits.keys.include? tuit.to_sym
       end
   
       def read_from_index_file auido
@@ -163,10 +173,10 @@ module Auidrome
         File.exists?(filepath) ? JSON.parse(File.read(filepath), symbolize_names: true) : {}
       end
   
-      def create! tuit, timestamp
+      def create! tuit, timestamp, config
         @@stored_tuits[tuit] = timestamp.to_s # the same as if it're read from JSON file
         store_tuits!
-        read(tuit)
+        read(tuit, config)
       end
   
       # to <a href> value
@@ -184,9 +194,9 @@ module Auidrome
         elsif template = PROPERTY_VALUE_TEMPLATES[:hrefs][name_sym]
           template.gsub('{{value}}', value)
         elsif mapped_drome = Config.drome_mapping_for(name_sym, value)
-          "#{Drome.protocol_for(name)}#{mapped_drome.domain_and_port}/tuits/#{value}"
+          "#{Config.protocol_for(name)}#{mapped_drome.domain_and_port}/tuits/#{value}"
         else
-          "#{Drome.protocol_for(name)}#{value}"
+          "#{Config.protocol_for(name)}#{value}"
         end
       end
 

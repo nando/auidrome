@@ -76,7 +76,7 @@
              %w{Docudrome Eventodrome Projectdrome Machinedrome}
            ].each do |dromes| %>
         <div>
-          <% dromes.map{|dromename| Auidrome::Config.drome(dromename.downcase)}.each do |drome| %>
+          <% dromes.map{|dromename| Auidrome::Config.drome_config(dromename.downcase)}.each do |drome| %>
           <a href="http://<%= drome.domain_and_port %>"><%= drome.site_name %></a>
           <% end %>
         </div>
@@ -117,7 +117,7 @@
              %w{Fictiondrome}
            ].each do |dromes| %>
         <div>
-          <% dromes.map{|dromename| Auidrome::Config.drome(dromename.downcase)}.each do |drome| %>
+          <% dromes.map{|dromename| Auidrome::Config.drome_config(dromename.downcase)}.each do |drome| %>
           <a href="http://<%= drome.domain_and_port %>"><%= drome.site_name %></a>
           <% end %>
         </div>

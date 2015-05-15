@@ -39,7 +39,7 @@ module Auidrome
         (@results.keys - [@dromename]).each do |other|
           others[other] = {
             number_of_auidos: @results[other].length,
-            search_url: Config.drome(other).url + "search?query=" + @query
+            search_url: Config.drome_config(other).url + "search?query=" + @query
           }
         end
       end
