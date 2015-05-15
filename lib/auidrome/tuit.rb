@@ -69,7 +69,7 @@ module Auidrome
     def basic_jsonld_for auido
       {
         :'@context' => @config.url + "json-context.json",
-        :'@id' => url
+        :'@id' => self_url
       }.merge(Tuit.basic_data_for(auido))
     end
 
@@ -111,7 +111,7 @@ module Auidrome
       created_at.to_i
     end
 
-    def url
+    def self_url
       @config.url + @hash[:auido].to_s
     end
 

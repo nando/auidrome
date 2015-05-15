@@ -86,7 +86,7 @@ module Auidrome
           verb: verb,
           tuit: tuit.auido,
           time: details[:when].iso8601,
-          object: tuit.url,
+          object: tuit.self_url,
           target: details[:target],
           foreign_id: details[:foreign_id]
         }
