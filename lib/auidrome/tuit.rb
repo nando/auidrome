@@ -112,7 +112,7 @@ module Auidrome
     end
 
     def self_url
-      @config.url + @hash[:auido].to_s
+      "#{@config.url}tuits/#{@hash[:auido]}"
     end
 
     private
