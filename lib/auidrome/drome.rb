@@ -6,12 +6,19 @@ module Auidrome
   class Drome
     include Auidrome
     class << self
-      def update_graph_nodes!
+      def update_graph_nodes!(config)
         Neo4jServerDB.start_session!
-        Tuit.current_stored_tuits.each do |tuit, timestamp|
-          puts "Uptading graph node for #{tuit}..."
-          Tuit.read_from_index_file(tuit)
-          Neo4jServerDB.create_node! self
+        Tuit.stored_tuits.each do |auido, timestamp|
+          puts "Uptading graph node for #{auido}..."
+          Neo4jServerDB.create_node! Tuit.read(auido, config)
+        end
+      end
+
+      def update_graph_relationships!(config)
+        Neo4jServerDB.start_session!
+        Tuit.stored_tuits.each do |auido, timestamp|
+          puts "Uptading #{auido} node relationships..."
+          Neo4jServerDB.update_node_relationships! Tuit.read(auido, config)
         end
       end
     end

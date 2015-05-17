@@ -27,13 +27,23 @@ module Auidrome
         run_query create_query(tuit)
       end
 
+      def update_node_relationships!(tuit)
+        puts "Updating #{tuit.auido}'s relationships (#{tuit.other_properties.join(',')}):"
+        tuit.other_properties.each do |prop|
+          update_property! tuit, prop
+        end
+      end
+
       def update_property!(tuit, property)
+        printf "  * Updating #{tuit.auido}'s #{property} property..."
         if Config.property_names_with_associated_drome.include?(property)
+          puts "mapped property!"
           related_auidos = [tuit.send(property)].flatten
           related_auidos.each do |related_auido|
             run_query update_mapped_property_value_query(tuit, property, related_auido)
           end
         elsif tuit.unmapped_properties.include?(property)
+          puts "unmapped property."
           run_query update_unmapped_property_query(tuit, property)
         end
       end
@@ -90,6 +100,8 @@ module Auidrome
           puts query #TODO: the logging thing (this line sucks!)
           session.query query
           Neo4j::Session.current.query query
+        elsif configured?
+          puts 'WARNING: Neo4j server configured but no session yet:(please, call #start_session! first:)'
         end
       end
     end

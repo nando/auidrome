@@ -9,11 +9,11 @@ module Auidrome
     @@dromes_properties = {} # Properties for each dromename
     @@ports_drome = {} # Drome for each port
 
-    def initialize(cfg_file = 'config/dromes/auidrome.yml', base_domain = 'localhost')
-      puts "Auidrome::Config.new(#{cfg_file}, #{base_domain})"
-      @dromename = File.basename(cfg_file, '.yml').to_sym
-      @yaml = YAML.load_file(cfg_file)
-      @@dromename ||= @dromename
+    def initialize(dromename = :auidrome, base_domain = 'localhost')
+      puts "Auidrome::Config.new(#{dromename}, #{base_domain})"
+      @yaml = YAML.load_file("config/dromes/#{dromename}.yml")
+      @dromename = dromename
+      @@dromename ||= dromename
       @@base_domain ||= base_domain
     end
 
@@ -155,7 +155,7 @@ module Auidrome
       end
   
       def load_drome dromename
-        @@configs[dromename.to_sym] ||= new("config/dromes/#{dromename}.yml", @@base_domain)
+        @@configs[dromename.to_sym] ||= new(dromename, @@base_domain)
       end
     end
   end
