@@ -5,6 +5,7 @@ gem 'thin'
 gem 'sinatra'
 gem 'rack-cors'
 gem 'rack-flash3'
+gem 'babosa'
 gem "omniauth"
 gem "omniauth-twitter"
 gem 'em-websocket'

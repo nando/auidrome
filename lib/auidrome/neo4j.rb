@@ -1,5 +1,7 @@
 # Copyright 2015 The Cocktail Experience
 require 'neo4j'
+require 'babosa'
+
 module Auidrome
   class Neo4jServerDB
     class << self
@@ -75,7 +77,7 @@ module Auidrome
         relationship = property.to_s.downcase.gsub(' ', '_')
         <<-QUERY
           MATCH (a:#{tuit.config.cardinal_point.point}),(b:#{related_cp.point})
-          WHERE a.name =~ '(?i)#{tuit.auido}' AND b.name =~ '(?i)#{related_auido}'
+          WHERE a.name =~ #{to_query_value('(?i)'+tuit.auido.to_s)} AND b.name =~ #{to_query_value('(?i)'+related_auido)}
           CREATE UNIQUE (a)-[r:#{relationship}]->(b)
           RETURN r
         QUERY
@@ -84,14 +86,14 @@ module Auidrome
       def update_unmapped_property_query(tuit, property)
         <<-QUERY
           MATCH (e {id: '#{tuit.tuit_id}'})
-          SET e.#{property}="#{tuit.send(property).to_s.gsub('"','\"')}"
+          SET e.#{to_query_key(property)}=#{to_query_value(tuit.send(property))}
         QUERY
       end
 
       def update_unmapped_properties_query(tuit)
         <<-QUERY
           MATCH (e { id: '#{tuit.tuit_id}' })
-          SET #{tuit.unmapped_properties.map{|p| %!e.#{p}="#{tuit.send(p).to_s.gsub('"','\"')}"!}.join(', ')}
+          SET #{tuit.unmapped_properties.map{|p| %!e.#{to_query_key(p)}="#{to_query_value(tuit.send(p))}"!}.join(', ')}
         QUERY
       end
 
@@ -103,6 +105,15 @@ module Auidrome
         elsif configured?
           puts 'WARNING: Neo4j server configured but no session yet:(please, call #start_session! first:)'
         end
+      end
+
+      def to_query_key(name)
+        name.to_s.to_slug.transliterate.to_s.gsub(/[0-9 \/\-!\.'"{},ºª:¿?]/, '_')
+      end
+
+      def to_query_value(value)
+        # Double quoted with double quotes escaped
+        %!"#{value.to_s.gsub('"','\"')}"!
       end
     end
   end
