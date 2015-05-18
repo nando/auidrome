@@ -137,6 +137,10 @@ EM.run do
         end
       end
 
+      def error_span text
+        %{<span class="error">ERROR: #{text}</span>}
+      end
+
       def warning_span text
         %{<span class="warning">#{text}</span>}
       end
@@ -406,16 +410,23 @@ EM.run do
 
     post '/admin/property/:auido' do
       auido = params['auido'].to_sym
-      App.config.create_tuit!(auido, Time.now.utc) unless Tuit.exists?(auido) # Right now then!
       property_name = params['property_name'].strip.to_sym
-      tuit = read_tuit(auido)
-      if tuit.properties.include? property_name
-        msg = warning_span("One more value for #{auido}'s #{property_name}")
+      value = params['property_value'].strip
+      if property_name.empty?
+        msg = error_span("No property name for '#{value}'.")
+      elsif value.empty?
+        msg = error_span("No value for property '#{property_name}'.")
       else
-        msg = "Now we know something about #{auido}'s #{property_name}"
+        App.config.create_tuit!(auido, Time.now.utc) unless Tuit.exists?(auido) # Right now then!
+        tuit = read_tuit(auido)
+        if tuit.properties.include? property_name
+          msg = warning_span("One more value for #{auido}'s #{property_name}")
+        else
+          msg = "Now we know something about #{auido}'s #{property_name}"
+        end
+        #TODO: (IMPORTANT) check current_user rigths!!!
+        tuit.add_value! property_name, value
       end
-      #TODO: (IMPORTANT) check current_user rigths!!!
-      tuit.add_value! property_name, params['property_value']
       return_to "tuits/#{auido}", msg
     end
   end

@@ -159,6 +159,7 @@ section.other img {
 .notice {color: green}
 .notice strong {color: inherit;}
 .notice .warning {color: orange}
+.notice .error {color: red}
 .notice a {
   font-weight: bold;
 }
