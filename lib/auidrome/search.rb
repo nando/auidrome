@@ -28,7 +28,7 @@ module Auidrome
       @query = query
       @results = grep_search_for(query)
       @conf = config || Auidrome::Config.new
-      @dromename = @conf.dromename
+      @dromename = @conf.dromename.to_sym
     end
 
     def in_other_dromes
