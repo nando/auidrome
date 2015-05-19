@@ -19,19 +19,16 @@ module Auidrome
       end
     end
 
-    def initialize(query, app)
+    attr_reader :dromename
+    attr_reader :query
+    attr_reader :conf
+    attr_reader :results
+
+    def initialize(query, config = nil)
       @query = query
       @results = grep_search_for(query)
-      @app = app
-      @dromename = app.config.dromename
-    end
-
-    def conf
-      @app.config
-    end
-
-    def results
-      @results
+      @conf = config || Auidrome::Config.new
+      @dromename = @conf.dromename
     end
 
     def in_other_dromes
