@@ -8,7 +8,7 @@ module Auidrome
   PEDALERS_DIR = 'data/public/pedalodrome/tuits'
   PROTECTED_TUITS_DIR = 'data/protected/auidrome/tuits'
   PRIVATE_TUITS_DIR = 'data/private/auidrome/tuits'
-  CORE_PROPERTIES = %i(@id @context auido created_at identity madrino)
+  CORE_PROPERTIES = %i(@id @context auido sluggarized created_at identity madrino)
   HREF_PROPERTIES = %i{
     email
     web

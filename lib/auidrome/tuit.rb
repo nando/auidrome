@@ -1,5 +1,7 @@
 # Copyright 2015 The Cocktail Experience
 require 'json'
+require 'babosa'
+
 module Auidrome
   class Tuit
     attr_accessor :hash
@@ -165,6 +167,7 @@ module Auidrome
         end
         @hash = empty_tuit_hash.merge!({
           auido: auido,
+          sluggarized: auido.to_slug.transliterate(:spanish).to_s,
           created_at: created_at
         })
       end
