@@ -167,7 +167,7 @@ module Auidrome
         end
         @hash = empty_tuit_hash.merge!({
           auido: auido,
-          sluggarized: auido.to_slug.transliterate(:spanish).to_s,
+          sluggarized: auido.to_s.to_slug.transliterate(:spanish).to_s,
           created_at: created_at
         })
       end
