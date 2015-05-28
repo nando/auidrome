@@ -5,7 +5,7 @@ if [ $# -eq 2 ]; then
   image=$2
 
   echo "scp $image otaony.com:dromes/$drome/public/images/$image"
-  scp       $image otaony.com:dromes/$drome/public/images/$image
+  scp      "$image" otaony.com:dromes/$drome/public/images/
 else
   echo 'Usage: uploadphoto.sh DROME FILE'
 fi
