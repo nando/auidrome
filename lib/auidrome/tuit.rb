@@ -1,33 +1,50 @@
-# Copyright 2015 The Cocktail Experience
+# Copyright 2015 The Cocktail Experience, S.L.
 require 'json'
 require 'babosa'
 
 module Auidrome
   class Tuit
-    attr_accessor :hash
+    attr_reader :hash
     attr_reader :reader
     attr_reader :config
 
-    def initialize(reader = nil, config = nil)
-      @reader, @hash = reader, {}
+    def initialize(auido, config = nil, reader = nil)
       @config ||= (config || Auidrome::Config.new)
-    end
+      @reader = reader
 
-    def self.read(auido, config = nil, reader = nil)
-      tuit = Tuit.new(reader, config)
-      public_data = read_json("#{PUBLIC_TUITS_DIR}/#{auido}.json")
+      filename =  Tuit.json_filename(auido)
+
+      @hash = Tuit.basic_data_for(auido, filename).merge \
+        json_url: "#{@config.url}tuits/#{filename}.json"
+
+      public_data = Tuit.read_json(PUBLIC_TUITS_DIR, filename)
       protected_data = if reader && AccessLevel.can_read_protected?(reader, public_data)
-        read_json("#{PROTECTED_TUITS_DIR}/#{auido}.json")
+        Tuit.read_json(PROTECTED_TUITS_DIR, filename)
       else
         {}
       end
       private_data = if reader && AccessLevel.can_read_private?(reader, public_data)
-        read_json("#{PRIVATE_TUITS_DIR}/#{auido}.json")
+        Tuit.read_json(PRIVATE_TUITS_DIR, filename)
       else
         {}
       end
-      tuit.hash = basic_data_for(auido).merge(public_data.merge(protected_data.merge(private_data)))
-      return tuit
+      @hash.merge! public_data.merge(protected_data.merge(private_data))
+    end
+
+    def filename
+      @hash[:filename]
+    end
+
+    def json_url
+      @hash[:json_url]
+    end
+
+    def identity
+      @hash[:identity]
+    end
+
+    def madrino
+      @hash[:madrino]
     end
 
     def properties
@@ -68,15 +85,18 @@ module Auidrome
       end
     end
 
-    def basic_jsonld_for auido
+    def basic_jsonld
       {
         :'@context' => @config.url + "json-context.json",
         :'@id' => self_url
-      }.merge(Tuit.basic_data_for(auido))
+      }.merge(Tuit.basic_data_for(@hash[:auido], @hash[:filename]))
     end
 
     def save_json!
-      save_hash_in_tuits_file! basic_jsonld_for(@hash[:auido]).merge(@hash)
+      @hash[:updated_at] = Time.now.utc.to_s
+      File.open(PUBLIC_TUITS_DIR + "/#{self.class.transliterated(@hash[:auido])}.json","w") do |f|
+         f.write JSON.pretty_generate(basic_jsonld.merge(@hash))
+      end
     end
 
     def add_value! property, value
@@ -114,16 +134,10 @@ module Auidrome
     end
 
     def self_url
-      "#{@config.url}tuits/#{@hash[:auido]}"
+      "#{@config.url}tuits/#{URI.encode(@hash[:auido].to_s)}"
     end
 
     private
-
-    def save_hash_in_tuits_file! hash
-      File.open(PUBLIC_TUITS_DIR + "/#{hash[:auido]}.json","w") do |f|
-        f.write JSON.pretty_generate(hash)
-      end
-    end
 
     class << self
       def empty_tuit_hash
@@ -135,18 +149,21 @@ module Auidrome
         }
       end
 
-      def basic_data_for auido
-        @hash = read_from_index_file(auido).merge(@hash)
-      end
-
-      def save_json! hash
-        File.open(PUBLIC_TUITS_DIR + "/#{hash[:auido]}.json","w") do |f|
-          if config.pretty_json?
-            f.write JSON.pretty_generate(hash)
-          else
-            f.write hash.to_json
-          end
+      def basic_data_for auido, filename
+        created_at = if string = stored_tuits[auido.to_sym]
+          Time.parse(string)
+        else
+          #TODO: this should be "nil", because this tuits hasn't been created yet.
+          # (i'm afraid to return nil right now and have no time at this moment...:(
+          Time.now.utc
         end
+        empty_tuit_hash.merge!({
+          created_at: created_at,
+          auido: auido,
+          transliterated: transliterated(auido),
+          # Old tuits are not transliterated...
+          filename: filename # ...to know how it's been stored.
+        })
       end
 
       def stored_tuits
@@ -157,29 +174,24 @@ module Auidrome
         stored_tuits.keys.include? tuit.to_sym
       end
   
-      def read_from_index_file auido
-        created_at = if string = stored_tuits[auido.to_sym]
-          Time.parse(string)
-        else
-          #TODO: this should be "nil", because this tuits hasn't been created yet.
-          # (i'm afraid to return nil right now and have no time at this moment...:(
-          Time.now.utc
-        end
-        @hash = empty_tuit_hash.merge!({
-          auido: auido,
-          sluggarized: auido.to_s.to_slug.transliterate(:spanish).to_s,
-          created_at: created_at
-        })
-      end
-  
-      def read_json(filepath)
+      def read_json(dir, filename)
+        filepath = "#{dir}/#{filename}.json"
         File.exists?(filepath) ? JSON.parse(File.read(filepath), symbolize_names: true) : {}
       end
+
+      def transliterated(string_or_symbol)
+        string_or_symbol.to_s.to_slug.transliterate(:spanish).to_s.downcase
+      end
   
-      def create! tuit, timestamp, config
-        @@stored_tuits[tuit] = timestamp.to_s # the same as if it're read from JSON file
+      def json_filename(auido)
+        filepath = "#{PUBLIC_TUITS_DIR}/#{auido}.json"
+        File.exists?(filepath) ? auido : transliterated(auido)
+      end
+  
+      def create! tuit, config
+        @@stored_tuits[tuit] = Time.now.utc.to_s # the same as if it're read from JSON file
         store_tuits!
-        read(tuit, config)
+        new tuit, config
       end
   
       # to <a href> value

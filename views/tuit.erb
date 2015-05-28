@@ -18,6 +18,11 @@
                 </span>
 <% end %>
                 <div class="tuit-properties">
+<% if Tuit.exists? @tuit.auido %>
+                  <div>
+                    <a href="<%= @tuit.json_url %>">JSON-LD</a>
+                  </div>
+<% end %>
                   <div>Created at
                     <span class="date" id="date"><%= @tuit.created_at %></span>
                   </div>

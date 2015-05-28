@@ -1,4 +1,4 @@
-# Copyright 2015 The Cocktail Experience
+# Copyright 2015 The Cocktail Experience, S.L.
 require 'thin'
 require 'em-websocket'
 require 'sinatra/base'
@@ -163,8 +163,8 @@ EM.run do
         #   (http://batsov.com/articles/2013/08/30/using-gsub-with-a-block/)
         name.to_s.gsub(/{{(.+)}}/) {
           human_auido = Regexp.last_match[1]
-          if people_drome = People.drome_for(human_auido)
-            %!<a href="#{people_drome.url}/tuits/#{human_auido}">#{human_auido}</a>!
+          if drome_config = People.drome_config_for(human_auido)
+            %!<a href="#{drome_config.url_for(human_auido)}">#{human_auido}</a>!
           else
             human_auido
           end
@@ -176,7 +176,7 @@ EM.run do
         #   (http://batsov.com/articles/2013/08/30/using-gsub-with-a-block/)
         name.to_s.gsub(/{{(.+)}}/) {
           human_auido = Regexp.last_match[1]
-          if drome = People.drome_for(human_auido)
+          if drome_config = People.drome_config_for(human_auido)
             %!<a href="#{drome.url}/tuits/#{human_auido}">#{human_auido}</a>!
           else
             human_auido
@@ -206,7 +206,7 @@ EM.run do
     end
 
     def read_tuit(auido)
-      Tuit.read(auido, App.config, current_user)
+      Tuit.new auido, App.config, current_user
     end
 
     def render_tuit_view image_quality
@@ -270,19 +270,13 @@ EM.run do
     post "/tuits" do
       piido = params[:piido].strip.to_sym
       logger.info (current_user || 'Somebody') + " has shouted: ¡¡¡#{piido}!!!"
-      if Tuit.stored_tuits[piido] 
-        # The piído is in our tuits.json but we still don't know anything about madrinos.
-        amadrinated_at = nil
-      else
-        # We assume current_user exist, so the piido will be "amadrinated" right now.
-        amadrinated_at = Time.now.utc
-        App.config.create_tuit! piido, amadrinated_at
-      end
+      previously_stored = !Tuit.stored_tuits[piido].nil?
+      App.config.create_tuit!(piido) unless previously_stored
       piido_link = %@<a href="/tuits/#{piido}">#{piido}</a>@
-      if amadrinated_at
-        msg = piido_link + ' is now between us!'
+      if previously_stored
+        msg = warning_span('We already knew ' + piido_link + ', thanks anyway!')
       else
-        msg = 'We already knew '+piido_link+", thanks!"
+        msg = piido_link + ' is now between us!'
       end
       return_to '/', msg
     end
@@ -291,15 +285,11 @@ EM.run do
       auido = params[:auido].to_sym
       if Tuit.exists? auido
         content_type :'application/json'
-        tuit = Tuit.basic_jsonld_for(auido)
-        Tuit.save_json! tuit # if we're here then the JSON file is not there
-        if pretty?
-          JSON.pretty_generate tuit
-        else
-          tuit.to_json
-        end
+        tuit = read_tuit(auido)
+        tuit.save_json! # if we're here then the JSON file is not there
+        JSON.pretty_generate tuit
       elsif App.config.drome_of_humans? and # i'm from the anti-if-campaign but
-            human_drome = People.drome_for(auido) # let's do this only for humans :D
+            human_drome = People.drome_config_for(auido) # let's do this only for humans :D
         redirect to human_drome.url + request.path
       else
         raise Sinatra::NotFound
@@ -417,7 +407,7 @@ EM.run do
       elsif value.empty?
         msg = error_span("No value for property '#{property_name}'.")
       else
-        App.config.create_tuit!(auido, Time.now.utc) unless Tuit.exists?(auido) # Right now then!
+        App.config.create_tuit!(auido) unless Tuit.exists?(auido) # Right now then!
         tuit = read_tuit(auido)
         if tuit.properties.include? property_name
           msg = warning_span("One more value for #{auido}'s #{property_name}")

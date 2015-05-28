@@ -1,11 +1,13 @@
-# Copyright 2015 The Cocktail Experience
+# Copyright 2015 The Cocktail Experience, S.L.
 require 'yaml'
+require 'uri'
+
 module Auidrome
   class Config
     @@configs = {} # Auidrome::Config instances of each drome.
     # Class instance variables "naming": @@HASH-KEYS_HASH-VALUE
     @@properties_drome = {} # Each property name with its mapped drome.
-    @@values_drome = {} # Values could be mapped too (i don't like this at all:(
+    @@values_config = {} # Values could be mapped too (i don't like this at all:(
     @@dromes_properties = {} # Properties for each dromename
     @@ports_drome = {} # Drome for each port
 
@@ -49,10 +51,14 @@ module Auidrome
       "http://#{domain_and_port}/"
     end
 
-    def create_tuit! auido, timestamp
-      tuit = Tuit.create!(auido, timestamp, self)
+    def create_tuit! auido
+      tuit = Tuit.create!(auido, self)
       ActivityStream.tuit! tuit
       Neo4jServerDB.create_node! tuit
+    end
+
+    def url_for(auido)
+      "#{url}/tuits/#{URI.encode(auido)}"
     end
 
     class << self
@@ -145,15 +151,15 @@ module Auidrome
       def drome_property_mappings_file
         @drome_property_mappings_file ||= YAML.load_file('config/drome_property_mappings.yml')
       end
-  
+
       def drome_for_value(value)
-        if @@values_drome[value].is_a? Auidrome::Config
-          @@values_drome[value]
-        elsif drome = People.drome_for(value.to_sym)
-          @@values_drome[value] = drome
+        if @@values_config[value].is_a? Auidrome::Config
+          @@values_config[value]
+        elsif conf = People.drome_config_for(value.to_sym)
+          @@values_config[value] = conf
         end
       end
-  
+
       def load_drome dromename
         @@configs[dromename.to_sym] ||= new(dromename, @@base_domain)
       end

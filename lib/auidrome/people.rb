@@ -28,7 +28,7 @@ module Auidrome
       end
 
       # Returns the first (more important) drome for a given human being
-      def drome_for auido
+      def drome_config_for auido
         Auidrome::Config.drome_config(@@all[auido.to_sym].first) if all[auido.to_sym]
       end
 
