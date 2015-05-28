@@ -4,11 +4,10 @@
         <div<%= ' class="cover-container"' unless @tuit_image.quality > 1 %>>
           <section id="tuit" class="<%= App.config.drome_of_humans? ? 'human' : 'other' %>">
             <article>
-<% if App.config.drome_of_humans? %>
               <a href="<%= @tuit_image.href %>">
                 <img src="<%= @tuit_image.src %>" alt="<%= @tuit.auido %> image" class="<%= @tuit_image.class %> icon"/>
               </a>
-<% end %>
+
                 <h1 id="auido">
                   <%= auido_title @tuit %>
                 </h1>
