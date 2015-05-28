@@ -94,8 +94,9 @@ module Auidrome
 
     def save_json!
       @hash[:updated_at] = Time.now.utc.to_s
-      File.open(PUBLIC_TUITS_DIR + "/#{self.class.transliterated(@hash[:auido])}.json","w") do |f|
-         f.write JSON.pretty_generate(basic_jsonld.merge(@hash))
+      json = basic_jsonld.merge(@hash)
+      File.open(PUBLIC_TUITS_DIR + "/#{Tuit.transliterated(@hash[:filename])}.json","w") do |f|
+        f.write JSON.pretty_generate(basic_jsonld.merge(@hash))
       end
     end
 
@@ -107,7 +108,6 @@ module Auidrome
       else
          @hash[property] = value
       end
-
       save_json!
 
       Neo4jServerDB.update_property! self, property
