@@ -1,11 +1,17 @@
 #!/bin/bash
 
+function run {
+  echo "Running '$1'..."
+  cmd="$1"
+  eval "$cmd"
+  echo " => DONE!"
+}
+
 if [ $# -eq 2 ]; then
   drome=$1
-  image=$2
-
-  echo "scp $image otaony.com:dromes/$drome/public/images/$image"
-  scp      "$image" otaony.com:dromes/$drome/public/images/
+  image=$(echo "$2" | sed -e "s/ /\\\ /g")
+  target=otaony.com:\"dromes/$drome/public/images/"$image"\"
+  run "scp $image $target"
 else
   echo 'Usage: uploadphoto.sh DROME FILE'
 fi
