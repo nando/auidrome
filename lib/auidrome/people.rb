@@ -16,12 +16,12 @@ module Auidrome
       def all
         # Order matters: the former more important when calling #drome_config_for(person)
         @@all ||= from_dromes \
+          :auidrome,
           :byebyedrome,
           :pedalodrome,
           :acadodrome,
           :restodrome,
           :lovedrome,
-          :auidrome,
           :ripodrome,
           :fictiondrome,
           :repulsodrome
