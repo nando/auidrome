@@ -14,13 +14,13 @@ module Auidrome
       #    :olalla => [:acadodrome, :auidrome]
       #  }
       def all
-        # Order matters: the former more important when calling #drome_for
+        # Order matters: the former more important when calling #drome_config_for(person)
         @@all ||= from_dromes \
           :byebyedrome,
           :pedalodrome,
-          :lovedrome,
           :acadodrome,
           :restodrome,
+          :lovedrome,
           :auidrome,
           :ripodrome,
           :fictiondrome,
@@ -51,7 +51,7 @@ module Auidrome
     private
       def from_dromes *dromes
         {}.tap do |people|
-          dromes.reverse.each do |drome|
+          dromes.each do |drome|
             JSON.parse(File.read("data/public/#{drome}/tuits.json")).each do |name, created_at|
               people[name.to_sym] ||= []
               people[name.to_sym].push drome
