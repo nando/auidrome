@@ -287,7 +287,7 @@ EM.run do
         content_type :'application/json'
         tuit = read_tuit(auido)
         tuit.save_json! # if we're here then the JSON file is not there
-        JSON.pretty_generate tuit
+        JSON.pretty_generate tuit.hash
       elsif App.config.drome_of_humans? and # i'm from the anti-if-campaign but
             human_drome = People.drome_config_for(auido) # let's do this only for humans :D
         redirect to human_drome.url + request.path
