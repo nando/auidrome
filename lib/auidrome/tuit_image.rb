@@ -10,6 +10,14 @@ module Auidrome
       @quality = quality
     end
 
+    def self.has_avatar?(auido)
+      !image_of_quality(auido, 0).nil?
+    end
+
+    def has_avatar?
+      !Tuit.has_avatar(@tuit.hash[:filename], 0).nil?
+    end
+
     def src
       if @tuit.auido and file?
         @file
@@ -53,8 +61,12 @@ module Auidrome
     end
 
     def image_of_quality quality
+      TuitImage.image_of_quality @tuit.hash[:filename], quality
+    end
+
+    def self.image_of_quality filename, quality
       prefix = quality > 0 ? "#{(['better']*quality).join('/')}/" : ""
-      basepath = "/images/#{prefix}" + @tuit.hash[:filename]
+      basepath = "/images/#{prefix}#{filename}"
       %w{gif jpeg jpg png}.each do |extension|
         filepath = "#{basepath}.#{extension}"
         return filepath if File.exists?("public" + filepath)

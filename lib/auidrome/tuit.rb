@@ -12,7 +12,7 @@ module Auidrome
       @config ||= (config || Auidrome::Config.new)
       @reader = reader
 
-      filename =  Tuit.json_filename(auido)
+      filename =  Tuit.name_for_files(auido)
 
       @hash = Tuit.basic_data_for(auido, filename).merge \
         json_url: "#{@config.url}tuits/#{filename}.json"
@@ -173,7 +173,11 @@ module Auidrome
       def exists? tuit
         stored_tuits.keys.include? tuit.to_sym
       end
-  
+
+      def has_avatar? tuit
+        TuitImage.has_avatar? tuit
+      end
+ 
       def read_json(dir, filename)
         filepath = "#{dir}/#{filename}.json"
         File.exists?(filepath) ? JSON.parse(File.read(filepath), symbolize_names: true) : {}
@@ -183,9 +187,13 @@ module Auidrome
         string_or_symbol.to_s.to_slug.transliterate(:spanish).to_s.downcase
       end
   
-      def json_filename(auido)
-        filepath = "#{PUBLIC_TUITS_DIR}/#{auido}.json"
-        File.exists?(filepath) ? auido : transliterated(auido)
+      def name_for_files(auido)
+        json_filepath = "#{PUBLIC_TUITS_DIR}/#{auido}.json"
+        if File.exists?(json_filepath) or TuitImage.has_avatar?(auido)
+          auido
+        else
+          transliterated(auido)
+        end
       end
   
       def create! tuit, config
