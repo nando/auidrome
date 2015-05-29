@@ -95,7 +95,7 @@ module Auidrome
     def save_json!
       @hash[:updated_at] = Time.now.utc.to_s
       json = basic_jsonld.merge(@hash)
-      File.open(PUBLIC_TUITS_DIR + "/#{Tuit.transliterated(@hash[:filename])}.json","w") do |f|
+      File.open(PUBLIC_TUITS_DIR + "/#{@hash[:filename]}.json","w") do |f|
         f.write JSON.pretty_generate(basic_jsonld.merge(@hash))
       end
     end
