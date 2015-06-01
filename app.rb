@@ -215,6 +215,8 @@ EM.run do
       @tuit = read_tuit(params[:auido])
       @tuit_image = TuitImage.new(@tuit, image_quality)
 
+      @property_to_drome = App.config.property_to_drome
+
       if port = get_port_from_referrer and
          dromename = Config.drome_for_port(port)
         @property_names_for_autocomplete = Config.properties_mapped_to(dromename).map {|p|
