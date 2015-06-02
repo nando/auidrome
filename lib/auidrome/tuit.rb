@@ -189,7 +189,7 @@ module Auidrome
   
       def name_for_files(auido)
         json_filepath = "#{PUBLIC_TUITS_DIR}/#{auido}.json"
-        if File.exists?(json_filepath)
+        if File.exists?(json_filepath) or TuitImage.has_images?(auido)
           auido
         else
           transliterated(auido)

@@ -14,6 +14,10 @@ module Auidrome
       !image_of_quality(auido, 0).nil?
     end
 
+    def self.has_images?(auido)
+      !image_of_quality(auido, 1).nil?
+    end
+
     def has_avatar?
       !Tuit.has_avatar(@tuit.hash[:filename], 0).nil?
     end
