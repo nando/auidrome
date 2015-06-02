@@ -196,14 +196,19 @@ module Auidrome
       def transliterated(string_or_symbol)
         string_or_symbol.to_s.to_slug.transliterate(:spanish).to_s.downcase
       end
+
+      def json_filepath(auido)
+        "#{PUBLIC_TUITS_DIR}/#{auido}.json"
+      end
   
       def name_for_files(auido)
-        json_filepath = "#{PUBLIC_TUITS_DIR}/#{auido}.json"
-        if File.exists?(json_filepath) or TuitImage.has_images?(auido)
-          auido
-        else
-          transliterated(auido)
-        end
+        return auido if File.exists?(json_filepath(auido)) or TuitImage.has_images?(auido)
+        
+        unescaped = CGI.unescape(auido)
+        return unescaped if File.exists?(json_filepath(unescaped))
+        
+        # neither two, then...
+        transliterated(auido)
       end
   
       def create! tuit, config
