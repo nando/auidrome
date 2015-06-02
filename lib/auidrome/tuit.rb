@@ -204,7 +204,7 @@ module Auidrome
       def name_for_files(auido)
         return auido if File.exists?(json_filepath(auido)) or TuitImage.has_images?(auido)
         
-        unescaped = CGI.unescape(auido)
+        unescaped = CGI.unescape(auido.to_s)
         return unescaped if File.exists?(json_filepath(unescaped))
         
         # neither two, then...
