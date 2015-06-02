@@ -248,7 +248,7 @@ EM.run do
     end
 
     get "/" do
-      array = Tuit.stored_tuits.to_a
+      array = Tuit.escaped_tuits.to_a
       size = array.length
       @pages = ((size - 1) / TUITS_PER_PAGE.to_f).to_i + 1
       @page = [[params[:page].to_i, 1].max, @pages].min

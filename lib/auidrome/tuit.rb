@@ -1,6 +1,7 @@
 # Copyright 2015 The Cocktail Experience, S.L.
 require 'json'
 require 'babosa'
+require 'cgi'
 
 module Auidrome
   class Tuit
@@ -73,6 +74,10 @@ module Auidrome
 
     def auido
       @hash[:auido]
+    end
+
+    def auido_escaped
+      @auido_escaped ||= CGI.escape(@hash[:auido])
     end
 
     def link_outside
@@ -166,8 +171,13 @@ module Auidrome
         })
       end
 
+      #DEPRECATED
       def stored_tuits
         @@stored_tuits ||= tuits_in_index_file
+      end
+ 
+      def escaped_tuits
+        @@escaped_tuits ||= Hash[stored_tuits.map{|t| [CGI.escape(t[0].to_s),t[1]]}]
       end
  
       def exists? tuit
