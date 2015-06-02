@@ -19,7 +19,7 @@ module Auidrome
     end
 
     def has_avatar?
-      !Tuit.has_avatar(@tuit.hash[:filename], 0).nil?
+      !TuitImage.has_avatar?(@tuit.hash[:filename], 0).nil?
     end
 
     def src
@@ -42,14 +42,6 @@ module Auidrome
       @quality ||= 0
     end
 
-    def src
-      if @tuit.auido and file?
-        @file
-      else
-        "/images/common/#{@tuit.config.dromename}.png"
-      end
-    end
-
     def href
       if better_image?
         "/tuits" + "/better" * (quality + 1) + "/#{@tuit.auido}"
@@ -60,7 +52,7 @@ module Auidrome
 
     private
     def file?
-      @file = image_of_quality(quality) unless @file
+      @file ||= image_of_quality(quality) || TuitImage.image_of_quality(@tuit.auido)
       !@file.nil?
     end
 
@@ -68,7 +60,7 @@ module Auidrome
       TuitImage.image_of_quality @tuit.hash[:filename], quality
     end
 
-    def self.image_of_quality filename, quality
+    def self.image_of_quality filename, quality = 0
       prefix = quality > 0 ? "#{(['better']*quality).join('/')}/" : ""
       basepath = "/images/#{prefix}#{filename}"
       %w{gif jpeg jpg png}.each do |extension|
