@@ -1,8 +1,8 @@
-lovedrome: author,autora,autor,speaker,featuring,vía,ponente,madre,padre,hermano,hermana,amiga,amigo,pedalea,compañera,compañero,participa,deportista,ilustrador,ilustradora,coordinado por,jugón,jugona,tío,tía,para,abuela,abuelo,nieta,nieto
+lovedrome: author,autora,autor,speaker,featuring,vía,ponente,madre,padre,hermano,hermana,amiga,amigo,pedalea,compañera,compañero,participa,deportista,ilustrador,ilustradora,coordinado por,jugón,jugona,tío,tía,para,abuela,abuelo,nieta,nieto,GANADORA,GANADOR
 
 docudrome: talk,doc,spec,codetail,charla,parte de,parte,obra,trabajo,recommends,post,screencast,recomienda leer,wrote,escribió,recomienda ver,libro,ensayo,aparece en,receta,cartel,articulillo
 
-notedrome: note,reflexion,thought,monolog,dialog,triatlog,conversation,chiste,pensamiento relacionado
+notedrome: note,reflexion,thought,pensamiento,monolog,dialog,triatlog,conversation,chiste,pensamiento relacionado
 
 eventodrome: event,evento,meet,quedada,open,hackathon,hackatón,organiza,colabora con,asistente a
 
