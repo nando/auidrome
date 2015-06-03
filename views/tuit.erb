@@ -43,12 +43,12 @@
 <%# Identity and trust/hope buttons :) %>
 <% unless (@tuit.madrino + @tuit.identity).include? current_user %>
   <% unless %w{Auidrome Ripodrome Fictiondrome}.include?(App.config.site_name) %>
-                  <form action="/admin/its-me/<%= @tuit.auido_escaped %>">
+                  <form action="/admin/its-me/<%= @tuit.auido %>">
                     <button><%= me_or_by_me_button_text %></button>
                   </form>
   <% end %>
   <% unless @tuit.madrino.include? current_user %>
-                  <form action="/admin/amadrinate/<%= @tuit.auido_escaped %>">
+                  <form action="/admin/amadrinate/<%= @tuit.auido %>">
                     <button><%= amadrinate_or_authorship_button_text %></button>
                   </form>
   <% end %>
@@ -100,7 +100,7 @@
                 });
               </script>
 
-              <form id="property_form" action="/admin/property/<%= @tuit.auido_escaped %>" method="POST">
+              <form id="property_form" action="/admin/property/<%= @tuit.auido %>" method="POST">
                 <input id="property_name" type="text" name="property_name" value="" size="8" />
                 <input id="property_value" type="text" name="property_value" value="<%= get_value_from_referrer %>" />
                 <button>Push!</button>

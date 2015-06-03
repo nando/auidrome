@@ -1,7 +1,6 @@
 # Copyright 2015 The Cocktail Experience, S.L.
 require 'json'
 require 'babosa'
-require 'cgi'
 
 module Auidrome
   class Tuit
@@ -9,15 +8,14 @@ module Auidrome
     attr_reader :reader
     attr_reader :config
 
-    def initialize(raw_auido, config = nil, reader = nil)
+    def initialize(auido, config = nil, reader = nil)
       @config ||= (config || Auidrome::Config.new)
       @reader = reader
 
-      auido = CGI.unescape(raw_auido.to_s)
-      filename = Tuit.name_for_files(auido)
+      filename =  Tuit.name_for_files(auido)
 
       @hash = Tuit.basic_data_for(auido, filename).merge \
-        json_url: "#{@config.url}tuits/#{CGI.escape(filename)}.json"
+        json_url: "#{@config.url}tuits/#{filename}.json"
 
       public_data = Tuit.read_json(PUBLIC_TUITS_DIR, filename)
       protected_data = if reader && AccessLevel.can_read_protected?(reader, public_data)
@@ -75,10 +73,6 @@ module Auidrome
 
     def auido
       @hash[:auido]
-    end
-
-    def auido_escaped
-      @auido_escaped ||= CGI.escape(@hash[:auido])
     end
 
     def link_outside
@@ -140,7 +134,7 @@ module Auidrome
     end
 
     def self_url
-      "#{@config.url}tuits/#{CGI.escape(@hash[:auido].to_s)}"
+      "#{@config.url}tuits/#{URI.encode(@hash[:auido].to_s)}"
     end
 
     private
@@ -172,7 +166,6 @@ module Auidrome
         })
       end
 
-      #DEPRECATED
       def stored_tuits
         @@stored_tuits ||= tuits_in_index_file
       end
@@ -193,14 +186,11 @@ module Auidrome
       def transliterated(string_or_symbol)
         string_or_symbol.to_s.to_slug.transliterate(:spanish).to_s.downcase
       end
-
-      def json_filepath(auido)
-        "#{PUBLIC_TUITS_DIR}/#{auido}.json"
-      end
   
       def name_for_files(auido)
-        if File.exists?(json_filepath(auido)) or TuitImage.has_images?(auido)
-          auido 
+        json_filepath = "#{PUBLIC_TUITS_DIR}/#{auido}.json"
+        if File.exists?(json_filepath) or TuitImage.has_images?(auido)
+          auido
         else
           transliterated(auido)
         end

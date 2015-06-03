@@ -88,7 +88,7 @@ function show_search_results(payload) {
 
 function show_tuit(text, at) {
   addMessage(" > show_tuit() "+ text);
-  var rendered = Mustache.render(template_tuited, {tuit: text, at: at, escaped: escape(text)});
+  var rendered = Mustache.render(template_tuited, {tuit: text, at: at});
   $('#content').prepend(rendered);
 }
 
