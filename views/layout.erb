@@ -35,9 +35,9 @@
     </script>
     <script id="template_result" type="x-tmpl-mustache">
       <div class="results">
-        <a href="/tuits/{{tuit}}"><img src="/images/{{tuit}}.png" onerror="this.src = '/images/common/<%= App.config.dromename %>.png'" alt="{{tuit}} avatar or default avatar" class="img-thumbnail icon"/></a>
-        <p><a href="/tuits/{{tuit}}">{{tuit}}</a>: {{at}}</p>
-        <p>· <a href="/tuits/{{tuit}}.json">JSON FILE</a> ·</p>
+        <a href="/tuits/{{escaped}}"><img src="/images/{{escaped}}.png" onerror="this.src = '/images/common/<%= App.config.dromename %>.png'" alt="{{tuit}} avatar or default avatar" class="img-thumbnail icon"/></a>
+        <p><a href="/tuits/{{escaped}}">{{tuit}}</a>: {{at}}</p>
+        <p>· <a href="/tuits/{{escaped}}.json">JSON FILE</a> ·</p>
       </div>
     </script>
     <script id="template_no_results" type="x-tmpl-mustache">
@@ -55,7 +55,7 @@
     </script>
     <script id="template_tuited" type="x-tmpl-mustache">
       <div class="status">
-        <a href="/tuits/{{tuit}}"><img src="/images/{{tuit}}.png" onerror="this.src = '/images/common/<%= App.config.dromename %>.png'" alt="{{tuit}} avatar or default avatar" class="img-thumbnail icon"/></a>
+        <a href="/tuits/{{escaped}}"><img src="/images/{{escaped}}.png" onerror="this.src = '/images/common/<%= App.config.dromename %>.png'" alt="{{tuit}} avatar or default avatar" class="img-thumbnail icon"/></a>
         <p><%= App.config.tuit_sentence %></p>
         <p><%= App.config.tuit_consideration %></p>
       </div>

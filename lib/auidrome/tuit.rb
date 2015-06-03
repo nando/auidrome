@@ -9,14 +9,15 @@ module Auidrome
     attr_reader :reader
     attr_reader :config
 
-    def initialize(auido, config = nil, reader = nil)
+    def initialize(raw_auido, config = nil, reader = nil)
       @config ||= (config || Auidrome::Config.new)
       @reader = reader
 
-      filename =  Tuit.name_for_files(auido)
+      auido = CGI.unescape(raw_auido.to_s)
+      filename = Tuit.name_for_files(auido)
 
       @hash = Tuit.basic_data_for(auido, filename).merge \
-        json_url: "#{@config.url}tuits/#{filename}.json"
+        json_url: "#{@config.url}tuits/#{CGI.escape(filename)}.json"
 
       public_data = Tuit.read_json(PUBLIC_TUITS_DIR, filename)
       protected_data = if reader && AccessLevel.can_read_protected?(reader, public_data)
@@ -139,7 +140,7 @@ module Auidrome
     end
 
     def self_url
-      "#{@config.url}tuits/#{URI.encode(@hash[:auido].to_s)}"
+      "#{@config.url}tuits/#{CGI.escape(@hash[:auido].to_s)}"
     end
 
     private
@@ -176,10 +177,6 @@ module Auidrome
         @@stored_tuits ||= tuits_in_index_file
       end
  
-      def escaped_tuits
-        @@escaped_tuits ||= Hash[stored_tuits.map{|t| [CGI.escape(t[0].to_s),t[1]]}]
-      end
- 
       def exists? tuit
         stored_tuits.keys.include? tuit.to_sym
       end
@@ -202,13 +199,11 @@ module Auidrome
       end
   
       def name_for_files(auido)
-        return auido if File.exists?(json_filepath(auido)) or TuitImage.has_images?(auido)
-        
-        unescaped = CGI.unescape(auido.to_s)
-        return unescaped if File.exists?(json_filepath(unescaped))
-        
-        # neither two, then...
-        transliterated(auido)
+        if File.exists?(json_filepath(auido)) or TuitImage.has_images?(auido)
+          auido 
+        else
+          transliterated(auido)
+        end
       end
   
       def create! tuit, config

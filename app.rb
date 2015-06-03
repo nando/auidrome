@@ -248,7 +248,7 @@ EM.run do
     end
 
     get "/" do
-      array = Tuit.escaped_tuits.to_a
+      array = Tuit.stored_tuits.to_a
       size = array.length
       @pages = ((size - 1) / TUITS_PER_PAGE.to_f).to_i + 1
       @page = [[params[:page].to_i, 1].max, @pages].min
@@ -361,28 +361,26 @@ EM.run do
     end
 
     get "/admin/its-me/:auido" do
-      auido = params['auido']
-      tuit = read_tuit(auido)
+      tuit = read_tuit(params['auido'])
       if tuit.identity.include? current_user
         msg = warning_span('Yes, we already knew that! :)')
       else
         tuit.add_identity! current_user 
-        msg = "Added <strong>#{current_user}</strong> as identity/author of <strong>" + auido + '</strong>.'
+        msg = "Added <strong>#{current_user}</strong> as identity/author of <strong>" + tuit.auido + '</strong>.'
       end
-      return_to 'tuits/' + auido, msg
+      return_to 'tuits/' + params['auido'], msg
     end
 
     get "/admin/amadrinate/:auido" do
-      auido = params['auido']
-      tuit = read_tuit(auido)
+      tuit = read_tuit(params['auido'])
       if tuit.madrino.include? current_user
-        msg = warning_span('You already was madrino of <strong>' + auido + '</strong>')
+        msg = warning_span('You already was madrino of <strong>' + tuit.auido + '</strong>')
       else
         tuit.add_madrino! current_user 
-        msg = "Now you are a madrino of <strong>" + auido + '</strong>. GREAT!!!'
+        msg = "Now you are a madrino of <strong>" + tuit.auido + '</strong>. GREAT!!!'
       end
       ActivityStream.amadrinate! tuit
-      return_to 'tuits/' + auido, msg
+      return_to 'tuits/' + params['auido'], msg
     end
 
     get "/activity" do
@@ -401,7 +399,7 @@ EM.run do
     end
 
     post '/admin/property/:auido' do
-      auido = params['auido'].to_sym
+      auido = CGI.unescape(params['auido']).to_sym
       property_name = params['property_name'].strip.to_sym
       value = params['property_value'].strip
       if property_name.empty?
