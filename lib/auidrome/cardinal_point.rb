@@ -18,28 +18,6 @@ module Auidrome
       @drift = drift.upcase.to_sym
     end
 
-    def self.for_letter(letter)
-      @@cardinal_points[letter.upcase.to_sym] ||= new(letter)
-    end
-
-    def self.letter_to_word(letter)
-      @@letters_hash[letter.upcase.to_sym]
-    end
-
-    # Returns array with [DRIFT, POINT, DROMENAME]
-    def self.create_from_port_number(port_base)
-      string = if port_base < 10000
-        cardinal_points_ports[port_base] || cardinal_points_ports[0]
-      else
-        cardinal_points_ports[port_base.div(10000)]
-      end
-      new string.split('-')[0]
-    end
-
-    def self.cardinal_points_ports
-      @@cardinal_points_ports ||= YAML.load_file('config/drome_cardinal_points.yml')
-    end
-
     def drift; config_values[0]; end
     def point; config_values[1]; end
     def dromename; config_values[2]; end
@@ -53,6 +31,47 @@ module Auidrome
       @config_values ||= self.class.cardinal_points_ports.values.detect {|str|
         str =~ /^#{@drift}\-/
       }.split('-')
+    end
+
+    class << self
+      def for_letter(letter)
+        @@cardinal_points[letter.upcase.to_sym] ||= new(letter)
+      end
+  
+      def letter_to_word(letter)
+        @@letters_hash[letter.upcase.to_sym]
+      end
+  
+      # Returns array with [DRIFT, POINT, DROMENAME]
+      def create_from_port_number(port_base)
+        string = if port_base < 10000
+          cardinal_points_ports[port_base] || cardinal_points_ports[0]
+        else
+          cardinal_points_ports[port_base.div(10000)]
+        end
+        new string.split('-')[0]
+      end
+  
+      def cardinal_points_ports
+        @@cardinal_points_ports ||= YAML.load_file('config/drome_cardinal_points.yml')
+      end
+  
+      # The following code has been extracted from lib/auidrome/people.rb.
+      # Commit 564d73bcee3 has the previous code (lack of tests' fear comment :(
+      def drome_config_for auido
+        Auidrome::Config.drome_config(@@all[auido.to_sym].first) if all[auido.to_sym]
+      end
+      private
+      def from_dromes *dromes
+        {}.tap do |people|
+          dromes.each do |drome|
+            JSON.parse(File.read("data/public/#{drome}/tuits.json")).each do |name, created_at|
+              people[name.to_sym] ||= []
+              people[name.to_sym].push drome
+            end
+          end
+        end
+      end
     end
   end
 end

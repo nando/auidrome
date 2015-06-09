@@ -1,8 +1,10 @@
 # Copyright 2015 The Cocktail Experience
 require 'json'
+require_relative 'cardinal_point'
+
 module Auidrome
   # "auidos" in committed public/tuits.json on "human" dromes (with port number < 10000)
-  class People
+  class Human < CardinalPoint
     class << self
       @@all = nil
       @@pedalers = {}
@@ -27,11 +29,6 @@ module Auidrome
           :repulsodrome
       end
 
-      # Returns the first (more important) drome for a given human being
-      def drome_config_for auido
-        Auidrome::Config.drome_config(@@all[auido.to_sym].first) if all[auido.to_sym]
-      end
-
       # Returns a hash with the Twitter identities of the people in the
       # Pedalodrome associated with their name. For example:
       #   { :ander_r4 => :ANDER, ... }
@@ -46,18 +43,6 @@ module Auidrome
           end
         end
         @@pedalers
-      end
-
-    private
-      def from_dromes *dromes
-        {}.tap do |people|
-          dromes.each do |drome|
-            JSON.parse(File.read("data/public/#{drome}/tuits.json")).each do |name, created_at|
-              people[name.to_sym] ||= []
-              people[name.to_sym].push drome
-            end
-          end
-        end
       end
     end
   end
