@@ -18,9 +18,9 @@ for drome in $DROME_NAMES; do
   run_command "cp public/tuits/* public_ant/tuits"
   run_command "cp public/images/* public_ant/images"
   # update from committed
-  cp ../auidrome/data/public/$drome/tuits.json public
-  cp ../auidrome/data/public/$drome/tuits/* public/tuits
-  cp ../auidrome/data/public/$drome/images/* public/images
+  run_command "cp ../auidrome/data/public/$drome/tuits.json public"
+  run_command "cp ../auidrome/data/public/$drome/tuits/* public/tuits"
+  run_command "cp ../auidrome/data/public/$drome/images/* public/images"
 
 #  ask_and_run 'ls'
 #  echo "Copia de seguridad de $drome's public/tuits.json:"

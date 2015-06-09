@@ -59,9 +59,10 @@ module Auidrome
         node_labels = "#{tuit.config.cardinal_point.point}:#{tuit.config.dromename.capitalize}"
         node_properties = <<-PROPERTIES
             {
-              id: "#{tuit.tuit_id}",
+              id: "#{tuit.cardinal_id}",
               name: "#{tuit.auido}",
-              iso8601: "#{tuit.created_at.iso8601}"
+              cardinal_drome: "#{tuit.cardinal_drome}", 
+              iso8601: "#{tuit.cardinal_created_at.iso8601}"
             }
         PROPERTIES
         <<-QUERY_STRING
@@ -108,7 +109,7 @@ module Auidrome
       end
 
       def to_query_key(name)
-        name.to_s.to_slug.transliterate.to_s.gsub(/[0-9 \/\-!\.'"{},ºª:¿?]/, '_')
+        name.to_s.to_slug.transliterate.to_s.gsub(/[0-9 \/\-!\.'"{},ºª:¿?\(\)]/, '_')
       end
 
       def to_query_value(value)
