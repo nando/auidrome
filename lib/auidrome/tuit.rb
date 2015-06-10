@@ -12,12 +12,14 @@ module Auidrome
       @config ||= (config || Auidrome::Config.new)
       @reader = reader
 
-      filename =  Tuit.name_for_files(auido)
+      filename =  Tuit.name_for_files(auido, @config)
 
       @hash = Tuit.basic_data_for(auido, filename).merge \
         json_url: "#{@config.url}tuits/#{filename}.json"
 
-      public_data = Tuit.read_json(PUBLIC_TUITS_DIR, filename)
+      public_data = Tuit.read_json(PUBLIC_TUITS_DIR, filename) # public/tuits.json first...
+      public_data = Tuit.read_from_committed(dromename, filename) if public_data.size == 0
+
       protected_data = if reader && AccessLevel.can_read_protected?(reader, public_data)
         Tuit.read_json(PROTECTED_TUITS_DIR, filename)
       else
@@ -75,12 +77,14 @@ module Auidrome
       @hash[:auido]
     end
 
+    # CAUTION: link_outside could return NIL!!!
     def link_outside
-      # CAUTION: It could be NIL!!! (we need at least a point between letters)
+      # url/web properties give us a link, but
       if href = (@hash[:url] || @hash[:web]) and !href.empty?
         href =~ /^http/ ? href : "http://#{href}"
-      elsif @hash[:auido] =~ /.+\..+/ # DOES IT HAS A POINT?
-        # ...then the "auido" is the URL itself
+      # if the auido itself has a point point between letters...
+      elsif @hash[:auido] =~ /.+\..+/
+        # ...then the "auido" itself is the URL
         "http://#{@hash[:auido]}"
       end
     end
@@ -167,9 +171,13 @@ module Auidrome
       end
 
       def stored_tuits
-        @@stored_tuits ||= tuits_in_index_file
+        @@stored_tuits ||= tuits_in_index_file(TUITS_FILE)
       end
- 
+
+      def committed_tuits(dromename = :auidrome)
+        tuits_in_index_file "data/public/#{dromename}/tuits.json"
+      end 
+
       def exists? tuit
         stored_tuits.keys.include? tuit.to_sym
       end
@@ -178,6 +186,10 @@ module Auidrome
         TuitImage.has_avatar? tuit
       end
  
+      def read_from_committed(dromename, auido)
+        Tuit.read_json("data/public/#{dromename}/tuits", auido)
+      end
+
       def read_json(dir, filename)
         filepath = "#{dir}/#{filename}.json"
         File.exists?(filepath) ? JSON.parse(File.read(filepath), symbolize_names: true) : {}
@@ -187,13 +199,19 @@ module Auidrome
         string_or_symbol.to_s.to_slug.transliterate(:spanish).to_s.downcase
       end
   
-      def name_for_files(auido)
+      def name_for_files(auido, drome_config = nil)
         json_filepath = "#{PUBLIC_TUITS_DIR}/#{auido}.json"
-        if File.exists?(json_filepath) or TuitImage.has_images?(auido)
+        if File.exists?(json_filepath) or
+           TuitImage.has_images?(auido) or
+           Tuit.committed_in_drome?(drome_config, auido)
           auido
         else
           transliterated(auido)
         end
+      end
+
+      def committed_in_drome?(drome_config, auido)
+        drome_config.committed_tuits.keys.include?(auido.to_sym)
       end
   
       def create! tuit, config
@@ -241,9 +259,9 @@ module Auidrome
         end 
       end
   
-      def tuits_in_index_file
-        if File.file?(TUITS_FILE)
-          JSON.parse(File.read(TUITS_FILE), symbolize_names: true)
+      def tuits_in_index_file(tuits_file)
+        if File.file?(tuits_file)
+          JSON.parse(File.read(tuits_file), symbolize_names: true)
         else
           {}
         end

@@ -10,6 +10,7 @@ module Auidrome
     @@values_config = {} # Values could be mapped too (i don't like this at all:(
     @@dromes_properties = {} # Properties for each dromename
     @@ports_drome = {} # Drome for each port
+    @@committed_tuits = {}
 
     def initialize(dromename = :auidrome, base_domain = 'localhost')
       puts "Auidrome::Config.new(#{dromename}, #{base_domain})"
@@ -59,6 +60,10 @@ module Auidrome
 
     def url_for(auido)
       "#{url}/tuits/#{URI.encode(auido)}"
+    end
+
+    def committed_tuits
+      @@committed_tuits[@dromename] ||= Tuit.committed_tuits(@dromename)
     end
 
     class << self
