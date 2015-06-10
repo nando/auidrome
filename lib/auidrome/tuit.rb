@@ -18,7 +18,7 @@ module Auidrome
         json_url: "#{@config.url}tuits/#{filename}.json"
 
       public_data = Tuit.read_json(PUBLIC_TUITS_DIR, filename) # public/tuits.json first...
-      public_data = Tuit.read_from_committed(dromename, filename) if public_data.size == 0
+      public_data = Tuit.read_from_committed(@config.dromename, filename) if public_data.size == 0
 
       protected_data = if reader && AccessLevel.can_read_protected?(reader, public_data)
         Tuit.read_json(PROTECTED_TUITS_DIR, filename)
