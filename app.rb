@@ -163,7 +163,7 @@ EM.run do
         #   (http://batsov.com/articles/2013/08/30/using-gsub-with-a-block/)
         name.to_s.gsub(/{{(.+)}}/) {
           human_auido = Regexp.last_match[1]
-          if drome_config = People.drome_config_for(human_auido)
+          if drome_config = Human.drome_config_for(human_auido)
             %!<a href="#{drome_config.url_for(human_auido)}">#{human_auido}</a>!
           else
             human_auido
@@ -176,7 +176,7 @@ EM.run do
         #   (http://batsov.com/articles/2013/08/30/using-gsub-with-a-block/)
         name.to_s.gsub(/{{(.+)}}/) {
           human_auido = Regexp.last_match[1]
-          if drome_config = People.drome_config_for(human_auido)
+          if drome_config = Human.drome_config_for(human_auido)
             %!<a href="#{drome.url}/tuits/#{human_auido}">#{human_auido}</a>!
           else
             human_auido
@@ -291,7 +291,7 @@ EM.run do
         tuit.save_json! # if we're here then the JSON file is not there
         JSON.pretty_generate tuit.hash
       elsif App.config.drome_of_humans? and # i'm from the anti-if-campaign but
-            human_drome = People.drome_config_for(auido) # let's do this only for humans :D
+            human_drome = Human.drome_config_for(auido) # let's do this only for humans :D
         redirect to human_drome.url + request.path
       else
         raise Sinatra::NotFound

@@ -160,7 +160,7 @@ module Auidrome
       def drome_for_value(value)
         if @@values_config[value].is_a? Auidrome::Config
           @@values_config[value]
-        elsif conf = People.drome_config_for(value.to_sym)
+        elsif conf = Human.drome_config_for(value.to_sym)
           @@values_config[value] = conf
         end
       end
