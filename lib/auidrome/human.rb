@@ -29,6 +29,11 @@ module Auidrome
           :repulsodrome
       end
 
+
+      def drome_config_for auido
+        Auidrome::Config.drome_config(all[auido.to_sym].first) if all[auido.to_sym]
+      end
+
       # Returns a hash with the Twitter identities of the people in the
       # Pedalodrome associated with their name. For example:
       #   { :ander_r4 => :ANDER, ... }

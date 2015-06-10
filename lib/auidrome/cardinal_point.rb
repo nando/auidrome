@@ -56,11 +56,6 @@ module Auidrome
         @@cardinal_points_ports ||= YAML.load_file('config/drome_cardinal_points.yml')
       end
   
-      # The following code has been extracted from lib/auidrome/people.rb.
-      # Commit 564d73bcee3 has the previous code (lack of tests' fear comment :(
-      def drome_config_for auido
-        Auidrome::Config.drome_config(@@all[auido.to_sym].first) if all[auido.to_sym]
-      end
       private
       def from_dromes *dromes
         {}.tap do |people|
