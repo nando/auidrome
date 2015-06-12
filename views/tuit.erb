@@ -30,7 +30,7 @@
                   <div><%= App.config.drome_of_humans? ? 'Madrino' : 'Announcer' %><%= 's' if @tuit.madrino.size > 1 %>
                   <% @tuit.madrino.each do |madrino| %>
                     <span class="madrino">
-                  <%   if pedaler = Auidrome::People.pedalers[madrino.to_sym] %>
+                  <%   if pedaler = Auidrome::Human.pedalers[madrino.to_sym] %>
                          <a href="<%= Auidrome::Config.pedalodrome.url %>tuits/<%= pedaler %>"><%= pedaler %></a>
                   <%   else %>
                          <%= madrino %>
