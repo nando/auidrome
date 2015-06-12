@@ -6,7 +6,7 @@ notedrome: note,reflexion,thought,pensamiento,monolog,dialog,triatlog,conversati
 
 eventodrome: event,evento,meet,quedada,open,hackathon,hackatón,organiza,colabora con,asistente a
 
-projectdrome: project,proyecto,site,sitio,comisión,depende de,organizador,organizado por,debilitador,ensuciado por,batería en,colabora en,parte del proyecto,proyecto relacionado,ha pedaleado con,vía proyecto,utiliza,usa,movimiento,hosted by,hosting for,recomienda el proyecto
+projectdrome: project,proyecto,site,sitio,comisión,depende de,organizado por,debilita,batería en,colabora en,parte del proyecto,proyecto relacionado,ha pedaleado con,vía proyecto,utiliza,usa,movimiento,hosted by,hosting for,recomienda el proyecto
 
 gamedrome: juego,creó el juego,jugona de,jugón de,recomienda el juego
 
@@ -18,6 +18,6 @@ auidrome: hija,hija,rapaza,rapaz,zagala,zagal
 acadodrome: estudiante,becaria,becario
 restodrome: maestra,maestro
 ripodrome: inspiración
-repulsodrome: bug,bicho,debilita,ensucia
+repulsodrome: bug,bicho,debilitado por
 # Ejemplo de limitación:
 byebyedrome: batería
