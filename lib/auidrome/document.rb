@@ -3,10 +3,16 @@ require 'json'
 require_relative 'cardinal_point'
 
 module Auidrome
-  # "auidos" in committed public/tuits.json on "human" dromes (with port number < 10000)
+  # "auidos" in committed public/tuits.json on "doc" dromes (10000 > port number < 20000)
   class Document < CardinalPoint
     class << self
       @@all = nil
+
+      def dromes
+        # Order matters: the former more important when calling #drome_config_for(person)
+        %i{docudrome notedrome}
+      end
+
 
       # Returns a hash with :auido_as_symbol => [:array, :of, :dromenames]
       # For example:
@@ -16,9 +22,7 @@ module Auidrome
       #  }
       def all
         # Order matters: the former more important when calling #drome_config_for(doc)
-        @@all ||= from_dromes \
-          :docudrome,
-          :notedrome
+        @@all ||= from_dromes(*dromes)
       end
     end
   end

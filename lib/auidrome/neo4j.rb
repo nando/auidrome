@@ -1,4 +1,4 @@
-# Copyright 2015 The Cocktail Experience
+# Copyright 2015 The Cocktail Experience, S.L.
 require 'neo4j'
 require 'babosa'
 
@@ -59,10 +59,10 @@ module Auidrome
         node_labels = "#{tuit.config.cardinal_point.point}:#{tuit.config.dromename.capitalize}"
         node_properties = <<-PROPERTIES
             {
-              id: "#{tuit.cardinal_id}",
               name: "#{tuit.auido}",
-              cardinal_drome: "#{tuit.cardinal_drome}", 
-              iso8601: "#{tuit.cardinal_created_at.iso8601}"
+              cardinal_id: "#{tuit.first_id}",
+              first_drome: "#{tuit.first_drome}", 
+              iso8601: "#{tuit.first_created_at.iso8601}"
             }
         PROPERTIES
         <<-QUERY_STRING

@@ -9,29 +9,34 @@ module Auidrome
       @@all = nil
       @@pedalers = {}
 
+      def dromes
+        # Order matters: the former more important when calling #drome_config_for(person)
+        %i{
+          auidrome
+          byebyedrome
+          pedalodrome
+          acadodrome
+          restodrome
+          lovedrome
+          ripodrome
+          fictiondrome
+          repulsodrome
+        }
+      end
+
+      def drome_config_for auido
+        Auidrome::Config.drome_config(all[auido.to_sym].first) if all[auido.to_sym]
+      end
+
       # Returns a hash with :auido_as_symbol => [:array, :of, :dromenames]
       # For example:
       #  {
       #    :alejandroporras => [:byebyedrome, :pedalodrome],
+      #    :PORRAS => [:byebyedrome, :pedalodrome],
       #    :olalla => [:acadodrome, :auidrome]
       #  }
       def all
-        # Order matters: the former more important when calling #drome_config_for(person)
-        @@all ||= from_dromes \
-          :auidrome,
-          :byebyedrome,
-          :pedalodrome,
-          :acadodrome,
-          :restodrome,
-          :lovedrome,
-          :ripodrome,
-          :fictiondrome,
-          :repulsodrome
-      end
-
-
-      def drome_config_for auido
-        Auidrome::Config.drome_config(all[auido.to_sym].first) if all[auido.to_sym]
+        @@all ||= from_dromes(*dromes)
       end
 
       # Returns a hash with the Twitter identities of the people in the

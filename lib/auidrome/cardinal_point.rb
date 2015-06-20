@@ -18,16 +18,33 @@ module Auidrome
       @drift = drift.upcase.to_sym
     end
 
-    def drift; config_values[0]; end
-    def point; config_values[1]; end
-    def dromename; config_values[2]; end
+    def drift; config_values[0]; end # i.e. "N"
+    def point; config_values[1]; end # i.e. "Human"
+    def dromename; config_values[2]; end # i.e. "lovedrome"
 
     def drome_config
       @drome_config ||= Auidrome::Config.drome_config(dromename)
     end
 
+    def point_class
+      @point_class = if Module.const_defined?("Auidrome::#{point}")
+        "Auidrome::#{point}".constantize
+      else
+        self
+      end
+    end
+
+    def dromes
+      if point_class == self
+        [dromename]
+      else
+        point_class.dromes
+      end
+    end
+
     private
     def config_values
+      # 0:    N-Human-lovedrome
       @config_values ||= self.class.cardinal_points_ports.values.detect {|str|
         str =~ /^#{@drift}\-/
       }.split('-')

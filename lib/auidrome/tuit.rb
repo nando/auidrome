@@ -8,6 +8,8 @@ module Auidrome
     attr_reader :reader
     attr_reader :config
 
+    @@committed_tuits = {}
+
     def initialize(auido, config = nil, reader = nil)
       @config ||= (config || Auidrome::Config.new)
       @reader = reader
@@ -31,6 +33,41 @@ module Auidrome
         {}
       end
       @hash.merge! public_data.merge(protected_data.merge(private_data))
+    end
+
+    def cardinal_dromes
+      if @config.cardinal_point.dromes.length > 1
+        @config.cardinal_point.point_class.all[auido.to_sym] || [@config.dromename]
+      else
+        @config.cardinal_point.dromes
+      end
+    end
+
+    def created_in_dromes
+      cardinal_dromes.inject([]) do |array, dromename|
+        array << dromename
+      end
+    end
+
+    def creation_timestamps
+      created_in_dromes.inject({created_at.to_s => @config.dromename}) do |hash, dromename|
+        if timestamp = Tuit.committed_tuits(dromename)[@hash[:auido].to_sym]
+          hash[timestamp] = dromename
+        end
+        hash
+      end
+    end
+
+    def first_drome
+      @first_drome ||= creation_timestamps[first_created_at.to_s]
+    end
+
+    def first_created_at
+      @first_created_at ||= Time.parse(creation_timestamps.keys.sort.first)
+    end
+
+    def first_id
+      first_created_at.to_i
     end
 
     def filename
@@ -154,8 +191,8 @@ module Auidrome
       end
 
       def basic_data_for auido, filename
-        created_at = if string = stored_tuits[auido.to_sym]
-          Time.parse(string)
+        created_at = if created_at_string = stored_tuits[auido.to_sym]
+          Time.parse(created_at_string)
         else
           #TODO: this should be "nil", because this tuits hasn't been created yet.
           # (i'm afraid to return nil right now and have no time at this moment...:(
@@ -175,7 +212,7 @@ module Auidrome
       end
 
       def committed_tuits(dromename = :auidrome)
-        tuits_in_index_file "data/public/#{dromename}/tuits.json"
+        @@committed_tuits[dromename.to_sym] ||= tuits_in_index_file "data/public/#{dromename}/tuits.json"
       end 
 
       def exists? tuit
@@ -211,13 +248,13 @@ module Auidrome
       end
 
       def committed_in_drome?(drome_config, auido)
-        drome_config.committed_tuits.keys.include?(auido.to_sym)
+        committed_tuits(drome_config.dromename).keys.include?(auido.to_sym)
       end
   
-      def create! tuit, config
-        @@stored_tuits[tuit] = Time.now.utc.to_s # the same as if it're read from JSON file
+      def create! auido, config
+        @@stored_tuits[auido] = Time.now.utc.to_s # the same as if it're read from JSON file
         store_tuits!
-        new tuit, config
+        new auido, config
       end
   
       # to <a href> value
