@@ -10,7 +10,7 @@ module Auidrome
         Neo4jServerDB.start_session!
         Tuit.stored_tuits.each do |auido, timestamp|
           puts "Uptading graph node for #{auido}..."
-          Neo4jServerDB.create_node! Tuit.read(auido, config)
+          Neo4jServerDB.create_node! Tuit.new(auido, config)
         end
       end
 
@@ -18,7 +18,7 @@ module Auidrome
         Neo4jServerDB.start_session!
         Tuit.stored_tuits.each do |auido, timestamp|
           puts "Uptading #{auido} node relationships..."
-          Neo4jServerDB.update_node_relationships! Tuit.read(auido, config)
+          Neo4jServerDB.update_node_relationships! Tuit.new(auido, config)
         end
       end
     end
