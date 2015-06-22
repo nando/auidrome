@@ -1,4 +1,10 @@
-# Copyright 2015 The Cocktail Experience
+# Copyright 2015 The Cocktail Experience, S.L.
+# 
+# Licensed under the GNU General Public License Version 3.0 (or later); you may not use this work except in compliance with the License. You may obtain a copy of the License in the COPYING file, or at:
+# 
+# http://www.gnu.org/licenses/gpl-3.0.txt
+# 
+# Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
 module Auidrome
   ACTIONS_PER_PAGE = 3
   TUITS_PER_PAGE = 50
@@ -61,12 +67,3 @@ require_relative 'auidrome/cardinal_point.rb'
 require_relative 'auidrome/human.rb'
 require_relative 'auidrome/document.rb'
 
-## Copyright / License
-
-Copyright 2015 The Cocktail Experience, S.L.
-
-Licensed under the GNU General Public License Version 3.0 (or later); you may not use this work except in compliance with the License. You may obtain a copy of the License in the COPYING file, or at:
-
-http://www.gnu.org/licenses/gpl-3.0.txt
-
-Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
