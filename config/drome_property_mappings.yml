@@ -1,6 +1,6 @@
 lovedrome: author,autora,autor,speaker,featuring,vía,ponente,madre,padre,hermano,hermana,amiga,amigo,pedalea,compañera,compañero,participa,deportista,ilustrador,ilustradora,coordinado por,jugón,jugona,tío,tía,para,abuela,abuelo,nieta,nieto,ganadora,ganador,enfermera,enfermero,médica,médico,asistente
 
-docudrome: talk,doc,spec,codetail,charla,parte de,parte,obra,trabajo,recommends,post,screencast,recomienda leer,wrote,escribió,recomienda ver,libro,ensayo,aparece en,receta,cartel,articulillo,cuadro
+docudrome: talk,doc,spec,codetail,charla,parte de,parte,obra,trabajo,recommends,post,screencast,recomienda leer,wrote,escribió,recomienda ver,libro,ensayo,aparece en,receta,cartel,articulillo,cuadro,bordado,licencia
 
 notedrome: note,reflexion,thought,pensamiento,monolog,dialog,triatlog,conversation,chiste,pensamiento relacionado
 
@@ -8,7 +8,7 @@ eventodrome: event,evento,meet,quedada,open,hackathon,hackatón,organiza,colabor
 
 projectdrome: project,proyecto,site,sitio,comisión,depende de,organizado por,debilita,batería en,colabora en,parte del proyecto,proyecto relacionado,ha pedaleado con,vía proyecto,utiliza,usa,movimiento,hosted by,hosting for,recomienda el proyecto
 
-gamedrome: juego,creó el juego,jugona de,jugón de,recomienda el juego
+gamedrome: juego,creó el juego,jugona de,jugón de,recomienda el juego,peluche
 
 petodrome: animal,pet,mascota,anmigo,anmiga
 
