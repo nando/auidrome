@@ -237,13 +237,18 @@ module Auidrome
       end
   
       def name_for_files(auido, drome_config = nil)
-        json_filepath = "#{PUBLIC_TUITS_DIR}/#{auido}.json"
-        if File.exists?(json_filepath) or
-           TuitImage.has_images?(auido) or
+        raw_path = "#{PUBLIC_TUITS_DIR}/#{auido}.json"
+        return auido if File.exists?(raw_path)
+
+        translit = transliterated(auido)
+        trans_path = "#{PUBLIC_TUITS_DIR}/#{translit}.json"
+        return translit if File.exists?(trans_path) 
+
+        if TuitImage.has_images?(auido) or
            Tuit.committed_in_drome?(drome_config, auido)
           auido
         else
-          transliterated(auido)
+          translit
         end
       end
 
