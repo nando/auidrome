@@ -381,7 +381,7 @@ EM.run do
         tuit.add_madrino! current_user 
         msg = "Now you are a madrino of <strong>" + auido + '</strong>. GREAT!!!'
       end
-      ActivityStream.amadrinate! tuit
+      # ActivityStream.amadrinate! tuit
       return_to 'tuits/' + auido, msg
     end
 
