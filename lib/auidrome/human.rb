@@ -12,11 +12,11 @@ module Auidrome
       def dromes
         # Order matters: the former more important when calling #drome_config_for(person)
         %i{
-          auidrome
-          byebyedrome
           pedalodrome
+          byebyedrome
           acadodrome
           restodrome
+          auidrome
           lovedrome
           ripodrome
           fictiondrome
