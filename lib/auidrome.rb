@@ -50,7 +50,8 @@ module Auidrome
     embeddings: {
       audio: %!<p><em>({{value}})</em></p><iframe src="https://archive.org/embed/{{value}}" width="600" height="30" frameborder="0" webkitallowfullscreen="true" mozallowfullscreen="true" allowfullscreen></iframe>!,
       vimeo: %!<iframe src="https://player.vimeo.com/video/{{value}}" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>!,
-      youtube: %!<iframe width="560" height="315" src="https://www.youtube.com/embed/{{value}}" frameborder="0" allowfullscreen></iframe>!
+      youtube: %!<iframe width="560" height="315" src="https://www.youtube.com/embed/{{value}}" frameborder="0" allowfullscreen></iframe>!,
+      slideshare: %!<iframe src="//www.slideshare.net/slideshow/embed_code/key/{{value}}" width="595" height="485" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen> </iframe>!
     }
   }
 end
