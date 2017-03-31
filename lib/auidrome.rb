@@ -41,6 +41,7 @@ module Auidrome
   # Templates to build HREFs and other embeddings
   PROPERTY_VALUE_TEMPLATES = {
     hrefs: {
+      facebook: "https://facebook.com/{{value}}",
       twitter: "http://twitter.com/{{value}}",
       flickr: "http://www.flickr.com/photos/{{value}}",
       github: "http://github.com/{{value}}",
