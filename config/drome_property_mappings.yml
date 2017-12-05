@@ -1,6 +1,7 @@
-lovedrome: author,autora,autor,speaker,featuring,vía,ponente,madre,padre,hermano,hermana,amiga,amigo,pedalea,compañera,compañero,participa,deportista,ilustrador,ilustradora,coordinado por,jugón,jugona,tío,tía,para,abuela,abuelo,nieta,nieto,ganadora,ganador,enfermera,enfermero,médica,médico,asistente,recomienda,protagonista
+pedalodrome: friend
+lovedrome: ceo,author,autora,autor,speaker,featuring,vía,ponente,madre,padre,hermano,hermana,amiga,amigo,pedalea,compañera,compañero,participa,deportista,ilustrador,ilustradora,coordinado por,jugón,jugona,tío,tía,para,abuela,abuelo,nieta,nieto,ganadora,ganador,enfermera,enfermero,médica,médico,asistente,recomienda,protagonista
 
-docudrome: dibujo,talk,doc,spec,codetail,charla,parte de,parte,obra,trabajo,recommends,post,screencast,recomienda leer,wrote,escribió,recomienda ver,libro,ensayo,aparece en,receta,cartel,articulillo,cuadro,bordado,licencia,chiste,recomienda escuchar,natural de
+docudrome: dibujo,talk,doc,spec,codetail,charla,parte de,parte,obra,trabajo,recommends,post,screencast,recomienda leer,wrote,escribió,recomienda ver,libro,ensayo,aparece en,receta,cartel,articulillo,cuadro,bordado,licencia,chiste,recomienda escuchar,natural de,curso on-line
 
 notedrome: note,reflexion,thought,pensamiento,monolog,dialog,triatlog,conversation,pensamiento relacionado,commit
 
